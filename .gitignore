@@ -1,5 +1,10 @@
 *.class
 
+# IDE Files #
+.classpath
+.settings
+.project
+
 # Package Files #
 *.jar
 *.war

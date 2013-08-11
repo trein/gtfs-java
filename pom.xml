@@ -35,7 +35,8 @@
         <commons.logging.version>1.1.1</commons.logging.version>
 
         <cglib.version>2.2.2</cglib.version>
-        <org.springframework.version>3.1.2.RELEASE</org.springframework.version>
+	<org.springframework.version>3.1.2.RELEASE</org.springframework.version>
+	<org.springframework.batch.version>2.2.1.RELEASE</org.springframework.batch.version>
         <org.springframework.javaconfig.version>1.0.0.m3</org.springframework.javaconfig.version>
         <org.aspectj.version>1.7.2</org.aspectj.version>
 
@@ -327,7 +328,21 @@
             <artifactId>aspectjweaver</artifactId>
             <version>${org.aspectj.version}</version>
         </dependency>
-
+	<dependency>
+	    <groupId>org.springframework.batch</groupId>
+	    <artifactId>spring-batch-core</artifactId>
+	    <version>${org.springframework.batch.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework.batch</groupId>
+	    <artifactId>spring-batch-infrastructure</artifactId>
+	    <version>${org.springframework.batch.version}</version>
+	</dependency>		
+	<dependency>
+	    <groupId>org.springframework.batch</groupId>
+	    <artifactId>spring-batch-test</artifactId>
+	    <version>${org.springframework.batch.version}</version>
+	</dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>

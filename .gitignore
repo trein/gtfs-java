@@ -9,3 +9,6 @@
 *.jar
 *.war
 *.ear
+
+# Maven Files #
+target/

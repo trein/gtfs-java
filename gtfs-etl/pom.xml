@@ -5,18 +5,69 @@
     <artifactId>gtfs-etl</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>GTFS Extract Load Transform</name>
+    <name>GTFS Extract Transform Load</name>
 
     <parent>
-         <artifactId>gtfs-all</artifactId>
-         <groupId>com.trein.gtfs</groupId>
-         <version>1.0-SNAPSHOT</version>
-     </parent>
+        <artifactId>gtfs-all</artifactId>
+        <groupId>com.trein.gtfs</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <dependencies>
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gtfs-orm</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gtfs-vo</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!-- Start testing dependency -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-test</artifactId>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!-- General dependencies -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!-- Logging dependencies -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-infrastructure</artifactId>
         </dependency>
     </dependencies>
 </project>

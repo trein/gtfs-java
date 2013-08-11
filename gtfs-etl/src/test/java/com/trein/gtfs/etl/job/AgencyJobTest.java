@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.trein.gtfs.etl.config.AgencySampleConfig;
+import com.trein.gtfs.etl.config.AgencySampleJobConfig;
 import com.trein.gtfs.etl.config.EtlTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { EtlTestConfig.class, AgencySampleConfig.class })
+@ContextConfiguration(classes = { EtlTestConfig.class, AgencySampleJobConfig.class })
 public class AgencyJobTest {
     
     @Autowired

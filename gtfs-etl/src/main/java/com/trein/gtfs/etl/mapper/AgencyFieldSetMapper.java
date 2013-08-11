@@ -22,10 +22,10 @@ public class AgencyFieldSetMapper implements FieldSetMapper<Agency> {
     
     @Override
     public Agency mapFieldSet(FieldSet fieldSet) throws BindException {
-	Agency agency = null;
+	Agency agency = new Agency();
 	
 	LOGGER.debug(fieldSet.toString());
-	// product = ;
+	
 	return agency;
     }
     

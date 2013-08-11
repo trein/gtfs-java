@@ -12,3 +12,6 @@
 
 # Maven Files #
 target/
+
+# OS Files  #
+.DS_Store

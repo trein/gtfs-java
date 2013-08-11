@@ -18,7 +18,7 @@ import com.trein.gtfs.etl.writer.LogAgencyItemWriter;
 import com.trein.gtfs.vo.Agency;
 
 @Configuration
-public class AgencySampleConfig {
+public class AgencySampleJobConfig {
     
     public static final String STEP_NAME = "step";
     public static final String JOB_NAME = "job";

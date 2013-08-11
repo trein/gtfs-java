@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 public class CSVItemReaderBuilder<T> {
     
     private static final String DELIMITER = ",";
+    private static final int LINES_TO_SKIP = 1;
     
     private final MultiResourceItemReader<T> reader;
     
@@ -24,6 +25,7 @@ public class CSVItemReaderBuilder<T> {
     private FlatFileItemReader<T> createDelegate(FieldSetMapper<T> context) {
 	FlatFileItemReader<T> itemReader = new FlatFileItemReader<T>();
 	itemReader.setLineMapper(createMapper(context));
+	itemReader.setLinesToSkip(LINES_TO_SKIP);
 	return itemReader;
     }
     

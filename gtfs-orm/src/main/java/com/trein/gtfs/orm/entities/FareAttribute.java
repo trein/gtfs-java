@@ -1,15 +1,16 @@
 package com.trein.gtfs.orm.entities;
 
-import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Fare information for a transit organization's routes.
  * 
  * @author trein
  */
-@Entity(name = "fare_attributes")
+// @Entity(name = "fare_attributes")
 public class FareAttribute {
     
+    @Id
     private long id;
     
     /**

@@ -1,7 +1,6 @@
 package com.trein.gtfs.orm.entities;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,7 +10,7 @@ import javax.persistence.ManyToOne;
  * 
  * @author trein
  */
-@Entity(name = "routes")
+// @Entity(name = "routes")
 public class Route {
     
     @Id

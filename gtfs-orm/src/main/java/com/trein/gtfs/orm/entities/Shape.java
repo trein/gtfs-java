@@ -1,18 +1,19 @@
 package com.trein.gtfs.orm.entities;
 
-import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Rules for drawing lines on a map to represent a transit organization's routes.
  * 
  * @author trein
  */
-@Entity(name = "shapes")
+// @Entity(name = "shapes")
 public class Shape {
     
     /**
      * shape_id Required The shape_id field contains an ID that uniquely identifies a shape.
      */
+    @Id
     private long id;
     
     /**

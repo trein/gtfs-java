@@ -2,7 +2,7 @@ package com.trein.gtfs.orm.entities;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Headway (time between trips) for routes with variable frequency of service.<br>
@@ -14,8 +14,11 @@ import javax.persistence.Entity;
  * 
  * @author trein
  */
-@Entity(name = "frequencies")
+// @Entity(name = "frequencies")
 public class Frequency {
+    
+    @Id
+    private long id;
     
     /**
      * trip_id Required The trip_id contains an ID that identifies a trip on which the specified

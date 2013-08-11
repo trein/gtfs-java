@@ -1,11 +1,8 @@
 package com.trein.gtfs.orm.entities;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 /**
  * One or more transit agencies that provide the data in this feed.
@@ -35,9 +32,6 @@ public class Agency {
     
     @Column(name = "fare_url", nullable = true)
     private String fareUrl;
-    
-    @OneToMany(mappedBy = "agency")
-    private List<Route> routes;
     
     /**
      * agency_id Optional: The agency_id field is an ID that uniquely identifies a transit agency. A
@@ -123,10 +117,6 @@ public class Agency {
      */
     public String getFareUrl() {
 	return this.fareUrl;
-    }
-    
-    public List<Route> getRoutes() {
-	return this.routes;
     }
     
 }

@@ -3,7 +3,6 @@ package com.trein.gtfs.orm.entities;
 import java.sql.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
@@ -21,7 +20,7 @@ import javax.persistence.Id;
  * 
  * @author trein
  */
-@Entity(name = "calendar_dates")
+// @Entity(name = "calendar_dates")
 public class CalendarDate {
     
     @Id

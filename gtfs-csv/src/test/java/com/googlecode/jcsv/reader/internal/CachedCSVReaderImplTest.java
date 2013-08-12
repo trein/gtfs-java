@@ -50,7 +50,7 @@ public class CachedCSVReaderImplTest {
     @Test
     public void testNext() {
 	Person result = this.cachedReader.next();
-	Person expected = new Person("Hans", "im Glück", 16);
+	Person expected = new Person("Hans", "im Gluck", 16);
 	assertEquals(expected, result);
 	
 	result = this.cachedReader.next();
@@ -121,7 +121,7 @@ public class CachedCSVReaderImplTest {
 	assertEquals(expected, result);
 	
 	result = this.cachedReader.get(0);
-	expected = new Person("Hans", "im Glück", 16);
+	expected = new Person("Hans", "im Gluck", 16);
 	assertEquals(expected, result);
 	
 	result = this.cachedReader.get(1);

@@ -16,7 +16,7 @@ import com.trein.gtfs.etl.config.EtlTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { EtlTestConfig.class, AgencySampleJobConfig.class })
-public class AgencyJobTest {
+public class AgencyJobIT {
     
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;

@@ -157,7 +157,7 @@ public class ValueProcessorsTest {
 	
 	assertEquals(df.parse("12.12.2012"), processor.processValue("12.12.2012"));
 	assertEquals(df.parse("01.01.1970"), processor.processValue("01.01.1970"));
-	assertEquals(-3600000, processor.processValue("01.01.1970").getTime());
+	assertEquals(10800000, processor.processValue("01.01.1970").getTime());
     }
     
     @Test(expected = IllegalArgumentException.class)

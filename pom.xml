@@ -10,6 +10,7 @@
         <module>gtfs-orm</module>
         <module>gtfs-vo</module>
         <module>gtfs-etl</module>
+        <module>gtfs-csv</module>
     </modules>
     
     <properties>

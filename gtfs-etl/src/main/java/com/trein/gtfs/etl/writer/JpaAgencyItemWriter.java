@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
-import com.trein.gtfs.vo.Agency;
+import com.trein.gtfs.vo.GtfsAgency;
 
 @Component
-public class JpaAgencyItemWriter implements ItemWriter<Agency> {
+public class JpaAgencyItemWriter implements ItemWriter<GtfsAgency> {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaAgencyItemWriter.class);
     
@@ -24,8 +24,8 @@ public class JpaAgencyItemWriter implements ItemWriter<Agency> {
     // }
     
     @Override
-    public void write(List<? extends Agency> items) {
-	for (Agency agency : items) {
+    public void write(List<? extends GtfsAgency> items) {
+	for (GtfsAgency agency : items) {
 	}
     }
     

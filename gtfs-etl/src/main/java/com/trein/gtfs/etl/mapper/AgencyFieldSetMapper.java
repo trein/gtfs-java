@@ -6,9 +6,9 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.validation.BindException;
 
-import com.trein.gtfs.vo.Agency;
+import com.trein.gtfs.vo.GtfsAgency;
 
-public class AgencyFieldSetMapper implements FieldSetMapper<Agency> {
+public class AgencyFieldSetMapper implements FieldSetMapper<GtfsAgency> {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(AgencyFieldSetMapper.class);
     
@@ -21,8 +21,8 @@ public class AgencyFieldSetMapper implements FieldSetMapper<Agency> {
     }
     
     @Override
-    public Agency mapFieldSet(FieldSet fieldSet) throws BindException {
-	Agency agency = new Agency();
+    public GtfsAgency mapFieldSet(FieldSet fieldSet) throws BindException {
+	GtfsAgency agency = new GtfsAgency();
 	
 	LOGGER.debug(fieldSet.toString());
 	

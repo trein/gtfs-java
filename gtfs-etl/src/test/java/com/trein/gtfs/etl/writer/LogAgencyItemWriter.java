@@ -6,14 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
 
-import com.trein.gtfs.vo.Agency;
+import com.trein.gtfs.vo.GtfsAgency;
 
-public class LogAgencyItemWriter implements ItemWriter<Agency> {
+public class LogAgencyItemWriter implements ItemWriter<GtfsAgency> {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(LogAgencyItemWriter.class);
     
     @Override
-    public void write(List<? extends Agency> items) throws Exception {
+    public void write(List<? extends GtfsAgency> items) throws Exception {
 	LOGGER.debug(items.toString());
     }
     

@@ -15,7 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.trein.gtfs.etl.mapper.AgencyFieldSetMapper;
 import com.trein.gtfs.etl.reader.CSVItemReaderBuilder;
 import com.trein.gtfs.etl.writer.JpaAgencyItemWriter;
-import com.trein.gtfs.vo.Agency;
+import com.trein.gtfs.vo.GtfsAgency;
 
 @Configuration
 public class GtfsAgencyConfig {
@@ -45,11 +45,11 @@ public class GtfsAgencyConfig {
     
     @Bean
     public Step step() {
-	return this.steps.get(STEP_NAME).<Object, Agency> chunk(100).reader(reader()).writer(this.writer).transactionManager(
+	return this.steps.get(STEP_NAME).<Object, GtfsAgency> chunk(100).reader(reader()).writer(this.writer).transactionManager(
 	        this.transactionManager).build();
     }
     
-    public MultiResourceItemReader<Agency> reader() {
-	return new CSVItemReaderBuilder<Agency>(new AgencyFieldSetMapper(), this.resources).build();
+    public MultiResourceItemReader<GtfsAgency> reader() {
+	return new CSVItemReaderBuilder<GtfsAgency>(new AgencyFieldSetMapper(), this.resources).build();
     }
 }

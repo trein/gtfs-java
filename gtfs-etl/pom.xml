@@ -24,6 +24,11 @@
             <artifactId>gtfs-vo</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gtfs-csv</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- ============================================================ -->
         <!-- Start testing dependency -->
@@ -61,6 +66,9 @@
             <artifactId>commons-logging</artifactId>
         </dependency>
 
+        <!-- ============================================================ -->
+        <!-- Spring Batch dependencies -->
+        <!-- ============================================================ -->
         <dependency>
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-core</artifactId>

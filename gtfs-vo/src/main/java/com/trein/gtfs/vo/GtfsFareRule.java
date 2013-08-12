@@ -1,6 +1,7 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Rules for applying fare information for a transit organization's routes.<br>
@@ -19,21 +20,22 @@ import com.googlecode.jcsv.annotations.MapToNamedColumn;
  * 
  * @author trein
  */
+@GtfsFile("fare_rules.txt")
 public class GtfsFareRule {
     
-    @MapToNamedColumn(column = "fare_id")
+    @GtfsColumn(column = "fare_id")
     private String fareId;
     
-    @MapToNamedColumn(column = "route_id", optional = true)
+    @GtfsColumn(column = "route_id", optional = true)
     private String routeId;
     
-    @MapToNamedColumn(column = "origin_id", optional = true)
+    @GtfsColumn(column = "origin_id", optional = true)
     private Integer originZoneId;
     
-    @MapToNamedColumn(column = "destination_id", optional = true)
+    @GtfsColumn(column = "destination_id", optional = true)
     private Integer destinationZoneId;
     
-    @MapToNamedColumn(column = "contains_id", optional = true)
+    @GtfsColumn(column = "contains_id", optional = true)
     private Integer containsId;
     
     /**

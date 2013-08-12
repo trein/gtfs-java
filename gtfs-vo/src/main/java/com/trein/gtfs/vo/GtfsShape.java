@@ -1,27 +1,29 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Rules for drawing lines on a map to represent a transit organization's routes.
  * 
  * @author trein
  */
+@GtfsFile("shapes.txt")
 public class GtfsShape {
     
-    @MapToNamedColumn(column = "shape_id")
+    @GtfsColumn(column = "shape_id")
     private String id;
     
-    @MapToNamedColumn(column = "shape_pt_lat")
+    @GtfsColumn(column = "shape_pt_lat")
     private Double lat;
     
-    @MapToNamedColumn(column = "shape_pt_lon")
+    @GtfsColumn(column = "shape_pt_lon")
     private Double lng;
     
-    @MapToNamedColumn(column = "shape_pt_sequence")
+    @GtfsColumn(column = "shape_pt_sequence")
     private Integer sequence;
     
-    @MapToNamedColumn(column = "shape_dist_traveled", optional = true)
+    @GtfsColumn(column = "shape_dist_traveled", optional = true)
     private Double distanceTraveled;
     
     /**

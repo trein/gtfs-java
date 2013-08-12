@@ -1,4 +1,4 @@
-package com.googlecode.jcsv.reader.internal;
+package com.trein.gtfs.csv.reader;
 
 import java.io.Reader;
 
@@ -8,6 +8,9 @@ import com.googlecode.jcsv.reader.CSVEntryParser;
 import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.CSVTokenizer;
 import com.googlecode.jcsv.reader.CachedCSVReader;
+import com.googlecode.jcsv.reader.internal.CSVTokenizerImpl;
+import com.googlecode.jcsv.reader.internal.CachedCSVReaderImpl;
+import com.googlecode.jcsv.reader.internal.DefaultCSVEntryParser;
 import com.googlecode.jcsv.util.Builder;
 
 /**

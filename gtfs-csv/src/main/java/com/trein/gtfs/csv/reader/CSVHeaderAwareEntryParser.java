@@ -1,13 +1,13 @@
-package com.googlecode.jcsv.reader.internal;
+package com.trein.gtfs.csv.reader;
 
 import java.lang.reflect.Field;
 
 import com.googlecode.jcsv.annotations.MapToColumn;
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
 import com.googlecode.jcsv.annotations.ValueProcessor;
 import com.googlecode.jcsv.annotations.internal.ValueProcessorProvider;
 import com.googlecode.jcsv.reader.CSVEntryParser;
 import com.googlecode.jcsv.reader.CSVParsingContext;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
 
 /**
  * Parses a csv entry, based on an annotated class.
@@ -72,7 +72,7 @@ public class CSVHeaderAwareEntryParser<E> implements CSVEntryParser<E> {
     private void fillObject(E entry, CSVParsingContext context) {
 	for (Field field : entry.getClass().getDeclaredFields()) {
 	    // check if there is a MapToColumn Annotation
-	    MapToNamedColumn mapAnnotation = field.getAnnotation(MapToNamedColumn.class);
+	    GtfsColumn mapAnnotation = field.getAnnotation(GtfsColumn.class);
 	    
 	    if (shouldFieldBeMapped(mapAnnotation)) {
 		Class<?> type = getFieldType(field, mapAnnotation);
@@ -102,7 +102,7 @@ public class CSVHeaderAwareEntryParser<E> implements CSVEntryParser<E> {
 	}
     }
     
-    private Object processValue(CSVParsingContext context, MapToNamedColumn mapAnnotation, ValueProcessor<?> vp, Field field) {
+    private Object processValue(CSVParsingContext context, GtfsColumn mapAnnotation, ValueProcessor<?> vp, Field field) {
 	boolean isOptional = mapAnnotation.optional();
 	String column = mapAnnotation.column();
 	
@@ -125,7 +125,7 @@ public class CSVHeaderAwareEntryParser<E> implements CSVEntryParser<E> {
      * @param mapAnnotation annotation
      * @return annotation type on field
      */
-    private Class<?> getFieldType(Field field, MapToNamedColumn mapAnnotation) {
+    private Class<?> getFieldType(Field field, GtfsColumn mapAnnotation) {
 	Class<?> type;
 	
 	if (mapAnnotation.type().equals(MapToColumn.Default.class)) {
@@ -138,7 +138,7 @@ public class CSVHeaderAwareEntryParser<E> implements CSVEntryParser<E> {
 	return type;
     }
     
-    private boolean shouldFieldBeMapped(MapToNamedColumn mapAnnotation) {
+    private boolean shouldFieldBeMapped(GtfsColumn mapAnnotation) {
 	return mapAnnotation != null;
     }
 }

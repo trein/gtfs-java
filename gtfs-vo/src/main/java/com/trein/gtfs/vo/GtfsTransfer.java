@@ -1,6 +1,7 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Rules for making connections at transfer points between routes.<br>
@@ -11,18 +12,19 @@ import com.googlecode.jcsv.annotations.MapToNamedColumn;
  * 
  * @author trein
  */
+@GtfsFile("transfers.txt")
 public class GtfsTransfer {
     
-    @MapToNamedColumn(column = "from_stop_id")
+    @GtfsColumn(column = "from_stop_id")
     private String fromStopId;
     
-    @MapToNamedColumn(column = "to_stop_id")
+    @GtfsColumn(column = "to_stop_id")
     private String toStopId;
     
-    @MapToNamedColumn(column = "transfer_type")
+    @GtfsColumn(column = "transfer_type")
     private Integer transferType;
     
-    @MapToNamedColumn(column = "min_transfer_time", optional = true)
+    @GtfsColumn(column = "min_transfer_time", optional = true)
     private Long minTransferTimeSecs;
     
     /**

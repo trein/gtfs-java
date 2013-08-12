@@ -1,4 +1,4 @@
-package com.googlecode.jcsv.reader.internal;
+package com.trein.gtfs.csv.reader;
 
 import java.util.HashMap;
 import java.util.List;

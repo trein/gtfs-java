@@ -1,33 +1,35 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * One or more transit agencies that provide the data in this feed.
  * 
  * @author trein
  */
+@GtfsFile("agency.txt")
 public class GtfsAgency {
     
-    @MapToNamedColumn(column = "agency_id")
+    @GtfsColumn(column = "agency_id")
     private String id;
     
-    @MapToNamedColumn(column = "agency_name")
+    @GtfsColumn(column = "agency_name")
     private String name;
     
-    @MapToNamedColumn(column = "agency_url")
+    @GtfsColumn(column = "agency_url")
     private String url;
     
-    @MapToNamedColumn(column = "agency_timezone")
+    @GtfsColumn(column = "agency_timezone")
     private String timezone;
     
-    @MapToNamedColumn(column = "agency_lang", optional = true)
+    @GtfsColumn(column = "agency_lang", optional = true)
     private String lang;
     
-    @MapToNamedColumn(column = "agency_phone", optional = true)
+    @GtfsColumn(column = "agency_phone", optional = true)
     private String phone;
     
-    @MapToNamedColumn(column = "agency_fare_url", optional = true)
+    @GtfsColumn(column = "agency_fare_url", optional = true)
     private String fareUrl;
     
     /**

@@ -1,39 +1,41 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Times that a vehicle arrives at and departs from individual stops for each trip.
  * 
  * @author trein
  */
+@GtfsFile("stop_times.txt")
 public class GtfsStopTime {
     
-    @MapToNamedColumn(column = "trip_id")
+    @GtfsColumn(column = "trip_id")
     private String tripId;
     
-    @MapToNamedColumn(column = "arrival_time")
+    @GtfsColumn(column = "arrival_time")
     private String arrivalTime;
     
-    @MapToNamedColumn(column = "departure_time")
+    @GtfsColumn(column = "departure_time")
     private String departureTime;
     
-    @MapToNamedColumn(column = "stop_id")
+    @GtfsColumn(column = "stop_id")
     private String stopId;
     
-    @MapToNamedColumn(column = "stop_sequence")
+    @GtfsColumn(column = "stop_sequence")
     private Integer stopSequence;
     
-    @MapToNamedColumn(column = "stop_headsign", optional = true)
+    @GtfsColumn(column = "stop_headsign", optional = true)
     private String stopHeadsign;
     
-    @MapToNamedColumn(column = "pickup_type", optional = true)
+    @GtfsColumn(column = "pickup_type", optional = true)
     private Integer pickupType;
     
-    @MapToNamedColumn(column = "drop_off_type", optional = true)
+    @GtfsColumn(column = "drop_off_type", optional = true)
     private Integer dropoffType;
     
-    @MapToNamedColumn(column = "shape_dist_traveled", optional = true)
+    @GtfsColumn(column = "shape_dist_traveled", optional = true)
     private Double shapeDistanceTraveled;
     
     /**

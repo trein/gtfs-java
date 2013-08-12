@@ -1,39 +1,41 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * One or more transit agencies that provide the data in this feed.
  * 
  * @author trein
  */
+@GtfsFile("trips.txt")
 public class GtfsTrip {
     
-    @MapToNamedColumn(column = "trip_id")
+    @GtfsColumn(column = "trip_id")
     private String id;
     
-    @MapToNamedColumn(column = "route_id")
+    @GtfsColumn(column = "route_id")
     private String routeId;
     
-    @MapToNamedColumn(column = "service_id")
+    @GtfsColumn(column = "service_id")
     private String serviceId;
     
-    @MapToNamedColumn(column = "trip_headsign", optional = true)
+    @GtfsColumn(column = "trip_headsign", optional = true)
     private String headsign;
     
-    @MapToNamedColumn(column = "trip_short_name", optional = true)
+    @GtfsColumn(column = "trip_short_name", optional = true)
     private String shortName;
     
-    @MapToNamedColumn(column = "direction_id", optional = true)
+    @GtfsColumn(column = "direction_id", optional = true)
     private Integer directionType;
     
-    @MapToNamedColumn(column = "block_id", optional = true)
+    @GtfsColumn(column = "block_id", optional = true)
     private Integer blockId;
     
-    @MapToNamedColumn(column = "shape_id", optional = true)
+    @GtfsColumn(column = "shape_id", optional = true)
     private Long shapeId;
     
-    @MapToNamedColumn(column = "wheelchair_accessible", optional = true)
+    @GtfsColumn(column = "wheelchair_accessible", optional = true)
     private Integer wheelchairType;
     
     /**

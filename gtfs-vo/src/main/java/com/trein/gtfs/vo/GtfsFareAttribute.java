@@ -1,30 +1,32 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Fare information for a transit organization's routes.
  * 
  * @author trein
  */
+@GtfsFile("fare_attributes.txt")
 public class GtfsFareAttribute {
     
-    @MapToNamedColumn(column = "fare_id")
+    @GtfsColumn(column = "fare_id")
     private String fareId;
     
-    @MapToNamedColumn(column = "price")
+    @GtfsColumn(column = "price")
     private Double price;
     
-    @MapToNamedColumn(column = "currency_type")
+    @GtfsColumn(column = "currency_type")
     private String currencyType;
     
-    @MapToNamedColumn(column = "payment_method")
+    @GtfsColumn(column = "payment_method")
     private Integer paymentType;
     
-    @MapToNamedColumn(column = "transfers")
+    @GtfsColumn(column = "transfers")
     private Integer transferType;
     
-    @MapToNamedColumn(column = "transfer_duration", optional = true)
+    @GtfsColumn(column = "transfer_duration", optional = true)
     private Double transferDuration;
     
     /**

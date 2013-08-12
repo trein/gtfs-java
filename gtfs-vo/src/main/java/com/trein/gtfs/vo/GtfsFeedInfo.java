@@ -1,6 +1,7 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Additional information about the feed itself, including publisher, version, and expiration
@@ -14,24 +15,25 @@ import com.googlecode.jcsv.annotations.MapToNamedColumn;
  * 
  * @author trein
  */
+@GtfsFile("feed_info.txt")
 public class GtfsFeedInfo {
     
-    @MapToNamedColumn(column = "feed_publisher_name")
+    @GtfsColumn(column = "feed_publisher_name")
     private String publisherName;
     
-    @MapToNamedColumn(column = "feed_publisher_name")
+    @GtfsColumn(column = "feed_publisher_name")
     private String pusblisherUrl;
     
-    @MapToNamedColumn(column = "feed_lang")
+    @GtfsColumn(column = "feed_lang")
     private String language;
     
-    @MapToNamedColumn(column = "feed_start_date", optional = true)
+    @GtfsColumn(column = "feed_start_date", optional = true)
     private String startDate;
     
-    @MapToNamedColumn(column = "feed_end_date", optional = true)
+    @GtfsColumn(column = "feed_end_date", optional = true)
     private String endDate;
     
-    @MapToNamedColumn(column = "feed_version", optional = true)
+    @GtfsColumn(column = "feed_version", optional = true)
     private String version;
     
     /**

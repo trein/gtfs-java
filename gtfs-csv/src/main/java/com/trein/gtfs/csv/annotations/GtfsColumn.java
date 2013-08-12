@@ -1,4 +1,4 @@
-package com.googlecode.jcsv.annotations;
+package com.trein.gtfs.csv.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +14,7 @@ import com.googlecode.jcsv.annotations.MapToColumn.Default;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface MapToNamedColumn {
+public @interface GtfsColumn {
     
     /**
      * The column of the data in the csv file. This parameter is required.

@@ -1,6 +1,7 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Headway (time between trips) for routes with variable frequency of service.<br>
@@ -12,21 +13,22 @@ import com.googlecode.jcsv.annotations.MapToNamedColumn;
  * 
  * @author trein
  */
+@GtfsFile("frequencies.txt")
 public class GtfsFrequency {
     
-    @MapToNamedColumn(column = "trip_id")
+    @GtfsColumn(column = "trip_id")
     private String tripId;
     
-    @MapToNamedColumn(column = "start_time")
+    @GtfsColumn(column = "start_time")
     private String startTime;
     
-    @MapToNamedColumn(column = "end_time")
+    @GtfsColumn(column = "end_time")
     private String endTime;
     
-    @MapToNamedColumn(column = "headway_secs")
+    @GtfsColumn(column = "headway_secs")
     private Long headwaySecs;
     
-    @MapToNamedColumn(column = "exact_times", optional = true)
+    @GtfsColumn(column = "exact_times", optional = true)
     private Integer exactTime;
     
     /**

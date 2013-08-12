@@ -1,6 +1,7 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Exceptions for the service IDs defined in the calendar.txt file. If calendar_dates.txt includes
@@ -17,15 +18,16 @@ import com.googlecode.jcsv.annotations.MapToNamedColumn;
  * 
  * @author trein
  */
+@GtfsFile("calendar_dates.txt")
 public class GtfsCalendarDate {
     
-    @MapToNamedColumn(column = "service_id")
+    @GtfsColumn(column = "service_id")
     private String serviceId;
     
-    @MapToNamedColumn(column = "date")
+    @GtfsColumn(column = "date")
     private String date;
     
-    @MapToNamedColumn(column = "exception_type")
+    @GtfsColumn(column = "exception_type")
     private Integer exceptionType;
     
     /**

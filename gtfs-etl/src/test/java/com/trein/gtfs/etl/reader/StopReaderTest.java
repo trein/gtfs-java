@@ -15,8 +15,8 @@ import org.junit.Test;
 
 import com.googlecode.jcsv.annotations.internal.ValueProcessorProvider;
 import com.googlecode.jcsv.reader.CSVReader;
-import com.googlecode.jcsv.reader.internal.CSVHeaderAwareEntryParser;
-import com.googlecode.jcsv.reader.internal.CSVHeaderAwareReaderBuilder;
+import com.trein.gtfs.csv.reader.CSVHeaderAwareEntryParser;
+import com.trein.gtfs.csv.reader.CSVHeaderAwareReaderBuilder;
 import com.trein.gtfs.vo.GtfsStop;
 
 /**

@@ -1,48 +1,50 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Individual locations where vehicles pick up or drop off passengers.
  * 
  * @author trein
  */
+@GtfsFile("stops.txt")
 public class GtfsStop {
     
-    @MapToNamedColumn(column = "stop_id")
+    @GtfsColumn(column = "stop_id")
     private String id;
     
-    @MapToNamedColumn(column = "stop_name")
+    @GtfsColumn(column = "stop_name")
     private String name;
     
-    @MapToNamedColumn(column = "stop_code", optional = true)
+    @GtfsColumn(column = "stop_code", optional = true)
     private String code;
     
-    @MapToNamedColumn(column = "stop_desc", optional = true)
+    @GtfsColumn(column = "stop_desc", optional = true)
     private String desc;
     
-    @MapToNamedColumn(column = "stop_lat")
+    @GtfsColumn(column = "stop_lat")
     private Double lat;
     
-    @MapToNamedColumn(column = "stop_lon")
+    @GtfsColumn(column = "stop_lon")
     private Double lng;
     
-    @MapToNamedColumn(column = "zone_id", optional = true)
+    @GtfsColumn(column = "zone_id", optional = true)
     private String zoneId;
     
-    @MapToNamedColumn(column = "stop_url", optional = true)
+    @GtfsColumn(column = "stop_url", optional = true)
     private String url;
     
-    @MapToNamedColumn(column = "location_type", optional = true)
+    @GtfsColumn(column = "location_type", optional = true)
     private Integer locationType;
     
-    @MapToNamedColumn(column = "parent_station", optional = true)
+    @GtfsColumn(column = "parent_station", optional = true)
     private Integer parentStation;
     
-    @MapToNamedColumn(column = "stop_timezone", optional = true)
+    @GtfsColumn(column = "stop_timezone", optional = true)
     private String timezone;
     
-    @MapToNamedColumn(column = "wheelchair_boarding", optional = true)
+    @GtfsColumn(column = "wheelchair_boarding", optional = true)
     private Integer wheelchairType;
     
     /**

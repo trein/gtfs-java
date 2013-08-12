@@ -1,39 +1,41 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Transit routes. A route is a group of trips that are displayed to riders as a single service.
  * 
  * @author trein
  */
+@GtfsFile("routes.txt")
 public class GtfsRoute {
     
-    @MapToNamedColumn(column = "route_id")
+    @GtfsColumn(column = "route_id")
     private String id;
     
-    @MapToNamedColumn(column = "agency_id", optional = true)
+    @GtfsColumn(column = "agency_id", optional = true)
     private String agencyId;
     
-    @MapToNamedColumn(column = "route_short_name")
+    @GtfsColumn(column = "route_short_name")
     private String shortName;
     
-    @MapToNamedColumn(column = "route_long_name")
+    @GtfsColumn(column = "route_long_name")
     private String longName;
     
-    @MapToNamedColumn(column = "route_desc", optional = true)
+    @GtfsColumn(column = "route_desc", optional = true)
     private String desc;
     
-    @MapToNamedColumn(column = "route_type")
+    @GtfsColumn(column = "route_type")
     private Integer routeType;
     
-    @MapToNamedColumn(column = "route_url", optional = true)
+    @GtfsColumn(column = "route_url", optional = true)
     private String url;
     
-    @MapToNamedColumn(column = "route_color", optional = true)
+    @GtfsColumn(column = "route_color", optional = true)
     private Integer hexPathColor;
     
-    @MapToNamedColumn(column = "route_text_color", optional = true)
+    @GtfsColumn(column = "route_text_color", optional = true)
     private Integer hexTextColor;
     
     /**

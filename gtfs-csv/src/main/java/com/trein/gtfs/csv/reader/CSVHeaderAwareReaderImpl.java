@@ -1,4 +1,4 @@
-package com.googlecode.jcsv.reader.internal;
+package com.trein.gtfs.csv.reader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import com.googlecode.jcsv.reader.CSVEntryFilter;
 import com.googlecode.jcsv.reader.CSVEntryParser;
 import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.CSVTokenizer;
+import com.googlecode.jcsv.reader.internal.CSVIterator;
 
 public class CSVHeaderAwareReaderImpl<E> implements CSVReader<E> {
     

@@ -1,6 +1,7 @@
 package com.trein.gtfs.vo;
 
-import com.googlecode.jcsv.annotations.MapToNamedColumn;
+import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotations.GtfsFile;
 
 /**
  * Dates for service IDs using a weekly schedule. Specify when service starts and ends, as well as
@@ -8,36 +9,37 @@ import com.googlecode.jcsv.annotations.MapToNamedColumn;
  * 
  * @author trein
  */
+@GtfsFile("calendar.txt")
 public class GtfsCalendar {
     
-    @MapToNamedColumn(column = "service_id")
+    @GtfsColumn(column = "service_id")
     private String serviceId;
     
-    @MapToNamedColumn(column = "monday")
+    @GtfsColumn(column = "monday")
     private Integer monday;
     
-    @MapToNamedColumn(column = "tuesday")
+    @GtfsColumn(column = "tuesday")
     private Integer tuesday;
     
-    @MapToNamedColumn(column = "wednesday")
+    @GtfsColumn(column = "wednesday")
     private Integer wednesday;
     
-    @MapToNamedColumn(column = "thursday")
+    @GtfsColumn(column = "thursday")
     private Integer thursday;
     
-    @MapToNamedColumn(column = "friday")
+    @GtfsColumn(column = "friday")
     private Integer friday;
     
-    @MapToNamedColumn(column = "saturday")
+    @GtfsColumn(column = "saturday")
     private Integer saturday;
     
-    @MapToNamedColumn(column = "sunday")
+    @GtfsColumn(column = "sunday")
     private Integer sunday;
     
-    @MapToNamedColumn(column = "start_date")
+    @GtfsColumn(column = "start_date")
     private String startDate;
     
-    @MapToNamedColumn(column = "end_date")
+    @GtfsColumn(column = "end_date")
     private String endDate;
     
     /**

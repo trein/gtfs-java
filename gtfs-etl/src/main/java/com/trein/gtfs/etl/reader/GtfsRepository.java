@@ -1,21 +1,21 @@
 package com.trein.gtfs.etl.reader;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.ListMultimap;
 
 public class GtfsRepository {
 
-    private final Multimap<Class<?>, Object> loadedEntities = ArrayListMultimap.create();
+    private final ListMultimap<Class<?>, Object> loadedEntities = ArrayListMultimap.create();
 
-    public void addAll(Class<?> entity, Collection<? extends Object> data) {
+    public void addAll(Class<?> entity, List<? extends Object> data) {
         this.loadedEntities.putAll(entity, data);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Collection<T> getEntities(Class<T> entity) {
-        return (Collection<T>) this.loadedEntities.get(entity);
+    public <T> List<T> getEntities(Class<T> entity) {
+        return (List<T>) this.loadedEntities.get(entity);
     }
 
     public void removeAll() {

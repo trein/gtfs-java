@@ -22,29 +22,28 @@ import com.trein.gtfs.vo.GtfsTransfer;
 import com.trein.gtfs.vo.GtfsTrip;
 
 public class GtfsReader {
-    
-    private static final Class<?>[] ENTITIES = { GtfsAgency.class, GtfsCalendarDate.class, GtfsCalendar.class, GtfsRoute.class,
-	    GtfsShape.class, GtfsStopTime.class, GtfsStop.class, GtfsTransfer.class, GtfsTrip.class };
-    
+
+    private static final Class<?>[] ENTITIES = {GtfsAgency.class, GtfsCalendarDate.class, GtfsCalendar.class, GtfsRoute.class,
+        GtfsShape.class, GtfsStopTime.class, GtfsStop.class, GtfsTransfer.class, GtfsTrip.class};
+
     private final GtfsRepository repository = new GtfsRepository();
-    
+
     public void load(String baseDir) throws IOException {
-	ValueProcessorProvider vpp = new ValueProcessorProvider();
-	
-	for (Class<?> entityClass : ENTITIES) {
-	    this.repository.addAll(entityClass, read(baseDir, vpp, entityClass));
-	}
+        ValueProcessorProvider vpp = new ValueProcessorProvider();
+
+        for (Class<?> entityClass : ENTITIES) {
+            this.repository.addAll(entityClass, read(baseDir, vpp, entityClass));
+        }
     }
-    
+
     private <T> List<T> read(String baseDir, ValueProcessorProvider vpp, Class<T> entityClass) throws IOException {
-	String filename = entityClass.getAnnotation(GtfsFile.class).value();
-	String path = baseDir + filename;
-	
-	Reader csv = new InputStreamReader(getClass().getResourceAsStream(path));
-	CSVEntryParser<T> parser = new CSVHeaderAwareEntryParser<T>(entityClass, vpp);
-	CSVReader<T> reader = new CSVHeaderAwareReaderBuilder<T>(csv).entryParser(parser).build();
-	
-	return reader.readAll();
+        String filename = entityClass.getAnnotation(GtfsFile.class).value();
+        String path = baseDir + filename;
+
+        Reader csv = new InputStreamReader(getClass().getResourceAsStream(path));
+        CSVEntryParser<T> parser = new CSVHeaderAwareEntryParser<T>(entityClass, vpp);
+        CSVReader<T> reader = new CSVHeaderAwareReaderBuilder<T>(csv).entryParser(parser).build();
+
+        return reader.readAll();
     }
-    
 }

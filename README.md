@@ -11,4 +11,4 @@ This project is composed by the following modules:
 (https://developers.google.com/transit/gtfs/reference).
 
 ## Important ##
-This is work in progress. Do not consider it as finshed impl.
+This is work in progress. Do not consider it as finshed implementation.

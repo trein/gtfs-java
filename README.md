@@ -8,7 +8,7 @@ This project is composed of the following modules:
 - `gtfs-csv`: Parsing logic for GTFS files
 
 ### Reference
-(https://developers.google.com/transit/gtfs/reference).
+- Official GTFS Specification: https://developers.google.com/transit/gtfs/reference
 
 ### Important
 This is work in progress. Do not consider it as finshed implementation.

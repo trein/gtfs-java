@@ -16,7 +16,7 @@ import com.googlecode.jcsv.annotations.internal.ValueProcessorProvider;
 import com.googlecode.jcsv.reader.CSVReader;
 import com.trein.gtfs.csv.reader.CSVHeaderAwareEntryParser;
 import com.trein.gtfs.csv.reader.CSVHeaderAwareReaderBuilder;
-import com.trein.gtfs.vo.GtfsTransfer;
+import com.trein.gtfs.csv.vo.GtfsTransfer;
 
 /**
  * Testing GTFS CSV file parsing for transfers.

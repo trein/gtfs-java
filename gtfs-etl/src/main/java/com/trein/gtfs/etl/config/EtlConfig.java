@@ -21,32 +21,32 @@ import com.trein.gtfs.orm.RepositoryConfig;
 
 @Configuration
 @EnableBatchProcessing
-@Import({ RepositoryConfig.class, GtfsAgencyConfig.class })
-@ComponentScan(basePackages = { "com.trein.etl" })
+@Import({ RepositoryConfig.class, GtfsJobConfig.class })
+@ComponentScan(basePackages = { "com.trein.gtfs" })
 public class EtlConfig {
-    
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer properties() {
-	return new PropertySourcesPlaceholderConfigurer();
+        return new PropertySourcesPlaceholderConfigurer();
     }
-    
+
     @Bean
     public TaskScheduler taskScheduler() {
-	return new ConcurrentTaskScheduler();
+        return new ConcurrentTaskScheduler();
     }
-    
+
     @Bean
     public JobRepository jobRepository() throws Exception {
-	return new SimpleJobRepository(new MapJobInstanceDao(), new MapJobExecutionDao(), new MapStepExecutionDao(),
-	        new MapExecutionContextDao());
+        return new SimpleJobRepository(new MapJobInstanceDao(), new MapJobExecutionDao(), new MapStepExecutionDao(),
+                new MapExecutionContextDao());
     }
-    
+
     @Bean
     public JobLauncher jobLauncher() throws Exception {
-	SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-	jobLauncher.setJobRepository(jobRepository());
-	jobLauncher.afterPropertiesSet();
-	return jobLauncher;
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
+        jobLauncher.setJobRepository(jobRepository());
+        jobLauncher.afterPropertiesSet();
+        return jobLauncher;
     }
-    
+
 }

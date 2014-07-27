@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
 
-import com.trein.gtfs.vo.GtfsAgency;
+import com.trein.gtfs.csv.vo.GtfsAgency;
 
 public class LogAgencyItemWriter implements ItemWriter<GtfsAgency> {
     

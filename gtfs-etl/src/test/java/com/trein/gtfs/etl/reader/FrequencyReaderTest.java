@@ -17,7 +17,7 @@ import com.googlecode.jcsv.annotations.internal.ValueProcessorProvider;
 import com.googlecode.jcsv.reader.CSVReader;
 import com.trein.gtfs.csv.reader.CSVHeaderAwareEntryParser;
 import com.trein.gtfs.csv.reader.CSVHeaderAwareReaderBuilder;
-import com.trein.gtfs.vo.GtfsFrequency;
+import com.trein.gtfs.csv.vo.GtfsFrequency;
 
 /**
  * Testing GTFS CSV file parsing for frequencies.

@@ -91,7 +91,7 @@ public class CSVHeaderAwareReaderBuilder<E> implements Builder<CSVReader<E>> {
 	    throw new IllegalStateException("you have to specify a csv entry parser");
 	}
 	
-	return new CSVHeaderAwareReaderImpl<E>(this);
+	return new CSVHeaderAwareReader<E>(this);
     }
     
     /**

@@ -13,7 +13,7 @@ import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.CSVTokenizer;
 import com.googlecode.jcsv.reader.internal.CSVIterator;
 
-public class CSVHeaderAwareReaderImpl<E> implements CSVReader<E> {
+public class CSVHeaderAwareReader<E> implements CSVReader<E> {
     
     private final BufferedReader reader;
     private final CSVStrategy strategy;
@@ -24,7 +24,7 @@ public class CSVHeaderAwareReaderImpl<E> implements CSVReader<E> {
     private CSVHeaderData headerData;
     private boolean firstLineRead = false;
     
-    CSVHeaderAwareReaderImpl(CSVHeaderAwareReaderBuilder<E> builder) {
+    CSVHeaderAwareReader(CSVHeaderAwareReaderBuilder<E> builder) {
 	this.reader = new BufferedReader(builder.reader);
 	this.strategy = builder.strategy;
 	this.entryParser = builder.entryParser;

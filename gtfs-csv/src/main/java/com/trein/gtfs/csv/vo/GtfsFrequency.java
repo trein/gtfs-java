@@ -15,22 +15,22 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile("frequencies.txt")
 public class GtfsFrequency {
-
+    
     @GtfsColumn(column = "trip_id")
     private String tripId;
-
+    
     @GtfsColumn(column = "start_time")
     private String startTime;
-
+    
     @GtfsColumn(column = "end_time")
     private String endTime;
-
+    
     @GtfsColumn(column = "headway_secs")
     private Long headwaySecs;
-
+    
     @GtfsColumn(column = "exact_times", optional = true)
     private Integer exactTime;
-
+    
     /**
      * trip_id Required The trip_id contains an ID that identifies a trip on which the specified
      * frequency of service applies. Trip IDs are referenced from the trips.txt file.
@@ -38,7 +38,7 @@ public class GtfsFrequency {
     public String getTripId() {
         return this.tripId;
     }
-
+    
     /**
      * start_time Required The start_time field specifies the time at which service begins with the
      * specified frequency. The time is measured from "noon minus 12h" (effectively midnight, except
@@ -49,7 +49,7 @@ public class GtfsFrequency {
     public String getStartTime() {
         return this.startTime;
     }
-
+    
     /**
      * end_time Required The end_time field indicates the time at which service changes to a
      * different frequency (or ceases) at the first stop in the trip. The time is measured from
@@ -61,7 +61,7 @@ public class GtfsFrequency {
     public String getEndTime() {
         return this.endTime;
     }
-
+    
     /**
      * headway_secs Required The headway_secs field indicates the time between departures from the
      * same stop (headway) for this trip type, during the time interval specified by start_time and
@@ -78,7 +78,7 @@ public class GtfsFrequency {
     public Long getHeadwaySecs() {
         return this.headwaySecs;
     }
-
+    
     /**
      * exact_times Optional The exact_times field determines if frequency-based trips should be
      * exactly scheduled based on the specified headway information. Valid values for this field
@@ -99,4 +99,9 @@ public class GtfsFrequency {
         return this.exactTime;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Frequency: %s", this.tripId);
+    }
+    
 }

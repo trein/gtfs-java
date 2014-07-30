@@ -7,16 +7,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
 
 public class GtfsItemWriter implements ItemWriter<GtfsItem> {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GtfsItemWriter.class);
     private static final boolean DRY_RUN = false;
-    
+
     public GtfsItemWriter() {
     }
-    
+
     @Override
     public void write(List<? extends GtfsItem> items) {
-        
+        LOGGER.debug("Received items [{}]", items);
     }
-    
+
 }

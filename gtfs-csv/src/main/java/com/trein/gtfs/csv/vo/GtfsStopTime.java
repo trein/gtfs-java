@@ -14,10 +14,10 @@ public class GtfsStopTime {
     @GtfsColumn(column = "trip_id")
     private String tripId;
 
-    @GtfsColumn(column = "arrival_time")
+    @GtfsColumn(column = "arrival_time", optional = true)
     private String arrivalTime;
 
-    @GtfsColumn(column = "departure_time")
+    @GtfsColumn(column = "departure_time", optional = true)
     private String departureTime;
 
     @GtfsColumn(column = "stop_id")
@@ -218,6 +218,11 @@ public class GtfsStopTime {
      */
     public Double getShapeDistanceTraveled() {
         return this.shapeDistanceTraveled;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Stop Time: %s::%s::%s", this.tripId, this.arrivalTime, this.departureTime);
     }
 
 }

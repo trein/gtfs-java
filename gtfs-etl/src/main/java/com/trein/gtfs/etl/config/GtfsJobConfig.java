@@ -17,8 +17,8 @@ import com.trein.gtfs.etl.job.GtfsItemWriter;
 public class GtfsJobConfig {
     
     private static final String GTFS_BASE_DIR = "br_poa/";
-    public static final String STEP_NAME = "step";
-    public static final String JOB_NAME = "job";
+    public static final String STEP_NAME = "gtfs_unique_step";
+    public static final String JOB_NAME = "gtfs_parser_job";
     
     @Autowired
     private JobBuilderFactory jobs;
@@ -36,7 +36,7 @@ public class GtfsJobConfig {
     
     @Bean
     public Step step() {
-        return this.steps.get(STEP_NAME).<Object, GtfsItem> chunk(100).reader(reader()).writer(writer()).build();
+        return this.steps.get(STEP_NAME).<Object, GtfsItem> chunk(1000).reader(reader()).writer(writer()).build();
     }
 
     private GtfsItemWriter writer() {

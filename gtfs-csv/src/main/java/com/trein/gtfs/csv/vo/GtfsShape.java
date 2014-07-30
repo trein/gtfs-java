@@ -10,29 +10,29 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile("shapes.txt")
 public class GtfsShape {
-
+    
     @GtfsColumn(column = "shape_id")
     private String id;
-
+    
     @GtfsColumn(column = "shape_pt_lat")
     private Double lat;
-
+    
     @GtfsColumn(column = "shape_pt_lon")
     private Double lng;
-
+    
     @GtfsColumn(column = "shape_pt_sequence")
     private Integer sequence;
-
+    
     @GtfsColumn(column = "shape_dist_traveled", optional = true)
     private Double distanceTraveled;
-
+    
     /**
      * shape_id Required The shape_id field contains an ID that uniquely identifies a shape.
      */
     public String getId() {
         return this.id;
     }
-
+    
     /**
      * shape_pt_lat Required The shape_pt_lat field associates a shape point's latitude with a shape
      * ID. The field value must be a valid WGS 84 latitude. Each row in shapes.txt represents a
@@ -48,7 +48,7 @@ public class GtfsShape {
     public Double getLat() {
         return this.lat;
     }
-
+    
     /**
      * shape_pt_lon Required The shape_pt_lon field associates a shape point's longitude with a
      * shape ID. The field value must be a valid WGS 84 longitude value from -180 to 180. Each row
@@ -65,7 +65,7 @@ public class GtfsShape {
     public Double getLng() {
         return this.lng;
     }
-
+    
     /**
      * shape_pt_sequence Required The shape_pt_sequence field associates the latitude and longitude
      * of a shape point with its sequence order along the shape. The values for shape_pt_sequence
@@ -82,7 +82,7 @@ public class GtfsShape {
     public Integer getSequence() {
         return this.sequence;
     }
-
+    
     /**
      * shape_dist_traveled Optional When used in the shapes.txt file, the shape_dist_traveled field
      * positions a shape point as a distance traveled along a shape from the first shape point. The
@@ -105,4 +105,9 @@ public class GtfsShape {
         return this.distanceTraveled;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Shape: %s", this.id);
+    }
+    
 }

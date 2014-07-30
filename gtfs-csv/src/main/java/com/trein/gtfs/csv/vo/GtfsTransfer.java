@@ -12,21 +12,21 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  *
  * @author trein
  */
-@GtfsFile("transfers.txt")
+@GtfsFile(value = "transfers.txt", optional = true)
 public class GtfsTransfer {
-
+    
     @GtfsColumn(column = "from_stop_id")
     private String fromStopId;
-
+    
     @GtfsColumn(column = "to_stop_id")
     private String toStopId;
-
+    
     @GtfsColumn(column = "transfer_type")
     private Integer transferType;
-
+    
     @GtfsColumn(column = "min_transfer_time", optional = true)
     private Long minTransferTimeSecs;
-
+    
     /**
      * from_stop_id Required The from_stop_id field contains a stop ID that identifies a stop or
      * station where a connection between routes begins. Stop IDs are referenced from the stops.txt
@@ -36,7 +36,7 @@ public class GtfsTransfer {
     public String getFromStopId() {
         return this.fromStopId;
     }
-
+    
     /**
      * to_stop_id Required The to_stop_id field contains a stop ID that identifies a stop or station
      * where a connection between routes ends. Stop IDs are referenced from the stops.txt file. If
@@ -46,7 +46,7 @@ public class GtfsTransfer {
     public String getToStopId() {
         return this.toStopId;
     }
-
+    
     /**
      * transfer_type Required The transfer_type field specifies the type of connection for the
      * specified (from_stop_id, to_stop_id) pair. Valid values for this field are:
@@ -61,7 +61,7 @@ public class GtfsTransfer {
     public Integer getTransferType() {
         return this.transferType;
     }
-
+    
     /**
      * min_transfer_time Optional When a connection between routes requires an amount of time
      * between arrival and departure (transfer_type=2), the min_transfer_time field defines the
@@ -74,4 +74,9 @@ public class GtfsTransfer {
         return this.minTransferTimeSecs;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Transfer: %s::%s::%s", this.fromStopId, this.toStopId, this.transferType);
+    }
+    
 }

@@ -33,7 +33,7 @@ public class GtfsTrip {
     private Integer blockId;
 
     @GtfsColumn(column = "shape_id", optional = true)
-    private Long shapeId;
+    private String shapeId;
 
     @GtfsColumn(column = "wheelchair_accessible", optional = true)
     private Integer wheelchairType;
@@ -146,7 +146,7 @@ public class GtfsTrip {
      *
      * @return share related to the current trip.
      */
-    public Long getShapeId() {
+    public String getShapeId() {
         return this.shapeId;
     }
 
@@ -163,6 +163,11 @@ public class GtfsTrip {
      */
     public Integer getWheelchairType() {
         return this.wheelchairType;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Trip: %s::%s", this.id);
     }
 
 }

@@ -11,37 +11,37 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile("calendar.txt")
 public class GtfsCalendar {
-
+    
     @GtfsColumn(column = "service_id")
     private String serviceId;
-
+    
     @GtfsColumn(column = "monday")
     private Integer monday;
-
+    
     @GtfsColumn(column = "tuesday")
     private Integer tuesday;
-
+    
     @GtfsColumn(column = "wednesday")
     private Integer wednesday;
-
+    
     @GtfsColumn(column = "thursday")
     private Integer thursday;
-
+    
     @GtfsColumn(column = "friday")
     private Integer friday;
-
+    
     @GtfsColumn(column = "saturday")
     private Integer saturday;
-
+    
     @GtfsColumn(column = "sunday")
     private Integer sunday;
-
+    
     @GtfsColumn(column = "start_date")
     private String startDate;
-
+    
     @GtfsColumn(column = "end_date")
     private String endDate;
-
+    
     /**
      * service_id Required The service_id contains an ID that uniquely identifies a set of dates
      * when service is available for one or more routes. Each service_id value can appear at most
@@ -51,7 +51,7 @@ public class GtfsCalendar {
     public String getServiceId() {
         return this.serviceId;
     }
-
+    
     /**
      * monday Required The monday field contains a binary value that indicates whether the service
      * is valid for all Mondays.
@@ -67,7 +67,7 @@ public class GtfsCalendar {
     public Integer getMonday() {
         return this.monday;
     }
-
+    
     /**
      * tuesday Required The tuesday field contains a binary value that indicates whether the service
      * is valid for all Tuesdays.
@@ -83,7 +83,7 @@ public class GtfsCalendar {
     public Integer getTuesday() {
         return this.tuesday;
     }
-
+    
     /**
      * wednesday Required The wednesday field contains a binary value that indicates whether the
      * service is valid for all Wednesdays.
@@ -96,7 +96,7 @@ public class GtfsCalendar {
     public Integer getWednesday() {
         return this.wednesday;
     }
-
+    
     /**
      * thursday Required The thursday field contains a binary value that indicates whether the
      * service is valid for all Thursdays.
@@ -109,7 +109,7 @@ public class GtfsCalendar {
     public Integer getThursday() {
         return this.thursday;
     }
-
+    
     /**
      * friday Required The friday field contains a binary value that indicates whether the service
      * is valid for all Fridays.
@@ -125,7 +125,7 @@ public class GtfsCalendar {
     public Integer getFriday() {
         return this.friday;
     }
-
+    
     /**
      * saturday Required The saturday field contains a binary value that indicates whether the
      * service is valid for all Saturdays.
@@ -141,7 +141,7 @@ public class GtfsCalendar {
     public Integer getSaturday() {
         return this.saturday;
     }
-
+    
     /**
      * sunday Required The sunday field contains a binary value that indicates whether the service
      * is valid for all Sundays.
@@ -157,7 +157,7 @@ public class GtfsCalendar {
     public Integer getSunday() {
         return this.sunday;
     }
-
+    
     /**
      * start_date Required The start_date field contains the start date for the service. The
      * start_date field's value should be in YYYYMMDD format.
@@ -165,7 +165,7 @@ public class GtfsCalendar {
     public String getStartDate() {
         return this.startDate;
     }
-
+    
     /**
      * end_date Required The end_date field contains the end date for the service. This date is
      * included in the service interval. The end_date field's value should be in YYYYMMDD format.
@@ -174,4 +174,9 @@ public class GtfsCalendar {
         return this.endDate;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Calendar: %s", this.serviceId);
+    }
+    
 }

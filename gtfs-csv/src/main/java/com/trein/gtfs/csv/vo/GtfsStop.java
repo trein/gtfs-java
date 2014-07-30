@@ -211,5 +211,10 @@ public class GtfsStop {
     public Integer getWheelchairType() {
         return this.wheelchairType;
     }
+    
+    @Override
+    public String toString() {
+        return String.format("Stop: %s", this.name);
+    }
 
 }

@@ -10,34 +10,34 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile("routes.txt")
 public class GtfsRoute {
-
+    
     @GtfsColumn(column = "route_id")
     private String id;
-
+    
     @GtfsColumn(column = "agency_id", optional = true)
     private String agencyId;
-
+    
     @GtfsColumn(column = "route_short_name")
     private String shortName;
-
+    
     @GtfsColumn(column = "route_long_name")
     private String longName;
-
+    
     @GtfsColumn(column = "route_desc", optional = true)
     private String desc;
-
+    
     @GtfsColumn(column = "route_type")
     private Integer routeType;
-
+    
     @GtfsColumn(column = "route_url", optional = true)
     private String url;
-
+    
     @GtfsColumn(column = "route_color", optional = true)
     private String hexPathColor;
-
+    
     @GtfsColumn(column = "route_text_color", optional = true)
     private String hexTextColor;
-
+    
     /**
      * route_id Required The route_id field contains an ID that uniquely identifies a route. The
      * route_id is dataset unique.
@@ -47,7 +47,7 @@ public class GtfsRoute {
     public String getId() {
         return this.id;
     }
-
+    
     /**
      * agency_id Optional The agency_id field defines an agency for the specified route. This value
      * is referenced from the agency.txt file. Use this field when you are providing data for routes
@@ -58,7 +58,7 @@ public class GtfsRoute {
     public String getAgencyId() {
         return this.agencyId;
     }
-
+    
     /**
      * route_short_name Required The route_short_name contains the short name of a route. This will
      * often be a short, abstract identifier like "32", "100X", or "Green" that riders use to
@@ -73,7 +73,7 @@ public class GtfsRoute {
     public String getShortName() {
         return this.shortName;
     }
-
+    
     /**
      * route_long_name Required The route_long_name contains the full name of a route. This name is
      * generally more descriptive than the route_short_name and will often include the route's
@@ -87,7 +87,7 @@ public class GtfsRoute {
     public String getLongName() {
         return this.longName;
     }
-
+    
     /**
      * route_desc Optional The route_desc field contains a description of a route. Please provide
      * useful, quality information. Do not simply duplicate the name of the route. For example,
@@ -103,7 +103,7 @@ public class GtfsRoute {
     public String getDesc() {
         return this.desc;
     }
-
+    
     /**
      * route_type Required The route_type field describes the type of transportation used on a
      * route. Valid values for this field are:
@@ -124,7 +124,7 @@ public class GtfsRoute {
     public Integer getRouteType() {
         return this.routeType;
     }
-
+    
     /**
      * route_url Optional The route_url field contains the URL of a web page about that particular
      * route. This should be different from the agency_url. The value must be a fully qualified URL
@@ -137,7 +137,7 @@ public class GtfsRoute {
     public String getUrl() {
         return this.url;
     }
-
+    
     /**
      * route_color Optional In systems that have colors assigned to routes, the route_color field
      * defines a color that corresponds to a route. The color must be provided as a six-character
@@ -153,7 +153,7 @@ public class GtfsRoute {
     public String getHexPathColor() {
         return this.hexPathColor;
     }
-
+    
     /**
      * route_text_color Optional The route_text_color field can be used to specify a legible color
      * to use for text drawn against a background of route_color. The color must be provided as a
@@ -167,4 +167,9 @@ public class GtfsRoute {
         return this.hexTextColor;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Route: %s::%s", this.id, this.shortName);
+    }
+    
 }

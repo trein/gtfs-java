@@ -20,16 +20,16 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile("calendar_dates.txt")
 public class GtfsCalendarDate {
-
+    
     @GtfsColumn(column = "service_id")
     private String serviceId;
-
+    
     @GtfsColumn(column = "date")
     private String date;
-
+    
     @GtfsColumn(column = "exception_type")
     private Integer exceptionType;
-
+    
     /**
      * service_id Required The service_id contains an ID that uniquely identifies a set of dates
      * when a service exception is available for one or more routes. Each (service_id, date) pair
@@ -43,7 +43,7 @@ public class GtfsCalendarDate {
     public String getServiceId() {
         return this.serviceId;
     }
-
+    
     /**
      * date Required The date field specifies a particular date when service availability is
      * different than the norm. You can use the exception_type field to indicate whether service is
@@ -54,7 +54,7 @@ public class GtfsCalendarDate {
     public String getDate() {
         return this.date;
     }
-
+    
     /**
      * exception_type Required The exception_type indicates whether service is available on the date
      * specified in the date field.
@@ -76,4 +76,9 @@ public class GtfsCalendarDate {
         return this.exceptionType;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Calendar Date: %s", this.serviceId);
+    }
+    
 }

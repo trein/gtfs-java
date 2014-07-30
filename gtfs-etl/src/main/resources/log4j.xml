@@ -10,7 +10,7 @@
     </appender>
 
     <logger name="com.trein.gtfs">
-        <level value="debug" />
+        <level value="info" />
     </logger>
     <root>
         <priority value="info" />

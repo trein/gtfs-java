@@ -117,5 +117,10 @@ public class GtfsAgency {
     public String getFareUrl() {
         return this.fareUrl;
     }
+    
+    @Override
+    public String toString() {
+        return String.format("Agency: %s", this.name);
+    }
 
 }

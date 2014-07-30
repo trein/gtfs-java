@@ -17,25 +17,25 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile("feed_info.txt")
 public class GtfsFeedInfo {
-
+    
     @GtfsColumn(column = "feed_publisher_name")
     private String publisherName;
-
+    
     @GtfsColumn(column = "feed_publisher_name")
     private String pusblisherUrl;
-
+    
     @GtfsColumn(column = "feed_lang")
     private String language;
-
+    
     @GtfsColumn(column = "feed_start_date", optional = true)
     private String startDate;
-
+    
     @GtfsColumn(column = "feed_end_date", optional = true)
     private String endDate;
-
+    
     @GtfsColumn(column = "feed_version", optional = true)
     private String version;
-
+    
     /**
      * feed_publisher_name Required The feed_publisher_name field contains the full name of the
      * organization that publishes the feed. (This may be the same as one of the agency_name values
@@ -45,7 +45,7 @@ public class GtfsFeedInfo {
     public String getPublisherName() {
         return this.publisherName;
     }
-
+    
     /**
      * feed_publisher_url Required The feed_publisher_url field contains the URL of the feed
      * publishing organization's website. (This may be the same as one of the agency_url values in
@@ -57,7 +57,7 @@ public class GtfsFeedInfo {
     public String getPusblisherUrl() {
         return this.pusblisherUrl;
     }
-
+    
     /**
      * feed_lang Required The feed_lang field contains a IETF BCP 47 language code specifying the
      * default language used for the text in this feed. This setting helps GTFS consumers choose
@@ -68,7 +68,7 @@ public class GtfsFeedInfo {
     public String getLanguage() {
         return this.language;
     }
-
+    
     /**
      * feed_start_date Optional The feed provides complete and reliable schedule information for
      * service in the period from the beginning of the feed_start_date day to the end of the
@@ -84,7 +84,7 @@ public class GtfsFeedInfo {
     public String getStartDate() {
         return this.startDate;
     }
-
+    
     /**
      * feed_end_date Optional The feed provides complete and reliable schedule information for
      * service in the period from the beginning of the feed_start_date day to the end of the
@@ -100,7 +100,7 @@ public class GtfsFeedInfo {
     public String getEndDate() {
         return this.endDate;
     }
-
+    
     /**
      * feed_version Optional The feed publisher can specify a string here that indicates the current
      * version of their GTFS feed. GTFS-consuming applications can display this value to help feed
@@ -110,4 +110,9 @@ public class GtfsFeedInfo {
         return this.version;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Feed Info: %s", this.publisherName);
+    }
+    
 }

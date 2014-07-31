@@ -17,6 +17,7 @@
             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
             <property name="hibernate.cache.use_second_level_cache" value="true" />
             <property name="hibernate.cache.use_query_cache" value="true" />
+            <property name="hibernate.jdbc.batch_size" value="100" />
         </properties>
     </persistence-unit>
 </persistence>

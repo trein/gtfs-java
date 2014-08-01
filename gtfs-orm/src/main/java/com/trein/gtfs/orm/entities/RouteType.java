@@ -3,7 +3,7 @@ package com.trein.gtfs.orm.entities;
 /**
  * route_type Required The route_type field describes the type of transportation used on a route.
  * See a Google Maps screenshot highlighting the route_type.
- * 
+ *
  * @author trein
  */
 public enum RouteType {
@@ -12,12 +12,12 @@ public enum RouteType {
     private final int code;
     
     private RouteType(int code) {
-	this.code = code;
+        this.code = code;
     }
     
     /**
      * Valid values for this field are:
-     * 
+     *
      * <pre>
      * 0 - Tram, Streetcar, Light rail. Any light rail or street level system within a metropolitan area.
      * 1 - Subway, Metro. Any underground rail system within a metropolitan area.
@@ -28,11 +28,18 @@ public enum RouteType {
      * 6 - Gondola, Suspended cable car. Typically used for aerial cable cars where the car is suspended from the cable.
      * 7 - Funicular. Any rail system designed for steep inclines.
      * </pre>
-     * 
+     *
      * @return code corresponding the type of the route.
      */
     public int getCode() {
-	return this.code;
+        return this.code;
+    }
+
+    public static RouteType valueOf(int code) {
+        for (RouteType e : RouteType.values()) {
+            if (e.getCode() == code) { return e; }
+        }
+        return RAIL;
     }
     
 }

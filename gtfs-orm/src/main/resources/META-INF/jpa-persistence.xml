@@ -4,20 +4,21 @@
     <persistence-unit name="manager" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-        <class>com.trein.gtfs.orm.entities.Agency</class>
-
         <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
 
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <!-- <property name="hibernate.hbm2ddl.auto" value="update" /> -->
+            <!-- <property name="hibernate.show_sql" value="false" /> -->
             <property name="hibernate.show_sql" value="false" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 
             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
+            <property name="net.sf.ehcache.configurationResourceName" value="/META-INF/ehcache.xml" />
             <property name="hibernate.cache.use_second_level_cache" value="true" />
             <property name="hibernate.cache.use_query_cache" value="true" />
-            <property name="hibernate.jdbc.batch_size" value="100" />
+            <property name="hibernate.jdbc.batch_size" value="1000" />
         </properties>
     </persistence-unit>
 </persistence>

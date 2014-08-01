@@ -3,64 +3,72 @@ package com.trein.gtfs.orm.entities;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Times that a vehicle arrives at and departs from individual stops for each trip.
- * 
+ *
  * @author trein
  */
-// @Entity(name = "stop_times")
+@Entity(name = "stop_times")
+@Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class StopTime {
-    
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "id", nullable = false, updatable = false)
     private Trip trip;
-    
+
     @Column(name = "arrival_time")
     private Timestamp arrivalTime;
-    
+
     @Column(name = "departure_time")
     private Timestamp departureTime;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "id", nullable = false, updatable = false)
     private Stop stop;
-    
+
     @Column(name = "stop_sequence")
     private int stopSequence;
-    
+
     @Column(name = "stop_headsign")
     private String stopHeadsign;
-    
+
     @Column(name = "pick_up_time", nullable = true)
     private AvailabilityType pickupType;
-    
+
     @Column(name = "drop_off_type", nullable = true)
     private AvailabilityType dropoffType;
-    
+
     @Column(name = "shape_distance_traveled", nullable = true)
     private double shapeDistanceTraveled;
-    
+
     public long getId() {
-	return this.id;
+        return this.id;
     }
-    
+
     /**
      * trip_id Required The trip_id field contains an ID that identifies a trip. This value is
      * referenced from the trips.txt file.
-     * 
+     *
      * @return trip related to current stop time.
      */
     public Trip getTrip() {
-	return this.trip;
+        return this.trip;
     }
-    
+
     /**
      * arrival_time Required The arrival_time specifies the arrival time at a specific stop for a
      * specific trip on a route. The time is measured from "noon minus 12h" (effectively midnight,
@@ -76,7 +84,7 @@ public class StopTime {
      * Times must be eight digits in HH:MM:SS format (H:MM:SS is also accepted, if the hour begins
      * with 0). Do not pad times with spaces. The following columns list stop times for a trip and
      * the proper way to express those times in the arrival_time field:
-     * 
+     *
      * <pre>
      *     Time			arrival_time value
      *     08:10:00 A.M.	08:10:00 or 8:10:00
@@ -84,18 +92,18 @@ public class StopTime {
      *     07:40:00 P.M.	19:40:00
      *     01:55:00 A.M.	25:55:00
      * </pre>
-     * 
+     *
      * Note: Trips that span multiple dates will have stop times greater than 24:00:00. For example,
      * if a trip begins at 10:30:00 p.m. and ends at 2:15:00 a.m. on the following day, the stop
      * times would be 22:30:00 and 26:15:00. Entering those stop times as 22:30:00 and 02:15:00
      * would not produce the desired results.
-     * 
+     *
      * @return current stop time's arrival time.
      */
     public Timestamp getArrivalTime() {
-	return this.arrivalTime;
+        return this.arrivalTime;
     }
-    
+
     /**
      * departure_time Required The departure_time specifies the departure time from a specific stop
      * for a specific trip on a route. The time is measured from "noon minus 12h" (effectively
@@ -111,7 +119,7 @@ public class StopTime {
      * Times must be eight digits in HH:MM:SS format (H:MM:SS is also accepted, if the hour begins
      * with 0). Do not pad times with spaces. The following columns list stop times for a trip and
      * the proper way to express those times in the departure_time field:
-     * 
+     *
      * <pre>
      *     Time			departure_time value
      *     08:10:00 A.M.	08:10:00 or 8:10:00
@@ -119,18 +127,18 @@ public class StopTime {
      *     07:40:00 P.M.	19:40:00
      *     01:55:00 A.M.	25:55:00
      * </pre>
-     * 
+     *
      * Note: Trips that span multiple dates will have stop times greater than 24:00:00. For example,
      * if a trip begins at 10:30:00 p.m. and ends at 2:15:00 a.m. on the following day, the stop
      * times would be 22:30:00 and 26:15:00. Entering those stop times as 22:30:00 and 02:15:00
      * would not produce the desired results.
-     * 
+     *
      * @return current stop time's departure time.
      */
     public Timestamp getDepartureTime() {
-	return this.departureTime;
+        return this.departureTime;
     }
-    
+
     /**
      * stop_id Required The stop_id field contains an ID that uniquely identifies a stop. Multiple
      * routes may use the same stop. The stop_id is referenced from the stops.txt file. If
@@ -139,61 +147,61 @@ public class StopTime {
      * updates. In other words, stop A with stop_id 1 should have stop_id 1 in all subsequent data
      * updates. If a stop is not a time point, enter blank values for arrival_time and
      * departure_time.
-     * 
+     *
      * @return stop related to current stop time.
      */
     public Stop getStop() {
-	return this.stop;
+        return this.stop;
     }
-    
+
     /**
      * stop_sequence Required The stop_sequence field identifies the order of the stops for a
      * particular trip. The values for stop_sequence must be non-negative integers, and they must
      * increase along the trip. For example, the first stop on the trip could have a stop_sequence
      * of 1, the second stop on the trip could have a stop_sequence of 23, the third stop could have
      * a stop_sequence of 40, and so on.
-     * 
+     *
      * @return current stop time's stop sequence.
      */
     public int getStopSequence() {
-	return this.stopSequence;
+        return this.stopSequence;
     }
-    
+
     /**
      * stop_headsign Optional The stop_headsign field contains the text that appears on a sign that
      * identifies the trip's destination to passengers. Use this field to override the default
      * trip_headsign when the headsign changes between stops. If this headsign is associated with an
      * entire trip, use trip_headsign instead. See a Google Maps screenshot highlighting the
      * headsign.
-     * 
+     *
      * @return current stop time's stop headsign.
      */
     public String getStopHeadsign() {
-	return this.stopHeadsign;
+        return this.stopHeadsign;
     }
-    
+
     /**
      * pickup_type Optional The pickup_type field indicates whether passengers are picked up at a
      * stop as part of the normal schedule or whether a pickup at the stop is not available.
-     * 
+     *
      * @return pickup type related to current stop time.
      * @see AvailabilityType refer to documentation for more details.
      */
     public AvailabilityType getPickupType() {
-	return this.pickupType;
+        return this.pickupType;
     }
-    
+
     /**
      * drop_off_type Optional The drop_off_type field indicates whether passengers are dropped off
      * at a stop as part of the normal schedule or whether a drop off at the stop is not available.
-     * 
+     *
      * @return dropoff type related to current stop time.
      * @see AvailabilityType refer to documentation for more details.
      */
     public AvailabilityType getDropoffType() {
-	return this.dropoffType;
+        return this.dropoffType;
     }
-    
+
     /**
      * shape_dist_traveled Optional When used in the stop_times.txt file, the shape_dist_traveled
      * field positions a stop as a distance from the first shape point. The shape_dist_traveled
@@ -205,11 +213,11 @@ public class StopTime {
      * stop_sequence: they cannot be used to show reverse travel along a route. The units used for
      * shape_dist_traveled in the stop_times.txt file must match the units that are used for this
      * field in the shapes.txt file.
-     * 
+     *
      * @return distance traveled indicated by this stop time.
      */
     public double getShapeDistanceTraveled() {
-	return this.shapeDistanceTraveled;
+        return this.shapeDistanceTraveled;
     }
-    
+
 }

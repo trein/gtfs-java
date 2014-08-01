@@ -6,4 +6,5 @@ import com.trein.gtfs.orm.entities.Agency;
 
 public interface AgencyRepository extends CrudRepository<Agency, Long> {
 
+    Agency findByAgencyId(String id);
 }

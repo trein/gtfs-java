@@ -2,7 +2,12 @@ package com.trein.gtfs.orm.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * One or more transit agencies that provide the data in this feed. Hibernate disables insert
@@ -11,29 +16,51 @@ import javax.persistence.Id;
  * @author trein
  */
 @Entity(name = "agencies")
+@Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Agency {
-
+    
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "agency_id")
+    private String agencyId;
+    
     @Column(name = "name")
     private String name;
-
+    
     @Column(name = "url")
     private String url;
-
+    
     @Column(name = "timezone")
     private String timezone;
-
+    
     @Column(name = "lang", nullable = true)
     private String lang;
-
+    
     @Column(name = "phone", nullable = true)
     private String phone;
-
+    
     @Column(name = "fare_url", nullable = true)
     private String fareUrl;
 
+    Agency() {
+    }
+    
+    public Agency(String agencyId, String name, String url, String timezone, String lang, String phone, String fareUrl) {
+        this.agencyId = agencyId;
+        this.name = name;
+        this.url = url;
+        this.timezone = timezone;
+        this.lang = lang;
+        this.phone = phone;
+        this.fareUrl = fareUrl;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+    
     /**
      * agency_id Optional: The agency_id field is an ID that uniquely identifies a transit agency. A
      * transit feed may represent data from more than one agency. The agency_id is dataset unique.
@@ -41,10 +68,10 @@ public class Agency {
      *
      * @return current agency's id.
      */
-    public long getId() {
-        return this.id;
+    public String getAgencyId() {
+        return this.agencyId;
     }
-
+    
     /**
      * agency_name Required: The agency_name field contains the full name of the transit agency.
      * Google Maps will display this name.
@@ -54,7 +81,7 @@ public class Agency {
     public String getName() {
         return this.name;
     }
-
+    
     /**
      * Required: The agency_url field contains the URL of the transit agency. The value must be a
      * fully qualified URL that includes http:// or https://, and any special characters in the URL
@@ -66,7 +93,7 @@ public class Agency {
     public String getUrl() {
         return this.url;
     }
-
+    
     /**
      * agency_timezone Required: The agency_timezone field contains the timezone where the transit
      * agency is located. Timezone names never contain the space character but may contain an
@@ -79,7 +106,7 @@ public class Agency {
     public String getTimezone() {
         return this.timezone;
     }
-
+    
     /***
      * agency_lang Optional: The agency_lang field contains a two-letter ISO 639-1 code for the
      * primary language used by this transit agency. The language code is case-insensitive (both en
@@ -92,7 +119,7 @@ public class Agency {
     public String getLang() {
         return this.lang;
     }
-
+    
     /**
      * agency_phone Optional: The agency_phone field contains a single voice telephone number for
      * the specified agency. This field is a string value that presents the telephone number as
@@ -105,7 +132,7 @@ public class Agency {
     public String getPhone() {
         return this.phone;
     }
-
+    
     /**
      * agency_fare_url Optional: The agency_fare_url specifies the URL of a web page that allows a
      * rider to purchase tickets or other fare instruments for that agency online. The value must be
@@ -119,5 +146,5 @@ public class Agency {
     public String getFareUrl() {
         return this.fareUrl;
     }
-
+    
 }

@@ -5,38 +5,45 @@ package com.trein.gtfs.orm.entities;
  * location type is specified, or the location_type is blank, stop IDs are treated as stops.
  * Stations may have different properties from stops when they are represented on a map or used in
  * trip planning.
- * 
+ *
  * @author trein
  */
 public enum StopLocationType {
     STOP(0), STATION(1);
-    
+
     private final int code;
-    
+
     private StopLocationType(int code) {
-	this.code = code;
+        this.code = code;
     }
-    
+
     /**
      * The location type field can have the following values:<br>
-     * 
+     *
      * <pre>
      * <li>0 or blank - Stop. A location where passengers board or disembark from a transit vehicle.</li>
      * <li>1 - Station. A physical structure or area that contains one or more stop.</li>
      * </pre>
-     * 
+     *
      * @return code corresponding to the given type of the stop.
      */
     public int getCode() {
-	return this.code;
+        return this.code;
     }
-    
+
     public boolean isStation() {
-	return this == STATION;
+        return this == STATION;
     }
-    
+
     public boolean isStop() {
-	return this == STOP;
+        return this == STOP;
     }
     
+    public static StopLocationType fromCode(int code) {
+        for (StopLocationType e : StopLocationType.values()) {
+            if (e.getCode() == code) { return e; }
+        }
+        return STOP;
+    }
+
 }

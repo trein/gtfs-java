@@ -35,7 +35,7 @@ public enum RouteType {
         return this.code;
     }
 
-    public static RouteType valueOf(int code) {
+    public static RouteType fromCode(int code) {
         for (RouteType e : RouteType.values()) {
             if (e.getCode() == code) { return e; }
         }

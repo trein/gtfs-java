@@ -24,7 +24,7 @@ public enum WheelchairType {
         return this.code;
     }
 
-    public static WheelchairType valueOf(int code) {
+    public static WheelchairType fromCode(int code) {
         for (WheelchairType e : WheelchairType.values()) {
             if (e.getCode() == code) { return e; }
         }

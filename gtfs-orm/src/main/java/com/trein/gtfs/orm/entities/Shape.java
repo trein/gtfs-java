@@ -22,16 +22,16 @@ public class Shape {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "shape_id")
+    @Column(name = "shape_id", nullable = false)
     private String shapeId;
-
-    private Location location;
 
     @Column(name = "sequence")
     private long sequence;
 
     @Column(name = "distance")
     private double distanceTraveled;
+    
+    private Location location;
 
     Shape() {
         

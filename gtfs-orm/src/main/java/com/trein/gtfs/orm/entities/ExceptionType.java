@@ -35,7 +35,7 @@ public enum ExceptionType {
         return this.code;
     }
 
-    public static ExceptionType valueOf(int code) {
+    public static ExceptionType fromCode(int code) {
         for (ExceptionType e : ExceptionType.values()) {
             if (e.getCode() == code) { return e; }
         }

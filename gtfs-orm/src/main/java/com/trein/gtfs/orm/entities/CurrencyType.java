@@ -2,7 +2,7 @@ package com.trein.gtfs.orm.entities;
 
 /**
  * The following is a list of active codes of official ISO 4217 currency names.
- * 
+ *
  * <pre>
  * Code	Num	E	Currency	Locations using this currency
  * AED	784	2	United Arab Emirates dirham	 United Arab Emirates
@@ -165,39 +165,52 @@ package com.trein.gtfs.orm.entities;
  * VUV	548	0	Vanuatu vatu	 Vanuatu
  * WST	882	2	Samoan tala	 Samoa
  * XAF	950	0	CFA franc BEAC	 Cameroon,  Central African Republic,  Republic of the Congo,  Chad,  Equatorial Guinea,  Gabon
- * XAG	961	.	Silver (one troy ounce)	
- * XAU	959	.	Gold (one troy ounce)	
- * XBA	955	.	European Composite Unit (EURCO) (bond market unit)	
- * XBB	956	.	European Monetary Unit (E.M.U.-6) (bond market unit)	
- * XBC	957	.	European Unit of Account 9 (E.U.A.-9) (bond market unit)	
- * XBD	958	.	European Unit of Account 17 (E.U.A.-17) (bond market unit)	
+ * XAG	961	.	Silver (one troy ounce)
+ * XAU	959	.	Gold (one troy ounce)
+ * XBA	955	.	European Composite Unit (EURCO) (bond market unit)
+ * XBB	956	.	European Monetary Unit (E.M.U.-6) (bond market unit)
+ * XBC	957	.	European Unit of Account 9 (E.U.A.-9) (bond market unit)
+ * XBD	958	.	European Unit of Account 17 (E.U.A.-17) (bond market unit)
  * XCD	951	2	East Caribbean dollar	 Anguilla,  Antigua and Barbuda,  Dominica,  Grenada,  Montserrat,  Saint Kitts and Nevis,  Saint Lucia,  Saint Vincent and the Grenadines
  * XDR	960	.	Special drawing rights	International Monetary Fund
  * XFU	Nil	.	UIC franc (special settlement currency)	International Union of Railways
  * XOF	952	0	CFA franc BCEAO	 Benin,  Burkina Faso,  Côte d'Ivoire,  Guinea-Bissau,  Mali,  Niger,  Senegal,  Togo
- * XPD	964	.	Palladium (one troy ounce)	
+ * XPD	964	.	Palladium (one troy ounce)
  * XPF	953	0	CFP franc (Franc du Pacifique)	French territories of the Pacific Ocean:  French Polynesia,  New Caledonia,  Wallis and Futuna
- * XPT	962	.	Platinum (one troy ounce)	
- * XTS	963	.	Code reserved for testing purposes	
- * XXX	999	.	No currency	
+ * XPT	962	.	Platinum (one troy ounce)
+ * XTS	963	.	Code reserved for testing purposes
+ * XXX	999	.	No currency
  * YER	886	2	Yemeni rial	 Yemen
  * ZAR	710	2	South African rand	 South Africa
  * ZMW	967	2	Zambian kwacha	 Zambia
  * </pre>
- * 
+ *
  * @author trein
  */
 public enum CurrencyType {
-    BRL("Brazilian real"), USD("US dollar"), EUR("Euro"), CAN("Canadian dollar");
-    
+    BRL("BRL", "Brazilian real"), USD("USD", "US dollar"), EUR("EUR", "Euro"), CAN("CAD", "Canadian dollar");
+
+    private final String code;
     private final String description;
-    
-    private CurrencyType(String description) {
-	this.description = description;
+
+    private CurrencyType(String code, String description) {
+        this.code = code;
+        this.description = description;
     }
     
+    public String getCode() {
+        return this.code;
+    }
+
     public String getDescription() {
-	return this.description;
+        return this.description;
     }
-    
+
+    public static CurrencyType fromCode(String code) {
+        for (CurrencyType e : CurrencyType.values()) {
+            if (e.getCode().equals(code)) { return e; }
+        }
+        return USD;
+    }
+
 }

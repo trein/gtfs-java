@@ -19,44 +19,44 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity(name = "trips")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Trip {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    @Column(name = "trip_id")
+    
+    @Column(name = "trip_id", nullable = false)
     private String tripId;
-    
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "id", nullable = false, updatable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "route", nullable = false)
     private Route route;
-    
-    @Column(name = "service_id")
-    private String serviceId;
-    
-    @Column(name = "headsign", nullable = true)
-    private String headsign;
-    
-    @Column(name = "short_name", nullable = true)
-    private String shortName;
-    
-    @Column(name = "direction_type", nullable = true)
-    private DirectionType directionType;
-    
-    @Column(name = "block_id", nullable = true)
-    private int blockId;
-    
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "id", nullable = false, updatable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "shape", nullable = false)
     private Shape shape;
     
-    @Column(name = "wheelchair_type", nullable = true)
+    @Column(name = "service_id", nullable = false)
+    private String serviceId;
+
+    @Column(name = "headsign")
+    private String headsign;
+
+    @Column(name = "short_name")
+    private String shortName;
+
+    @Column(name = "block_id")
+    private int blockId;
+    
+    @Column(name = "direction_type")
+    private DirectionType directionType;
+
+    @Column(name = "wheelchair_type")
     private WheelchairType wheelchairType;
-    
+
     Trip() {
-        
+
     }
-    
+
     public Trip(String tripId, Route route, String serviceId, String headsign, String shortName, DirectionType directionType,
             int blockId, Shape shape, WheelchairType wheelchairType) {
         this.tripId = tripId;
@@ -69,11 +69,11 @@ public class Trip {
         this.shape = shape;
         this.wheelchairType = wheelchairType;
     }
-    
+
     public long getId() {
         return this.id;
     }
-    
+
     /**
      * trip_id Required The trip_id field contains an ID that identifies a trip. The trip_id is
      * dataset unique.
@@ -83,7 +83,7 @@ public class Trip {
     public String getTripId() {
         return this.tripId;
     }
-    
+
     /**
      * route_id Required The route_id field contains an ID that uniquely identifies a route. This
      * value is referenced from the routes.txt file.
@@ -93,7 +93,7 @@ public class Trip {
     public Route getRoute() {
         return this.route;
     }
-    
+
     /**
      * service_id Required The service_id contains an ID that uniquely identifies a set of dates
      * when service is available for one or more routes. This value is referenced from the
@@ -104,7 +104,7 @@ public class Trip {
     public String getServiceId() {
         return this.serviceId;
     }
-    
+
     /**
      * trip_headsign Optional The trip_headsign field contains the text that appears on a sign that
      * identifies the trip's destination to passengers. Use this field to distinguish between
@@ -117,7 +117,7 @@ public class Trip {
     public String getHeadsign() {
         return this.headsign;
     }
-    
+
     /**
      * trip_short_name Optional The trip_short_name field contains the text that appears in
      * schedules and sign boards to identify the trip to passengers, for example, to identify train
@@ -131,7 +131,7 @@ public class Trip {
     public String getShortName() {
         return this.shortName;
     }
-    
+
     /**
      * direction_id Optional The direction_id field contains a binary value that indicates the
      * direction of travel for a trip. Use this field to distinguish between bi-directional trips
@@ -155,7 +155,7 @@ public class Trip {
     public DirectionType getDirectionType() {
         return this.directionType;
     }
-    
+
     /**
      * block_id Optional The block_id field identifies the block to which the trip belongs. A block
      * consists of two or more sequential trips made using the same vehicle, where a passenger can
@@ -167,7 +167,7 @@ public class Trip {
     public int getBlockId() {
         return this.blockId;
     }
-    
+
     /**
      * shape_id Optional The shape_id field contains an ID that defines a shape for the trip. This
      * value is referenced from the shapes.txt file. The shapes.txt file allows you to define how a
@@ -178,7 +178,7 @@ public class Trip {
     public Shape getShape() {
         return this.shape;
     }
-    
+
     /**
      * wheelchair_accessible Optional
      *
@@ -193,5 +193,5 @@ public class Trip {
     public WheelchairType getWheelchairType() {
         return this.wheelchairType;
     }
-    
+
 }

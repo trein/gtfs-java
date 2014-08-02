@@ -27,21 +27,21 @@ public class Route {
     @Column(name = "route_id")
     private String routeId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "agency_id", nullable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "agency", nullable = false)
     private Agency agency;
 
-    @Column(name = "short_name")
+    @Column(name = "short_name", nullable = false)
     private String shortName;
 
-    @Column(name = "long_name")
+    @Column(name = "long_name", nullable = false)
     private String longName;
+    
+    @Column(name = "route_type")
+    private RouteType type;
 
     @Column(name = "description")
     private String desc;
-
-    @Column(name = "route_type")
-    private RouteType type;
 
     @Column(name = "url")
     private String url;

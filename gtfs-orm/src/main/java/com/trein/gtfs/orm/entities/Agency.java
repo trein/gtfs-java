@@ -23,16 +23,16 @@ public class Agency {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "agency_id")
+    @Column(name = "agency_id", nullable = false)
     private String agencyId;
     
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     
-    @Column(name = "url")
+    @Column(name = "url", nullable = false)
     private String url;
     
-    @Column(name = "timezone")
+    @Column(name = "timezone", nullable = false)
     private String timezone;
     
     @Column(name = "lang", nullable = true)
@@ -83,10 +83,11 @@ public class Agency {
     }
     
     /**
-     * Required: The agency_url field contains the URL of the transit agency. The value must be a
-     * fully qualified URL that includes http:// or https://, and any special characters in the URL
-     * must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html
-     * for a description of how to create fully qualified URL values.
+     * agency_url Required: The agency_url field contains the URL of the transit agency. The value
+     * must be a fully qualified URL that includes http:// or https://, and any special characters
+     * in the URL must be correctly escaped. See
+     * http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to
+     * create fully qualified URL values.
      *
      * @return current agency's url.
      */

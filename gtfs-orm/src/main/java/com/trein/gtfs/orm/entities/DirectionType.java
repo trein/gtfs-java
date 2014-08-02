@@ -33,7 +33,7 @@ public enum DirectionType {
         return this.code;
     }
     
-    public static DirectionType valueOf(int code) {
+    public static DirectionType fromCode(int code) {
         for (DirectionType e : DirectionType.values()) {
             if (e.getCode() == code) { return e; }
         }

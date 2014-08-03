@@ -20,7 +20,7 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  *
  * @author trein
  */
-@GtfsFile("fare_rules.txt")
+@GtfsFile(value = "fare_rules.txt", optional = true)
 public class GtfsFareRule {
     
     @GtfsColumn(column = "fare_id")

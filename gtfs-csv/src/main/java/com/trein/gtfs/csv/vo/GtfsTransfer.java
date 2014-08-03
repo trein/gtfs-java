@@ -21,6 +21,7 @@ public class GtfsTransfer {
     @GtfsColumn(column = "to_stop_id")
     private String toStopId;
     
+    // FIXME: handle case of empty transfer which currently will be mapped to 0
     @GtfsColumn(column = "transfer_type")
     private Integer transferType;
     

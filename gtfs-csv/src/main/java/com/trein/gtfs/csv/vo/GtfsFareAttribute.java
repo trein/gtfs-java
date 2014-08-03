@@ -8,7 +8,7 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  *
  * @author trein
  */
-@GtfsFile("fare_attributes.txt")
+@GtfsFile(value = "fare_attributes.txt", optional = true)
 public class GtfsFareAttribute {
     
     @GtfsColumn(column = "fare_id")
@@ -24,7 +24,7 @@ public class GtfsFareAttribute {
     private Integer paymentType;
     
     @GtfsColumn(column = "transfers")
-    private Integer transferType;
+    private String transfers;
     
     @GtfsColumn(column = "transfer_duration", optional = true)
     private Double transferDuration;
@@ -78,8 +78,8 @@ public class GtfsFareAttribute {
      * (empty) - If this field is empty, unlimited transfers are permitted.
      * </pre>
      */
-    public Integer getTransferType() {
-        return this.transferType;
+    public String getTransfers() {
+        return this.transfers;
     }
     
     /**

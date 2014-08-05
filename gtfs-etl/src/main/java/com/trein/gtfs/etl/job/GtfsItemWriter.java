@@ -71,6 +71,8 @@ public class GtfsItemWriter implements ItemWriter<GtfsItem> {
     private StopTimeRepository stopTimeRepository;
     @Autowired
     private TransferRepository transferRepository;
+
+    private int currentCount;
     
     public GtfsItemWriter() {
     }
@@ -78,7 +80,12 @@ public class GtfsItemWriter implements ItemWriter<GtfsItem> {
     @Override
     public void write(List<? extends GtfsItem> items) {
         for (GtfsItem item : items) {
-            LOGGER.info("Received item [{}]", item);
+
+            this.currentCount++;
+            LOGGER.debug("Received item [{}]", item);
+            if ((this.currentCount % 10000) == 0) {
+                LOGGER.info("Writing entry [{}] into database", String.valueOf(this.currentCount));
+            }
             
             if (item.getEntityClass().equals(GtfsAgency.class)) {
                 persistAgency(item);
@@ -157,14 +164,14 @@ public class GtfsItemWriter implements ItemWriter<GtfsItem> {
     private void persistTrip(GtfsItem item) {
         GtfsTrip trip = item.getEntity();
         Route route = this.routeRepository.findByRouteId(trip.getRouteId());
-        Shape shape = this.shapeRepository.findByShapeId(trip.getShapeId());
+        List<Shape> shapes = this.shapeRepository.findByShapeId(trip.getShapeId());
         DirectionType direction = DirectionType.fromCode(trip.getDirectionType().intValue());
         WheelchairType wheelchairType = WheelchairType.fromCode(trip.getWheelchairType().intValue());
         int blockId = (trip.getBlockId() != null) ? trip.getBlockId().intValue() : 0;
         String serviceId = trip.getServiceId();
         String headsign = trip.getHeadsign();
         String shortName = trip.getShortName();
-        Trip entity = new Trip(trip.getId(), route, serviceId, headsign, shortName, direction, blockId, shape, wheelchairType);
+        Trip entity = new Trip(trip.getId(), route, serviceId, headsign, shortName, direction, blockId, shapes, wheelchairType);
         
         if (!DRY_RUN) {
             this.tripRepository.save(entity);

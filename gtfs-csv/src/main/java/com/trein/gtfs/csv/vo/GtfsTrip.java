@@ -10,34 +10,34 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile("trips.txt")
 public class GtfsTrip {
-
+    
     @GtfsColumn(column = "trip_id")
     private String id;
-
+    
     @GtfsColumn(column = "route_id")
     private String routeId;
-
+    
     @GtfsColumn(column = "service_id")
     private String serviceId;
-
+    
     @GtfsColumn(column = "trip_headsign", optional = true)
     private String headsign;
-
+    
     @GtfsColumn(column = "trip_short_name", optional = true)
     private String shortName;
-
+    
     @GtfsColumn(column = "direction_id", optional = true)
     private Integer directionType;
-
+    
     @GtfsColumn(column = "block_id", optional = true)
     private Integer blockId;
-
+    
     @GtfsColumn(column = "shape_id", optional = true)
     private String shapeId;
-
+    
     @GtfsColumn(column = "wheelchair_accessible", optional = true)
     private Integer wheelchairType;
-
+    
     /**
      * trip_id Required The trip_id field contains an ID that identifies a trip. The trip_id is
      * dataset unique.
@@ -47,7 +47,7 @@ public class GtfsTrip {
     public String getId() {
         return this.id;
     }
-
+    
     /**
      * route_id Required The route_id field contains an ID that uniquely identifies a route. This
      * value is referenced from the routes.txt file.
@@ -57,7 +57,7 @@ public class GtfsTrip {
     public String getRouteId() {
         return this.routeId;
     }
-
+    
     /**
      * service_id Required The service_id contains an ID that uniquely identifies a set of dates
      * when service is available for one or more routes. This value is referenced from the
@@ -68,7 +68,7 @@ public class GtfsTrip {
     public String getServiceId() {
         return this.serviceId;
     }
-
+    
     /**
      * trip_headsign Optional The trip_headsign field contains the text that appears on a sign that
      * identifies the trip's destination to passengers. Use this field to distinguish between
@@ -81,7 +81,7 @@ public class GtfsTrip {
     public String getHeadsign() {
         return this.headsign;
     }
-
+    
     /**
      * trip_short_name Optional The trip_short_name field contains the text that appears in
      * schedules and sign boards to identify the trip to passengers, for example, to identify train
@@ -95,7 +95,7 @@ public class GtfsTrip {
     public String getShortName() {
         return this.shortName;
     }
-
+    
     /**
      * direction_id Optional The direction_id field contains a binary value that indicates the
      * direction of travel for a trip. Use this field to distinguish between bi-directional trips
@@ -126,7 +126,7 @@ public class GtfsTrip {
     public Integer getDirectionType() {
         return this.directionType;
     }
-
+    
     /**
      * block_id Optional The block_id field identifies the block to which the trip belongs. A block
      * consists of two or more sequential trips made using the same vehicle, where a passenger can
@@ -138,7 +138,7 @@ public class GtfsTrip {
     public Integer getBlockId() {
         return this.blockId;
     }
-
+    
     /**
      * shape_id Optional The shape_id field contains an ID that defines a shape for the trip. This
      * value is referenced from the shapes.txt file. The shapes.txt file allows you to define how a
@@ -149,7 +149,7 @@ public class GtfsTrip {
     public String getShapeId() {
         return this.shapeId;
     }
-
+    
     /**
      * wheelchair_accessible Optional
      *
@@ -164,10 +164,10 @@ public class GtfsTrip {
     public Integer getWheelchairType() {
         return this.wheelchairType;
     }
-
+    
     @Override
     public String toString() {
-        return String.format("Trip: %s::%s", this.id);
+        return String.format("Trip: %s::%s", this.id, this.routeId);
     }
-
+    
 }

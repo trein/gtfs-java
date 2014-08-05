@@ -16,45 +16,45 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity(name = "shapes")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Shape {
-
+public class Shape implements Comparable<Shape> {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
     @Column(name = "shape_id", nullable = false)
     private String shapeId;
-
+    
     @Column(name = "sequence")
     private long sequence;
-
+    
     @Column(name = "distance")
     private double distanceTraveled;
-    
-    private Location location;
 
-    Shape() {
-        
-    }
+    private Location location;
     
+    Shape() {
+
+    }
+
     public Shape(String shapeId, Location location, long sequence, double distanceTraveled) {
         this.shapeId = shapeId;
         this.location = location;
         this.sequence = sequence;
         this.distanceTraveled = distanceTraveled;
     }
-
+    
     public long getId() {
         return this.id;
     }
-
+    
     /**
      * shape_id Required The shape_id field contains an ID that uniquely identifies a shape.
      */
     public String getShapeId() {
         return this.shapeId;
     }
-
+    
     /**
      * shape_pt_lat Required The shape_pt_lat field associates a shape point's latitude with a shape
      * ID. The field value must be a valid WGS 84 latitude. Each row in shapes.txt represents a
@@ -82,7 +82,7 @@ public class Shape {
     public Location getLocation() {
         return this.location;
     }
-
+    
     /**
      * shape_pt_sequence Required The shape_pt_sequence field associates the latitude and longitude
      * of a shape point with its sequence order along the shape. The values for shape_pt_sequence
@@ -99,7 +99,7 @@ public class Shape {
     public long getSequence() {
         return this.sequence;
     }
-
+    
     /**
      * shape_dist_traveled Optional When used in the shapes.txt file, the shape_dist_traveled field
      * positions a shape point as a distance traveled along a shape from the first shape point. The
@@ -121,5 +121,10 @@ public class Shape {
     public double getDistanceTraveled() {
         return this.distanceTraveled;
     }
-
+    
+    @Override
+    public int compareTo(Shape o) {
+        return (int) this.sequence - (int) o.sequence;
+    }
+    
 }

@@ -39,27 +39,27 @@ import com.trein.gtfs.csv.vo.GtfsTransfer;
 import com.trein.gtfs.csv.vo.GtfsTrip;
 
 public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GtfsItemReader.class);
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(GtfsItemReader.class);
+
     private static final List<Class<?>> ENTITIES = Arrays.asList(GtfsAgency.class, GtfsCalendarDate.class, GtfsCalendar.class,
             GtfsRoute.class, GtfsShape.class, GtfsTrip.class, GtfsStop.class, GtfsStopTime.class, GtfsTransfer.class,
             GtfsFareAttribute.class, GtfsFareRule.class, GtfsFrequency.class, GtfsFeedInfo.class);
-    
-    private static final String ENTITY_KEY = "gtfs_class";
 
+    private static final String ENTITY_KEY = "gtfs_class";
+    
     private Iterator<Class<?>> entityIterator;
     private Class<Object> currentEntityClass;
     private CSVReader<?> reader;
     private boolean saveState = true;
     private final String baseDir;
     private int currentCount;
-
+    
     public GtfsItemReader(String baseDir) {
         this.baseDir = baseDir;
         setExecutionContextName(ClassUtils.getShortName(MultiResourceItemReader.class));
     }
-
+    
     /**
      * Reads the next item, jumping to next resource if necessary.
      */
@@ -68,12 +68,12 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
     public GtfsItem read() throws Exception, UnexpectedInputException, ParseException {
         Object parsedEntity = this.reader.readNext();
         boolean hasReachedEndOfFile = parsedEntity == null;
-
+        
         // If there is no resource, then this is the first item, set the current
         // resource to 0 and open the first delegate.
         if (hasReachedEndOfFile) {
             this.reader.close();
-
+            
             while (this.entityIterator.hasNext()) {
                 this.currentCount = 0;
                 this.currentEntityClass = (Class<Object>) this.entityIterator.next();
@@ -84,23 +84,23 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
                 }
             }
         }
-
+        
         // Signals there are no resources to read -> just return null on first read
         if (parsedEntity == null) { return null; }
-
+        
         this.currentCount++;
         if ((this.currentCount % 10000) == 0) {
-            LOGGER.info("Handling entry [{}] from file [{}]", this.currentEntityClass, String.valueOf(this.currentCount));
+            LOGGER.info("Reading entry [{}] from file [{}]", this.currentEntityClass, String.valueOf(this.currentCount));
         }
-
+        
         return new GtfsItem(this.currentEntityClass, parsedEntity);
     }
-
+    
     private boolean isValidEntity() {
         GtfsFile annotation = this.currentEntityClass.getAnnotation(GtfsFile.class);
         String path = getEntityFilePath();
         InputStream stream = getClass().getClassLoader().getResourceAsStream(path);
-
+        
         if (stream == null) {
             if (!annotation.optional()) {
                 throw new IllegalStateException("mandatory GTFS file not found");
@@ -110,7 +110,7 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
         }
         return stream != null;
     }
-
+    
     private CSVReader<?> createNextEntityReader() {
         LOGGER.info("Loading file [{}]", this.currentEntityClass);
         String path = getEntityFilePath();
@@ -120,14 +120,14 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
         CSVHeaderAwareEntryParser<Object> entryParser = new CSVHeaderAwareEntryParser<Object>(this.currentEntityClass, processor);
         return new CSVHeaderAwareReaderBuilder<Object>(csv).entryParser(entryParser).build();
     }
-
+    
     private String getEntityFilePath() {
         GtfsFile annotation = this.currentEntityClass.getAnnotation(GtfsFile.class);
         String filename = annotation.value();
         String path = this.baseDir + filename;
         return path;
     }
-
+    
     /**
      * Close the {@link #setDelegate(ResourceAwareItemReaderItemStream)} reader and reset instance
      * variable values.
@@ -141,7 +141,7 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
             throw new ItemStreamException(e.getMessage());
         }
     }
-
+    
     /**
      * Figure out which resource to start with in case of restart, open the delegate and restore
      * delegate's position in the resource.
@@ -152,7 +152,7 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
         super.open(executionContext);
         this.currentCount = 0;
         this.entityIterator = ENTITIES.iterator();
-
+        
         if (executionContext.containsKey(getExecutionContextKey(ENTITY_KEY))) {
             String entityClassName = executionContext.getString(getExecutionContextKey(ENTITY_KEY));
             while (this.entityIterator.hasNext()) {
@@ -163,15 +163,15 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
                 }
             }
         }
-
+        
         if (this.currentEntityClass == null) {
             this.entityIterator = ENTITIES.iterator();
             this.currentEntityClass = (Class<Object>) this.entityIterator.next();
         }
-
+        
         this.reader = createNextEntityReader();
     }
-
+    
     /**
      * Store the current resource index and position in the resource.
      */
@@ -182,9 +182,9 @@ public class GtfsItemReader extends AbstractItemStreamItemReader<GtfsItem> {
             executionContext.putString(getExecutionContextKey(ENTITY_KEY), this.currentEntityClass.getName());
         }
     }
-
+    
     public void setSaveState(boolean saveState) {
         this.saveState = saveState;
     }
-
+    
 }

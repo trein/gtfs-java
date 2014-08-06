@@ -22,22 +22,22 @@ import com.trein.gtfs.csv.annotations.GtfsFile;
  */
 @GtfsFile(value = "fare_rules.txt", optional = true)
 public class GtfsFareRule {
-    
+
     @GtfsColumn(column = "fare_id")
     private String fareId;
-    
+
     @GtfsColumn(column = "route_id", optional = true)
     private String routeId;
-    
+
     @GtfsColumn(column = "origin_id", optional = true)
-    private Integer originZoneId;
-    
+    private String originZoneId;
+
     @GtfsColumn(column = "destination_id", optional = true)
-    private Integer destinationZoneId;
-    
+    private String destinationZoneId;
+
     @GtfsColumn(column = "contains_id", optional = true)
-    private Integer containsId;
-    
+    private String containsId;
+
     /**
      * fare_id Required The fare_id field contains an ID that uniquely identifies a fare class. This
      * value is referenced from the fare_attributes.txt file.
@@ -45,7 +45,7 @@ public class GtfsFareRule {
     public String getFareId() {
         return this.fareId;
     }
-    
+
     /**
      * route_id Optional The route_id field associates the fare ID with a route. Route IDs are
      * referenced from the routes.txt file. If you have several routes with the same fare
@@ -61,7 +61,7 @@ public class GtfsFareRule {
     public String getRouteId() {
         return this.routeId;
     }
-    
+
     /**
      * origin_id Optional The origin_id field associates the fare ID with an origin zone ID. Zone
      * IDs are referenced from the stops.txt file. If you have several origin IDs with the same fare
@@ -74,10 +74,10 @@ public class GtfsFareRule {
      * b, , 8
      * </pre>
      */
-    public Integer getOriginZoneId() {
+    public String getOriginZoneId() {
         return this.originZoneId;
     }
-    
+
     /**
      * destination_id Optional The destination_id field associates the fare ID with a destination
      * zone ID. Zone IDs are referenced from the stops.txt file. If you have several destination IDs
@@ -91,10 +91,10 @@ public class GtfsFareRule {
      * b, , 3,5
      * </pre>
      */
-    public Integer getDestinationZoneId() {
+    public String getDestinationZoneId() {
         return this.destinationZoneId;
     }
-    
+
     /**
      * contains_id Optional The contains_id field associates the fare ID with a zone ID, referenced
      * from the stops.txt file. The fare ID is then associated with itineraries that pass through
@@ -111,13 +111,13 @@ public class GtfsFareRule {
      * through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see
      * FareExamples in the GoogleTransitDataFeed project wiki.
      */
-    public Integer getContainsId() {
+    public String getContainsId() {
         return this.containsId;
     }
-
+    
     @Override
     public String toString() {
         return String.format("Fare Rule: %s", this.fareId);
     }
-    
+
 }

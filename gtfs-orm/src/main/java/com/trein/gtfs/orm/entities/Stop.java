@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -15,6 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @author trein
  */
 @Entity(name = "stops")
+@Table(indexes = { @Index(name = "o_stop_idx", columnList = "o_stop_id") })
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Stop {
 
@@ -22,7 +25,7 @@ public class Stop {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "stop_id", nullable = false)
+    @Column(name = "o_stop_id", nullable = false)
     private String stopId;
 
     @Column(name = "name", nullable = false)

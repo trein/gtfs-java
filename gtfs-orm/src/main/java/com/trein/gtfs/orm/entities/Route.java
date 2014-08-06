@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -17,6 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @author trein
  */
 @Entity(name = "routes")
+@Table(indexes = { @Index(name = "o_route_idx", columnList = "o_route_id") })
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Route {
 
@@ -24,7 +27,7 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "route_id")
+    @Column(name = "o_route_id")
     private String routeId;
 
     @ManyToOne

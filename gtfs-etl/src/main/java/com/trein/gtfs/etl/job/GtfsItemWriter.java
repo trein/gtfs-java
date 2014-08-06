@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.trein.gtfs.csv.vo.GtfsAgency;
 import com.trein.gtfs.csv.vo.GtfsCalendar;
 import com.trein.gtfs.csv.vo.GtfsCalendarDate;
+import com.trein.gtfs.csv.vo.GtfsFareAttribute;
+import com.trein.gtfs.csv.vo.GtfsFareRule;
+import com.trein.gtfs.csv.vo.GtfsFeedInfo;
+import com.trein.gtfs.csv.vo.GtfsFrequency;
 import com.trein.gtfs.csv.vo.GtfsRoute;
 import com.trein.gtfs.csv.vo.GtfsShape;
 import com.trein.gtfs.csv.vo.GtfsStop;
@@ -24,9 +28,17 @@ import com.trein.gtfs.orm.entities.Agency;
 import com.trein.gtfs.orm.entities.AvailabilityType;
 import com.trein.gtfs.orm.entities.Calendar;
 import com.trein.gtfs.orm.entities.CalendarDate;
+import com.trein.gtfs.orm.entities.CurrencyType;
 import com.trein.gtfs.orm.entities.DirectionType;
+import com.trein.gtfs.orm.entities.ExactTimeType;
 import com.trein.gtfs.orm.entities.ExceptionType;
+import com.trein.gtfs.orm.entities.FareAttribute;
+import com.trein.gtfs.orm.entities.FareRule;
+import com.trein.gtfs.orm.entities.FareTransferType;
+import com.trein.gtfs.orm.entities.FeedInfo;
+import com.trein.gtfs.orm.entities.Frequency;
 import com.trein.gtfs.orm.entities.Location;
+import com.trein.gtfs.orm.entities.PaymentType;
 import com.trein.gtfs.orm.entities.Route;
 import com.trein.gtfs.orm.entities.RouteType;
 import com.trein.gtfs.orm.entities.Shape;
@@ -40,6 +52,10 @@ import com.trein.gtfs.orm.entities.WheelchairType;
 import com.trein.gtfs.orm.repository.AgencyRepository;
 import com.trein.gtfs.orm.repository.CalendarDateRepository;
 import com.trein.gtfs.orm.repository.CalendarRepository;
+import com.trein.gtfs.orm.repository.FareAttributeRepository;
+import com.trein.gtfs.orm.repository.FareRuleRepository;
+import com.trein.gtfs.orm.repository.FeedInfoRepository;
+import com.trein.gtfs.orm.repository.FrequencyRepository;
 import com.trein.gtfs.orm.repository.RouteRepository;
 import com.trein.gtfs.orm.repository.ShapeRepository;
 import com.trein.gtfs.orm.repository.StopRepository;
@@ -71,6 +87,14 @@ public class GtfsItemWriter implements ItemWriter<GtfsItem> {
     private StopTimeRepository stopTimeRepository;
     @Autowired
     private TransferRepository transferRepository;
+    @Autowired
+    private FareAttributeRepository fareAttributeRepository;
+    @Autowired
+    private FareRuleRepository fareRuleRepository;
+    @Autowired
+    private FrequencyRepository frequencyRepository;
+    @Autowired
+    private FeedInfoRepository feedInfoRepository;
 
     private int currentCount;
     
@@ -105,8 +129,74 @@ public class GtfsItemWriter implements ItemWriter<GtfsItem> {
                 persistStopTime(item);
             } else if (item.getEntityClass().equals(GtfsTransfer.class)) {
                 persistTransfer(item);
+            } else if (item.getEntityClass().equals(GtfsFareAttribute.class)) {
+                persistFareAttribute(item);
+            } else if (item.getEntityClass().equals(GtfsFareRule.class)) {
+                persistFareRule(item);
+            } else if (item.getEntityClass().equals(GtfsFrequency.class)) {
+                persistFrequency(item);
+            } else if (item.getEntityClass().equals(GtfsFeedInfo.class)) {
+                persistFeedInfo(item);
             }
-            // GtfsFareAttribute.class, GtfsFareRule.class, GtfsFrequency.class, GtfsFeedInfo.class
+        }
+    }
+
+    private void persistFeedInfo(GtfsItem item) {
+        try {
+            GtfsFeedInfo info = item.getEntity();
+            Date startDate = CALENDAR_FORMAT.parse(info.getStartDate());
+            Date endDate = CALENDAR_FORMAT.parse(info.getEndDate());
+            String publisherName = info.getPublisherName();
+            String url = info.getPusblisherUrl();
+            String language = info.getLanguage();
+            String version = info.getVersion();
+            FeedInfo entity = new FeedInfo(publisherName, url, language, startDate, endDate, version);
+
+            if (!DRY_RUN) {
+                this.feedInfoRepository.save(entity);
+            }
+        } catch (ParseException e) {
+            throw new IllegalStateException("Error storing feed info date", e);
+        }
+    }
+
+    private void persistFrequency(GtfsItem item) {
+        GtfsFrequency frequency = item.getEntity();
+        Trip trip = this.tripRepository.findByTripId(frequency.getTripId());
+        Time start = Time.valueOf(frequency.getStartTime());
+        Time end = Time.valueOf(frequency.getEndTime());
+        long headway = (frequency.getHeadwaySecs() != null) ? frequency.getHeadwaySecs().longValue() : 0;
+        ExactTimeType exactTime = ExactTimeType.fromCode(frequency.getExactTime().intValue());
+        Frequency entity = new Frequency(trip, start, end, headway, exactTime);
+        
+        if (!DRY_RUN) {
+            this.frequencyRepository.save(entity);
+        }
+    }
+    
+    private void persistFareRule(GtfsItem item) {
+        GtfsFareRule rule = item.getEntity();
+        Route route = this.routeRepository.findByRouteId(rule.getRouteId());
+        // TODO: save Fare
+        FareRule entity = new FareRule(null, route, rule.getOriginZoneId(), rule.getDestinationZoneId(), rule.getContainsId());
+        
+        if (!DRY_RUN) {
+            this.fareRuleRepository.save(entity);
+        }
+    }
+
+    private void persistFareAttribute(GtfsItem item) {
+        GtfsFareAttribute attribute = item.getEntity();
+        double price = (attribute.getPrice() != null) ? attribute.getPrice().doubleValue() : 0;
+        CurrencyType currencyType = CurrencyType.fromCode(attribute.getCurrencyType());
+        PaymentType paymentType = PaymentType.fromCode(attribute.getPaymentType().intValue());
+        FareTransferType transferType = FareTransferType.fromCode(attribute.getTransfers());
+        double duration = (attribute.getTransferDuration() != null) ? attribute.getTransferDuration().doubleValue() : 0;
+        // TODO: save Fare
+        FareAttribute entity = new FareAttribute(null, price, currencyType, paymentType, transferType, duration);
+        
+        if (!DRY_RUN) {
+            this.fareAttributeRepository.save(entity);
         }
     }
 

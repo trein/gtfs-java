@@ -19,35 +19,35 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity(name = "fare_attributes")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FareAttribute {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
     @ManyToOne
     @JoinColumn(name = "fare", nullable = false)
     private Fare fare;
-
+    
     @Column(name = "price", nullable = false)
     private double price;
-
+    
     @Column(name = "currency_type")
     private CurrencyType currencyType;
-
+    
     @Column(name = "payment_type")
     private PaymentType paymentType;
-
+    
     @Column(name = "transfer_type")
-    private TransferType transferType;
-
+    private FareTransferType transferType;
+    
     @Column(name = "transfer_duration")
     private double transferDuration;
-    
+
     FareAttribute() {
     }
-    
-    public FareAttribute(Fare fare, double price, CurrencyType currencyType, PaymentType paymentType, TransferType transferType,
-            double duration) {
+
+    public FareAttribute(Fare fare, double price, CurrencyType currencyType, PaymentType paymentType,
+            FareTransferType transferType, double duration) {
         this.fare = fare;
         this.price = price;
         this.currencyType = currencyType;
@@ -55,11 +55,11 @@ public class FareAttribute {
         this.transferType = transferType;
         this.transferDuration = duration;
     }
-
+    
     public long getId() {
         return this.id;
     }
-
+    
     /**
      * fare_id Required The fare_id field contains an ID that uniquely identifies a fare class. The
      * fare_id is dataset unique.
@@ -67,7 +67,7 @@ public class FareAttribute {
     public Fare getFare() {
         return this.fare;
     }
-
+    
     /**
      * price Required The price field contains the fare price, in the unit specified by
      * currency_type.
@@ -75,7 +75,7 @@ public class FareAttribute {
     public double getPrice() {
         return this.price;
     }
-
+    
     /**
      * currency_type Required The currency_type field defines the currency used to pay the fare.
      * Please use the ISO 4217 alphabetical currency codes which can be found at the following URL:
@@ -84,7 +84,7 @@ public class FareAttribute {
     public CurrencyType getCurrencyType() {
         return this.currencyType;
     }
-
+    
     /**
      * payment_method Required The payment_method field indicates when the fare must be paid. Valid
      * values for this field are:
@@ -97,7 +97,7 @@ public class FareAttribute {
     public PaymentType getPaymentType() {
         return this.paymentType;
     }
-
+    
     /**
      * transfers Required The transfers field specifies the number of transfers permitted on this
      * fare. Valid values for this field are:
@@ -109,10 +109,10 @@ public class FareAttribute {
      * (empty) - If this field is empty, unlimited transfers are permitted.
      * </pre>
      */
-    public TransferType getTransferType() {
+    public FareTransferType getTransferType() {
         return this.transferType;
     }
-
+    
     /**
      * transfer_duration Optional The transfer_duration field specifies the length of time in
      * seconds before a transfer expires. When used with a transfers value of 0, the
@@ -123,5 +123,5 @@ public class FareAttribute {
     public double getTransferDuration() {
         return this.transferDuration;
     }
-    
+
 }

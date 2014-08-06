@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -15,6 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @author trein
  */
 @Entity(name = "shapes")
+@Table(indexes = { @Index(name = "o_shape_idx", columnList = "o_shape_id") })
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Shape implements Comparable<Shape> {
     
@@ -22,7 +25,7 @@ public class Shape implements Comparable<Shape> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    @Column(name = "shape_id", nullable = false)
+    @Column(name = "o_shape_id", nullable = false)
     private String shapeId;
     
     @Column(name = "sequence")

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -16,14 +18,15 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @author trein
  */
 @Entity(name = "agencies")
+@Table(indexes = { @Index(name = "o_agency_idx", columnList = "o_agency_id") })
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Agency {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    @Column(name = "agency_id", nullable = false)
+    
+    @Column(name = "o_agency_id", nullable = false)
     private String agencyId;
     
     @Column(name = "name", nullable = false)
@@ -43,7 +46,7 @@ public class Agency {
     
     @Column(name = "fare_url", nullable = true)
     private String fareUrl;
-
+    
     Agency() {
     }
     
@@ -56,7 +59,7 @@ public class Agency {
         this.phone = phone;
         this.fareUrl = fareUrl;
     }
-
+    
     public long getId() {
         return this.id;
     }

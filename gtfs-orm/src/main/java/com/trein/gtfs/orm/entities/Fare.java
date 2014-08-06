@@ -12,27 +12,27 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity(name = "fares")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Fare {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
-    @Column(name = "fare_id", nullable = false)
+
+    @Column(name = "o_fare_id", nullable = false)
     private String fareId;
-    
+
     Fare() {
     }
-    
+
     public Fare(String fareId) {
         this.fareId = fareId;
     }
-    
+
     public long getId() {
         return this.id;
     }
-    
+
     public String getFareId() {
         return this.fareId;
     }
-    
+
 }

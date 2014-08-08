@@ -10,6 +10,7 @@
         <module>gtfs-orm</module>
         <module>gtfs-etl</module>
         <module>gtfs-csv</module>
+        <module>gtfs-service</module>
     </modules>
 
     <properties>
@@ -74,12 +75,6 @@
                         <groupId>javax.activation</groupId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.codehaus.jackson</groupId>
-                <artifactId>jackson-xc</artifactId>
-                <version>${org.codehaus.jackson.version}</version>
             </dependency>
 
             <dependency>

@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -31,31 +34,31 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity(name = "fare_rules")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FareRule {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
     @ManyToOne
     @JoinColumn(name = "fare", nullable = false)
     private Fare fare;
-
+    
     @ManyToOne
     @JoinColumn(name = "route", nullable = false)
     private Route route;
-
+    
     @Column(name = "origin_zone")
     private String originZone;
-
+    
     @Column(name = "destination_zone")
     private String destinationZone;
-
+    
     @Column(name = "contains_zone")
     private String contains;
-    
+
     FareRule() {
     }
-
+    
     public FareRule(Fare fare, Route route, String originZone, String destinationZone, String contains) {
         this.fare = fare;
         this.route = route;
@@ -63,11 +66,11 @@ public class FareRule {
         this.destinationZone = destinationZone;
         this.contains = contains;
     }
-
+    
     public long getId() {
         return this.id;
     }
-
+    
     /**
      * fare_id Required The fare_id field contains an ID that uniquely identifies a fare class. This
      * value is referenced from the fare_attributes.txt file.
@@ -75,7 +78,7 @@ public class FareRule {
     public Fare getFare() {
         return this.fare;
     }
-
+    
     /**
      * route_id Optional The route_id field associates the fare ID with a route. Route IDs are
      * referenced from the routes.txt file. If you have several routes with the same fare
@@ -91,7 +94,7 @@ public class FareRule {
     public Route getRoute() {
         return this.route;
     }
-
+    
     /**
      * origin_id Optional The origin_id field associates the fare ID with an origin zone ID. Zone
      * IDs are referenced from the stops.txt file. If you have several origin IDs with the same fare
@@ -107,7 +110,7 @@ public class FareRule {
     public String getOriginZone() {
         return this.originZone;
     }
-
+    
     /**
      * destination_id Optional The destination_id field associates the fare ID with a destination
      * zone ID. Zone IDs are referenced from the stops.txt file. If you have several destination IDs
@@ -124,7 +127,7 @@ public class FareRule {
     public String getDestinationZone() {
         return this.destinationZone;
     }
-
+    
     /**
      * contains_id Optional The contains_id field associates the fare ID with a zone ID, referenced
      * from the stops.txt file. The fare ID is then associated with itineraries that pass through
@@ -144,5 +147,19 @@ public class FareRule {
     public String getContains() {
         return this.contains;
     }
-
+    
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+    
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this).build();
+    }
 }

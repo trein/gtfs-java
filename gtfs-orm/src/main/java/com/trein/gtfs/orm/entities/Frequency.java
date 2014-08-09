@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -26,30 +29,30 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity(name = "frequencies")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Frequency {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     @ManyToOne
     @JoinColumn(name = "trip", nullable = false)
     private Trip trip;
-
+    
     @Column(name = "start_time", nullable = false)
     private Time startTime;
-
+    
     @Column(name = "end_time", nullable = false)
     private Time endTime;
-    
+
     @Column(name = "headway_secs")
     private long headwaySecs;
-
+    
     @Column(name = "exact_time")
     private ExactTimeType exactTime;
-    
+
     Frequency() {
     }
-
+    
     public Frequency(Trip trip, Time startTime, Time endTime, long headwaySecs, ExactTimeType exactTime) {
         this.trip = trip;
         this.startTime = startTime;
@@ -57,11 +60,11 @@ public class Frequency {
         this.headwaySecs = headwaySecs;
         this.exactTime = exactTime;
     }
-
+    
     public long getId() {
         return this.id;
     }
-
+    
     /**
      * trip_id Required The trip_id contains an ID that identifies a trip on which the specified
      * frequency of service applies. Trip IDs are referenced from the trips.txt file.
@@ -69,7 +72,7 @@ public class Frequency {
     public Trip getTrip() {
         return this.trip;
     }
-
+    
     /**
      * start_time Required The start_time field specifies the time at which service begins with the
      * specified frequency. The time is measured from "noon minus 12h" (effectively midnight, except
@@ -80,7 +83,7 @@ public class Frequency {
     public Time getStartTime() {
         return this.startTime;
     }
-
+    
     /**
      * end_time Required The end_time field indicates the time at which service changes to a
      * different frequency (or ceases) at the first stop in the trip. The time is measured from
@@ -92,7 +95,7 @@ public class Frequency {
     public Time getEndTime() {
         return this.endTime;
     }
-
+    
     /**
      * headway_secs Required The headway_secs field indicates the time between departures from the
      * same stop (headway) for this trip type, during the time interval specified by start_time and
@@ -109,7 +112,7 @@ public class Frequency {
     public long getHeadwaySecs() {
         return this.headwaySecs;
     }
-
+    
     /**
      * exact_times Optional The exact_times field determines if frequency-based trips should be
      * exactly scheduled based on the specified headway information. Valid values for this field
@@ -132,4 +135,19 @@ public class Frequency {
         return this.exactTime;
     }
 
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+    
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this).build();
+    }
+    
 }

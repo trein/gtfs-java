@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,46 +23,46 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(indexes = { @Index(name = "o_stop_idx", columnList = "o_stop_id") })
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Stop {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
     @Column(name = "o_stop_id", nullable = false)
     private String stopId;
-
+    
     @Column(name = "name", nullable = false)
     private String name;
-
+    
     private Location latLng;
-
+    
     @Column(name = "code")
     private String code;
-
+    
     @Column(name = "description")
     private String desc;
-
+    
     @Column(name = "zone")
     private String zone;
-
+    
     @Column(name = "url")
     private String url;
-
+    
     @Column(name = "time_zone")
     private String timezone;
-
+    
     @Column(name = "parent_station")
     private int parentStation;
-
+    
     @Column(name = "wheelchair_type")
     private WheelchairType wheelchairType;
-
+    
     @Column(name = "location_type")
     private StopLocationType locationType;
-
+    
     Stop() {
     }
-    
+
     public Stop(String stopId, String code, String name, String desc, Location latLng, String zone, String url,
             StopLocationType locationType, int parentStation, String timezone, WheelchairType wheelchairType) {
         this.stopId = stopId;
@@ -74,11 +77,11 @@ public class Stop {
         this.timezone = timezone;
         this.wheelchairType = wheelchairType;
     }
-
+    
     public long getId() {
         return this.id;
     }
-
+    
     /**
      * stop_id Required The stop_id field contains an ID that uniquely identifies a stop or station.
      * Multiple routes may use the same stop. The stop_id is dataset unique.
@@ -88,7 +91,7 @@ public class Stop {
     public String getStopId() {
         return this.stopId;
     }
-
+    
     /**
      * stop_code Optional The stop_code field contains short text or a number that uniquely
      * identifies the stop for passengers. Stop codes are often used in phone-based transit
@@ -102,7 +105,7 @@ public class Stop {
     public String getCode() {
         return this.code;
     }
-
+    
     /**
      * stop_name Required The stop_name field contains the name of a stop or station. Please use a
      * name that people will understand in the local and tourist vernacular.
@@ -112,7 +115,7 @@ public class Stop {
     public String getName() {
         return this.name;
     }
-
+    
     /**
      * stop_desc Optional The stop_desc field contains a description of a stop. Please provide
      * useful, quality information. Do not simply duplicate the name of the stop.
@@ -122,7 +125,7 @@ public class Stop {
     public String getDesc() {
         return this.desc;
     }
-
+    
     /**
      * Location of the current stop.
      *
@@ -131,7 +134,7 @@ public class Stop {
     public Location getLatLng() {
         return this.latLng;
     }
-
+    
     /**
      * zone_id Optional The zone_id field defines the fare zone for a stop ID. Zone IDs are required
      * if you want to provide fare information using fare_rules.txt. If this stop ID represents a
@@ -142,7 +145,7 @@ public class Stop {
     public String getZone() {
         return this.zone;
     }
-
+    
     /**
      * stop_url Optional The stop_url field contains the URL of a web page about a particular stop.
      * This should be different from the agency_url and the route_url fields. The value must be a
@@ -155,7 +158,7 @@ public class Stop {
     public String getUrl() {
         return this.url;
     }
-
+    
     /**
      * location_type Optional The location_type field identifies whether this stop ID represents a
      * stop or station. If no location type is specified, or the location_type is blank, stop IDs
@@ -168,7 +171,7 @@ public class Stop {
     public StopLocationType getLocationType() {
         return this.locationType;
     }
-
+    
     /**
      * parent_station Optional For stops that are physically located inside stations, the
      * parent_station field identifies the station associated with the stop. To use this field,
@@ -186,7 +189,7 @@ public class Stop {
     public int getParentStation() {
         return this.parentStation;
     }
-
+    
     /**
      * stop_timezone Optional The stop_timezone field contains the timezone in which this stop or
      * station is located. Please refer to Wikipedia List of Timezones for a list of valid values.
@@ -209,7 +212,7 @@ public class Stop {
     public String getTimezone() {
         return this.timezone;
     }
-
+    
     /**
      * wheelchair_boarding Optional The wheelchair_boarding field identifies whether wheelchair
      * boardings are possible from the specified stop or station. The field can have the following
@@ -236,17 +239,32 @@ public class Stop {
     public WheelchairType getWheelchairType() {
         return this.wheelchairType;
     }
-
+    
     public boolean isInsideStation() {
         return (this.parentStation != 0) && this.locationType.isStop();
     }
-
+    
     public boolean isOutsideStation() {
         return (this.parentStation == 0) && this.locationType.isStop();
     }
-
+    
     public boolean isStation() {
         return (this.parentStation == 0) && this.locationType.isStation();
     }
 
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+    
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this).build();
+    }
+    
 }

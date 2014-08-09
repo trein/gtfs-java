@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -23,35 +26,35 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity(name = "transfers")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Transfer {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
     @ManyToOne
     @JoinColumn(name = "from_stop", nullable = false)
     private Stop fromStop;
-
+    
     @ManyToOne
     @JoinColumn(name = "to_stop", nullable = false)
     private Stop toStop;
-    
+
     @Column(name = "transfer_type")
     private TransferType transferType;
-    
+
     @Column(name = "min_transfer")
     private long minTransferTimeSecs;
-    
+
     Transfer() {
     }
-    
+
     public Transfer(Stop fromStop, Stop toStop, TransferType transferType, long minTransferTimeSecs) {
         this.fromStop = fromStop;
         this.toStop = toStop;
         this.transferType = transferType;
         this.minTransferTimeSecs = minTransferTimeSecs;
     }
-
+    
     /**
      * from_stop_id Required The from_stop_id field contains a stop ID that identifies a stop or
      * station where a connection between routes begins. Stop IDs are referenced from the stops.txt
@@ -61,7 +64,7 @@ public class Transfer {
     public Stop getFromStop() {
         return this.fromStop;
     }
-    
+
     /**
      * to_stop_id Required The to_stop_id field contains a stop ID that identifies a stop or station
      * where a connection between routes ends. Stop IDs are referenced from the stops.txt file. If
@@ -71,7 +74,7 @@ public class Transfer {
     public Stop getToStop() {
         return this.toStop;
     }
-    
+
     /**
      * transfer_type Required The transfer_type field specifies the type of connection for the
      * specified (from_stop_id, to_stop_id) pair. Valid values for this field are:
@@ -88,7 +91,7 @@ public class Transfer {
     public TransferType getTransferType() {
         return this.transferType;
     }
-    
+
     /**
      * min_transfer_time Optional When a connection between routes requires an amount of time
      * between arrival and departure (transfer_type=2), the min_transfer_time field defines the
@@ -100,5 +103,20 @@ public class Transfer {
     public long getMinTransferTimeSecs() {
         return this.minTransferTimeSecs;
     }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
     
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+    
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this).build();
+    }
+
 }

@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,35 +24,35 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(indexes = { @Index(name = "o_agency_idx", columnList = "o_agency_id") })
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Agency {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     @Column(name = "o_agency_id", nullable = false)
     private String agencyId;
-    
+
     @Column(name = "name", nullable = false)
     private String name;
-    
+
     @Column(name = "url", nullable = false)
     private String url;
-    
+
     @Column(name = "timezone", nullable = false)
     private String timezone;
-    
+
     @Column(name = "lang", nullable = true)
     private String lang;
-    
+
     @Column(name = "phone", nullable = true)
     private String phone;
-    
+
     @Column(name = "fare_url", nullable = true)
     private String fareUrl;
-    
+
     Agency() {
     }
-    
+
     public Agency(String agencyId, String name, String url, String timezone, String lang, String phone, String fareUrl) {
         this.agencyId = agencyId;
         this.name = name;
@@ -59,11 +62,11 @@ public class Agency {
         this.phone = phone;
         this.fareUrl = fareUrl;
     }
-    
+
     public long getId() {
         return this.id;
     }
-    
+
     /**
      * agency_id Optional: The agency_id field is an ID that uniquely identifies a transit agency. A
      * transit feed may represent data from more than one agency. The agency_id is dataset unique.
@@ -74,7 +77,7 @@ public class Agency {
     public String getAgencyId() {
         return this.agencyId;
     }
-    
+
     /**
      * agency_name Required: The agency_name field contains the full name of the transit agency.
      * Google Maps will display this name.
@@ -84,7 +87,7 @@ public class Agency {
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * agency_url Required: The agency_url field contains the URL of the transit agency. The value
      * must be a fully qualified URL that includes http:// or https://, and any special characters
@@ -97,7 +100,7 @@ public class Agency {
     public String getUrl() {
         return this.url;
     }
-    
+
     /**
      * agency_timezone Required: The agency_timezone field contains the timezone where the transit
      * agency is located. Timezone names never contain the space character but may contain an
@@ -110,7 +113,7 @@ public class Agency {
     public String getTimezone() {
         return this.timezone;
     }
-    
+
     /***
      * agency_lang Optional: The agency_lang field contains a two-letter ISO 639-1 code for the
      * primary language used by this transit agency. The language code is case-insensitive (both en
@@ -123,7 +126,7 @@ public class Agency {
     public String getLang() {
         return this.lang;
     }
-    
+
     /**
      * agency_phone Optional: The agency_phone field contains a single voice telephone number for
      * the specified agency. This field is a string value that presents the telephone number as
@@ -136,7 +139,7 @@ public class Agency {
     public String getPhone() {
         return this.phone;
     }
-    
+
     /**
      * agency_fare_url Optional: The agency_fare_url specifies the URL of a web page that allows a
      * rider to purchase tickets or other fare instruments for that agency online. The value must be
@@ -150,5 +153,20 @@ public class Agency {
     public String getFareUrl() {
         return this.fareUrl;
     }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
     
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+    
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this).build();
+    }
+
 }

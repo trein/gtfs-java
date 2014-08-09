@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,45 +23,45 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity(name = "calendars")
 @Cache(region = "entity", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Calendar {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     @Column(name = "o_service_id", nullable = false)
     private String serviceId;
-    
+
     @Column(name = "monday")
     private boolean monday;
-    
+
     @Column(name = "tuesday")
     private boolean tuesday;
-    
+
     @Column(name = "wednesday")
     private boolean wednesday;
-    
+
     @Column(name = "thursday")
     private boolean thursday;
-    
+
     @Column(name = "friday")
     private boolean friday;
-    
+
     @Column(name = "saturday")
     private boolean saturday;
-    
+
     @Column(name = "sunday")
     private boolean sunday;
-    
+
     @Column(name = "start_date")
     private Date startDate;
-    
+
     @Column(name = "end_date")
     private Date endDate;
-    
-    Calendar() {
 
+    Calendar() {
+        
     }
-    
+
     public Calendar(String serviceId, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday,
             boolean saturday, boolean sunday, Date startDate, Date endDate) {
         this.serviceId = serviceId;
@@ -72,11 +75,11 @@ public class Calendar {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    
+
     public long getId() {
         return this.id;
     }
-    
+
     /**
      * service_id Required The service_id contains an ID that uniquely identifies a set of dates
      * when service is available for one or more routes. Each service_id value can appear at most
@@ -86,7 +89,7 @@ public class Calendar {
     public String getServiceId() {
         return this.serviceId;
     }
-    
+
     /**
      * monday Required The monday field contains a binary value that indicates whether the service
      * is valid for all Mondays.
@@ -102,7 +105,7 @@ public class Calendar {
     public boolean isAvailableOnMonday() {
         return this.monday;
     }
-    
+
     /**
      * tuesday Required The tuesday field contains a binary value that indicates whether the service
      * is valid for all Tuesdays.
@@ -118,7 +121,7 @@ public class Calendar {
     public boolean isAvailableOnTuesday() {
         return this.tuesday;
     }
-    
+
     /**
      * wednesday Required The wednesday field contains a binary value that indicates whether the
      * service is valid for all Wednesdays.
@@ -131,7 +134,7 @@ public class Calendar {
     public boolean isAvailableOnWednesday() {
         return this.wednesday;
     }
-    
+
     /**
      * thursday Required The thursday field contains a binary value that indicates whether the
      * service is valid for all Thursdays.
@@ -144,7 +147,7 @@ public class Calendar {
     public boolean isAvailableOnThursday() {
         return this.thursday;
     }
-    
+
     /**
      * friday Required The friday field contains a binary value that indicates whether the service
      * is valid for all Fridays.
@@ -160,7 +163,7 @@ public class Calendar {
     public boolean isAvailableOnFriday() {
         return this.friday;
     }
-    
+
     /**
      * saturday Required The saturday field contains a binary value that indicates whether the
      * service is valid for all Saturdays.
@@ -176,7 +179,7 @@ public class Calendar {
     public boolean isAvailableOnSaturday() {
         return this.saturday;
     }
-    
+
     /**
      * sunday Required The sunday field contains a binary value that indicates whether the service
      * is valid for all Sundays.
@@ -192,7 +195,7 @@ public class Calendar {
     public boolean isAvailableOnSunday() {
         return this.sunday;
     }
-    
+
     /**
      * start_date Required The start_date field contains the start date for the service. The
      * start_date field's value should be in YYYYMMDD format.
@@ -200,7 +203,7 @@ public class Calendar {
     public Date getStartDate() {
         return this.startDate;
     }
-    
+
     /**
      * end_date Required The end_date field contains the end date for the service. This date is
      * included in the service interval. The end_date field's value should be in YYYYMMDD format.
@@ -208,5 +211,20 @@ public class Calendar {
     public Date getEndDate() {
         return this.endDate;
     }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
     
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+    
+    @Override
+    public String toString() {
+        return new ReflectionToStringBuilder(this).build();
+    }
+
 }

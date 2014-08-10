@@ -1,0 +1,10 @@
+package com.trein.gtfs.jpa.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.trein.gtfs.jpa.entities.Agency;
+
+public interface AgencyRepository extends JpaRepository<Agency, Long> {
+    
+    Agency findByAgencyId(String id);
+}

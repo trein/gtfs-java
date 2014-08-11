@@ -7,7 +7,8 @@
     <name>GTFS All</name>
 
     <modules>
-        <module>gtfs-orm</module>
+        <module>gtfs-jpa</module>
+        <module>gtfs-mongo</module>
         <module>gtfs-etl</module>
         <module>gtfs-csv</module>
         <module>gtfs-service</module>

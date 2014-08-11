@@ -18,11 +18,11 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
-import com.trein.gtfs.orm.RepositoryConfig;
+import com.trein.gtfs.jpa.JpaRepositoryConfig;
 
 @Configuration
 @EnableBatchProcessing
-@Import(RepositoryConfig.class)
+@Import(JpaRepositoryConfig.class)
 @ComponentScan(basePackages = { "com.trein.etl" })
 public class EtlTestConfig {
     

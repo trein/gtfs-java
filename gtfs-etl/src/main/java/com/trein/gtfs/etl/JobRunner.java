@@ -6,16 +6,19 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.trein.gtfs.etl.config.EtlConfig;
-import com.trein.gtfs.etl.config.GtfsJobConfig;
+import com.trein.gtfs.etl.config.JpaEtlConfig;
 
 public class JobRunner {
-
+    
     public static void main(String[] args) throws Exception {
-        try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(EtlConfig.class)) {
+        try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(JpaEtlConfig.class)) {
             JobLauncher laucher = appContext.getBean(JobLauncher.class);
-            Job initJob = appContext.getBean(GtfsJobConfig.JOB_NAME, Job.class);
+            Job initJob = appContext.getBean(JpaEtlConfig.JOB_NAME, Job.class);
             laucher.run(initJob, new JobParameters());
+            
+            // JobLauncher laucher = appContext.getBean(JobLauncher.class);
+            // Job initJob = appContext.getBean(MongoEtlConfig.JOB_NAME, Job.class);
+            // laucher.run(initJob, new JobParameters());
         }
     }
 }

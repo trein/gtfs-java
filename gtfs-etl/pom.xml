@@ -16,7 +16,12 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>gtfs-orm</artifactId>
+            <artifactId>gtfs-jpa</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>gtfs-mongo</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

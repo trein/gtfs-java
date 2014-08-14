@@ -24,38 +24,38 @@ import com.trein.gtfs.jpa.datasource.JpaPropertiesResolver;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @EnableJpaRepositories
-@ComponentScan(basePackages = { "com.trein.gtfs.orm" })
+@ComponentScan(basePackages = { "com.trein.gtfs.jpa" })
 public class JpaRepositoryConfig {
-
+    
     @Bean
     public JpaPropertiesResolver jpaResolver() {
         return new JpaPropertiesResolver();
     }
-
+    
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         JpaPropertiesResolver resolver = jpaResolver();
-        
+
         dataSource.setDriverClass(resolver.getDiverClassName());
         dataSource.setJdbcUrl(resolver.getJdbcUrl());
         dataSource.setUser(resolver.getUsername());
         dataSource.setPassword(resolver.getPassword());
-        
+
         dataSource.setMaxPoolSize(resolver.getMaxPoolSize());
         dataSource.setMinPoolSize(resolver.getMinPoolSize());
         dataSource.setMaxStatements(resolver.getMaxStatements());
         dataSource.setIdleConnectionTestPeriod(resolver.getIdleConnectionTestPeriod());
-        
+
         return dataSource;
     }
-
+    
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws PropertyVetoException {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        
+
         entityManagerFactoryBean.setDataSource(dataSource());
-        
+
         /**
          * Renamed to jpa-persistence.xml cause Spring will manage the DataSource and not the
          * container.
@@ -63,18 +63,18 @@ public class JpaRepositoryConfig {
         entityManagerFactoryBean.setPersistenceXmlLocation("classpath*:META-INF/jpa-persistence.xml");
         entityManagerFactoryBean.setJpaDialect(new HibernateJpaDialect());
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        
+
         return entityManagerFactoryBean;
     }
-
+    
     @Bean
     public PlatformTransactionManager transactionManager() throws PropertyVetoException {
         return new JpaTransactionManager(entityManagerFactory().getObject());
     }
-
+    
     @Bean
     public PersistenceAnnotationBeanPostProcessor persistenceAnnotation() {
         return new PersistenceAnnotationBeanPostProcessor();
     }
-
+    
 }

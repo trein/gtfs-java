@@ -37,7 +37,6 @@ import com.trein.gtfs.mongo.entities.FareRule;
 import com.trein.gtfs.mongo.entities.FareTransferType;
 import com.trein.gtfs.mongo.entities.FeedInfo;
 import com.trein.gtfs.mongo.entities.Frequency;
-import com.trein.gtfs.mongo.entities.Location;
 import com.trein.gtfs.mongo.entities.PaymentType;
 import com.trein.gtfs.mongo.entities.Route;
 import com.trein.gtfs.mongo.entities.RouteType;
@@ -233,7 +232,7 @@ public class GtfsMongoItemWriter implements ItemWriter<GtfsItem> {
 
     private void persistStop(GtfsItem item) {
         GtfsStop stop = item.getEntity();
-        Location location = new Location(stop.getLat().doubleValue(), stop.getLng().doubleValue());
+        double[] location = new double[] { stop.getLat().doubleValue(), stop.getLng().doubleValue() };
         StopLocationType type = StopLocationType.fromCode(stop.getLocationType());
         WheelchairType wheelchairType = WheelchairType.fromCode(stop.getWheelchairType());
         int parentStop = (stop.getParentStation() != null) ? stop.getParentStation().intValue() : 0;
@@ -270,7 +269,7 @@ public class GtfsMongoItemWriter implements ItemWriter<GtfsItem> {
 
     private void persistShape(GtfsItem item) {
         GtfsShape shape = item.getEntity();
-        Location location = new Location(shape.getLat().doubleValue(), shape.getLng().doubleValue());
+        double[] location = new double[] { shape.getLat().doubleValue(), shape.getLng().doubleValue() };
         double distanceTraveled = (shape.getDistanceTraveled() != null) ? shape.getDistanceTraveled().doubleValue() : 0;
         Shape entity = new Shape(shape.getId(), location, shape.getSequence().longValue(), distanceTraveled);
         

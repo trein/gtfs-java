@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="gtfs-service"
+    version="2.5">
+    <display-name>GTFS Service</display-name>
+
+    <!-- Configure ContextLoaderListener to use JavaConfigWebApplicationContext instead of the default XmlWebApplicationContext -->
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    </context-param>
+    <!-- Configuration locations must consist of one or more comma- or space-delimited fully-qualified @Configuration classes -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>com.trein.gtfs.service.configuration.ApplicationSpringConfig</param-value>
+    </context-param>
+
+    <!-- Resteasy configuration -->
+    <listener>
+        <listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.trein.gtfs.service.runner.GtfsContextLoaderListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>resteasy</servlet-name>
+        <servlet-class>com.trein.gtfs.service.runner.MultipleMappingsHttpServletDispatcher</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>resteasy</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+        <url-pattern>/transport-poa-service/rest/*</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>resteasy.servlet.mapping.prefix</param-name>
+        <param-value>/transport-poa-service/rest,/rest</param-value>
+    </context-param>
+</web-app>

@@ -12,6 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.trein.gtfs.mongo.MongoRepositoryConfig;
@@ -23,6 +25,11 @@ import com.trein.gtfs.mongo.MongoRepositoryConfig;
 @Import({ MongoRepositoryConfig.class })
 @ComponentScan(basePackages = { "com.trein.gtfs.service" })
 public class ApplicationSpringConfig {
+    
+    @Bean
+    public ConversionService conversionService() {
+        return new DefaultFormattingConversionService();
+    }
     
     @Bean
     public CacheManager cacheManager() {

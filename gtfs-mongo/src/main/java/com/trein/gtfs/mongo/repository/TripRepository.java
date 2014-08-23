@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import com.trein.gtfs.mongo.entities.DirectionType;
 import com.trein.gtfs.mongo.entities.Trip;
 
 public interface TripRepository extends MongoRepository<Trip, ObjectId> {
@@ -17,5 +18,7 @@ public interface TripRepository extends MongoRepository<Trip, ObjectId> {
     
     @Query(value = "{ 'route' : ?0 }")
     Trip findOneByRouteId(ObjectId id);
+
+    Trip findOneByRouteAndDirectionType(ObjectId id, DirectionType type);
     
 }

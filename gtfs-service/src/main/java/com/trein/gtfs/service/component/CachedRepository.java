@@ -9,16 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
+import com.trein.gtfs.mongo.entities.DirectionType;
 import com.trein.gtfs.mongo.entities.Route;
 import com.trein.gtfs.mongo.entities.Stop;
+import com.trein.gtfs.mongo.entities.StopTime;
 import com.trein.gtfs.mongo.entities.Trip;
 import com.trein.gtfs.mongo.repository.RouteRepository;
 import com.trein.gtfs.mongo.repository.StopRepository;
+import com.trein.gtfs.mongo.repository.StopTimeRepository;
 import com.trein.gtfs.mongo.repository.TripRepository;
 import com.trein.gtfs.service.endpoint.v1.GtfsRestServiceImpl;
 
@@ -36,6 +40,9 @@ public class CachedRepository {
     
     @Autowired
     private RouteRepository routeRepository;
+    
+    @Autowired
+    private StopTimeRepository stopTimeRepository;
     
     public CachedRepository() {
     }
@@ -63,8 +70,9 @@ public class CachedRepository {
     @Cacheable(value = "route_trips")
     public List<Trip> getTripsForRoute(String routeId) {
         Route route = this.routeRepository.findByRouteId(routeId);
-        Trip trips = this.tripRepository.findOneByRouteId(route.getId());
-        return Arrays.asList(trips);
+        Trip inTrip = this.tripRepository.findOneByRouteAndDirectionType(route.getId(), DirectionType.INBOUND);
+        Trip outTrip = this.tripRepository.findOneByRouteAndDirectionType(route.getId(), DirectionType.OUTBOUND);
+        return Arrays.asList(inTrip, outTrip);
     }
     
     @Cacheable(value = "routes")
@@ -83,8 +91,14 @@ public class CachedRepository {
     }
     
     @Cacheable(value = "nearby_stops")
-    public GeoResults<Stop> getNearbyStops(Point point) {
+    public List<GeoResult<Stop>> getNearbyStops(Point point) {
         GeoResults<Stop> stops = this.stopRepository.findByLocationNear(point, DISTANCE);
+        return stops.getContent();
+    }
+    
+    public List<StopTime> getStopTimesForTrip(String tripId) {
+        Trip trip = this.tripRepository.findByTripId(tripId);
+        List<StopTime> stops = this.stopTimeRepository.findByTrip(trip.getId());
         return stops;
     }
     

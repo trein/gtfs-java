@@ -29,48 +29,48 @@ import com.trein.gtfs.service.exception.ResourceNotFoundException;
 @Service
 @ServiceEndpoint
 public class GtfsRestServiceImpl implements GtfsRestService, RestRequestAware {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(GtfsRestServiceImpl.class);
-
+    
     @Context
     private HttpServletRequest request;
-
+    
     @Context
     private UriInfo uriInfo;
-
+    
     @Autowired
     private CachedRepository repository;
-
+    
     @Override
     public HttpServletRequest getRequest() {
         return this.request;
     }
-
+    
     @Override
     public UriInfo getUriInfo() {
         return this.uriInfo;
     }
-    
+
     @Override
     public Response getTrips(Integer page) throws ResourceNotFoundException {
         List<Trip> trips = this.repository.getTrips(page);
         return Response.status(Status.OK).entity(trips).build();
     }
-
+    
     @Override
     public Response getTripStopTimes(String tripId) throws ResourceNotFoundException, UnsupportedEncodingException {
         String decodedTripId = URLDecoder.decode(tripId, "UTF-8");
         List<StopTime> stops = this.repository.getStopTimesForTrip(decodedTripId);
         LOGGER.info("Found {} stop for trip [{}]", String.valueOf(stops.size()), decodedTripId);
-        return Response.status(Status.OK).entity(stops).build();
+        return Response.status(Status.OK).entity(stops.get(0)).build();
     }
-
+    
     @Override
     public Response getRoutes(Integer page) throws ResourceNotFoundException {
         List<Route> routes = this.repository.getRoutes(page);
         return Response.status(Status.OK).entity(routes).build();
     }
-    
+
     @Override
     public Response getRouteTrips(String routeId) throws ResourceNotFoundException, UnsupportedEncodingException {
         String decodedRouteId = URLDecoder.decode(routeId, "UTF-8");
@@ -78,7 +78,7 @@ public class GtfsRestServiceImpl implements GtfsRestService, RestRequestAware {
         LOGGER.info("Found {} trips for route [{}]", String.valueOf(trips.size()), decodedRouteId);
         return Response.status(Status.OK).entity(trips).build();
     }
-
+    
     @Override
     public Response getNearbyStops(String latitude, String longitude) throws ResourceNotFoundException {
         Point point = new Point(Double.parseDouble(latitude), Double.parseDouble(longitude));
@@ -86,7 +86,7 @@ public class GtfsRestServiceImpl implements GtfsRestService, RestRequestAware {
         LOGGER.info("Found {} stops for location [{} {}]", String.valueOf(stops.size()), latitude, longitude);
         return Response.status(Status.OK).entity(stops).build();
     }
-
+    
     @Override
     public String getName() {
         return "GTFS Rest Service";

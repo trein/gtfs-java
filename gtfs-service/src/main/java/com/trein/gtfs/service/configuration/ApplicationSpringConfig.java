@@ -23,7 +23,7 @@ import com.trein.gtfs.mongo.MongoRepositoryConfig;
 @Import({ MongoRepositoryConfig.class })
 @ComponentScan(basePackages = { "com.trein.gtfs.service" })
 public class ApplicationSpringConfig {
-    
+
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
@@ -32,6 +32,7 @@ public class ApplicationSpringConfig {
         caches.add(new ConcurrentMapCache("trip"));
         caches.add(new ConcurrentMapCache("trips"));
         caches.add(new ConcurrentMapCache("trip_stop_times"));
+        caches.add(new ConcurrentMapCache("trip_shapes"));
         caches.add(new ConcurrentMapCache("route_trips"));
         caches.add(new ConcurrentMapCache("route"));
         caches.add(new ConcurrentMapCache("routes"));

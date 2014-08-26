@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.trein.gtfs.mongo.entities.DirectionType;
 import com.trein.gtfs.mongo.entities.Route;
+import com.trein.gtfs.mongo.entities.Shape;
 import com.trein.gtfs.mongo.entities.Stop;
 import com.trein.gtfs.mongo.entities.StopTime;
 import com.trein.gtfs.mongo.entities.Trip;
@@ -30,7 +31,7 @@ import com.trein.gtfs.service.endpoint.v1.GtfsRestServiceImpl;
 public class CachedRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GtfsRestServiceImpl.class);
-    private static final Distance DISTANCE = new Distance(1, Metrics.KILOMETERS);
+    private static final Distance DISTANCE = new Distance(0.5, Metrics.KILOMETERS);
 
     @Autowired
     private StopRepository stopRepository;
@@ -66,6 +67,23 @@ public class CachedRepository {
     public Trip getTrip(String tripId) {
         return this.tripRepository.findByTripId(tripId);
     }
+
+    @Cacheable(value = "trip_stop_times")
+    public List<StopTime> getStopTimesForTrip(String tripId) {
+        Trip trip = this.tripRepository.findByTripId(tripId);
+        List<StopTime> stops = this.stopTimeRepository.findByTrip(trip.getId());
+        // FIXME: prevent trips from being serialized
+        for (StopTime stopTime : stops) {
+            stopTime.setTrip(null);
+        }
+        return stops;
+    }
+    
+    @Cacheable(value = "trip_shapes")
+    public List<Shape> getTripShapes(String tripId) {
+        Trip trip = this.tripRepository.findByTripId(tripId);
+        return trip.getShapes();
+    }
     
     @Cacheable(value = "route_trips")
     public List<Trip> getTripsForRoute(String routeId) {
@@ -94,17 +112,6 @@ public class CachedRepository {
     public List<GeoResult<Stop>> getNearbyStops(Point point) {
         GeoResults<Stop> stops = this.stopRepository.findByLocationNear(point, DISTANCE);
         return stops.getContent();
-    }
-
-    @Cacheable(value = "trip_stop_times")
-    public List<StopTime> getStopTimesForTrip(String tripId) {
-        Trip trip = this.tripRepository.findByTripId(tripId);
-        List<StopTime> stops = this.stopTimeRepository.findByTrip(trip.getId());
-        // FIXME: prevent trips from being serialized
-        for (StopTime stopTime : stops) {
-            stopTime.setTrip(null);
-        }
-        return stops;
     }
 
 }

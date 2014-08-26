@@ -18,12 +18,24 @@ public interface GtfsRestService {
     @Produces(MediaType.APPLICATION_JSON)
     @GZIP
     Response getTrips(@QueryParam("page") Integer page) throws Exception;
+
+    @GET
+    @Path("/trips/{trip_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GZIP
+    Response getTrip(@PathParam("trip_id") String tripId) throws Exception;
     
     @GET
     @Path("/trips/{trip_id}/stops")
     @Produces(MediaType.APPLICATION_JSON)
     @GZIP
     Response getTripStopTimes(@PathParam("trip_id") String tripId) throws Exception;
+    
+    @GET
+    @Path("/trips/{trip_id}/shapes")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GZIP
+    Response getTripShapes(@PathParam("trip_id") String tripId) throws Exception;
     
     @GET
     @Path("/routes")

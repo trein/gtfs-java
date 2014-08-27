@@ -15,12 +15,12 @@ import org.springframework.data.geo.Metrics;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
 
-import com.trein.gtfs.mongo.entities.DirectionType;
-import com.trein.gtfs.mongo.entities.Route;
-import com.trein.gtfs.mongo.entities.Shape;
-import com.trein.gtfs.mongo.entities.Stop;
-import com.trein.gtfs.mongo.entities.StopTime;
-import com.trein.gtfs.mongo.entities.Trip;
+import com.trein.gtfs.mongo.entity.DirectionType;
+import com.trein.gtfs.mongo.entity.Route;
+import com.trein.gtfs.mongo.entity.Shape;
+import com.trein.gtfs.mongo.entity.Stop;
+import com.trein.gtfs.mongo.entity.StopTime;
+import com.trein.gtfs.mongo.entity.Trip;
 import com.trein.gtfs.mongo.repository.RouteRepository;
 import com.trein.gtfs.mongo.repository.StopRepository;
 import com.trein.gtfs.mongo.repository.StopTimeRepository;

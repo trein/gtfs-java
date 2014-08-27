@@ -17,10 +17,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.trein.gtfs.mongo.converters.DateTimeConverter;
+import com.trein.gtfs.mongo.converter.DateTimeConverter;
 import com.trein.gtfs.mongo.datasource.MongoPropertiesResolver;
-import com.trein.gtfs.mongo.entities.StopTime;
-import com.trein.gtfs.mongo.entities.Trip;
+import com.trein.gtfs.mongo.entity.StopTime;
+import com.trein.gtfs.mongo.entity.Trip;
 
 @Configuration
 @EnableAspectJAutoProxy

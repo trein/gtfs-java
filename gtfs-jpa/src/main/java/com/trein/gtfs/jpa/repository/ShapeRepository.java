@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.trein.gtfs.jpa.entities.Shape;
+import com.trein.gtfs.jpa.entity.Shape;
 
 public interface ShapeRepository extends JpaRepository<Shape, Long> {
 

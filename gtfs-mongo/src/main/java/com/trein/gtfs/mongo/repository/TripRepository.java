@@ -6,8 +6,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.trein.gtfs.mongo.entities.DirectionType;
-import com.trein.gtfs.mongo.entities.Trip;
+import com.trein.gtfs.mongo.entity.DirectionType;
+import com.trein.gtfs.mongo.entity.Trip;
 
 public interface TripRepository extends MongoRepository<Trip, ObjectId> {
 

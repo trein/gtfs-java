@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.trein.gtfs.mongo.entities.app.Audit;
+import com.trein.gtfs.mongo.entity.app.Audit;
 import com.trein.gtfs.mongo.repository.AuditRepository;
 import com.trein.gtfs.service.endpoint.RestRequestAware;
 import com.trein.gtfs.service.exception.SecurityException;

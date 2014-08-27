@@ -17,7 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.trein.gtfs.mongo.MongoRepositoryConfig;
-import com.trein.gtfs.mongo.entities.Shape;
+import com.trein.gtfs.mongo.entity.Shape;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { MongoRepositoryConfig.class })

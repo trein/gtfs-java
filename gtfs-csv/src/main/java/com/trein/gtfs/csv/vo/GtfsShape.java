@@ -1,7 +1,7 @@
 package com.trein.gtfs.csv.vo;
 
-import com.trein.gtfs.csv.annotations.GtfsColumn;
-import com.trein.gtfs.csv.annotations.GtfsFile;
+import com.trein.gtfs.csv.annotation.GtfsColumn;
+import com.trein.gtfs.csv.annotation.GtfsFile;
 
 /**
  * Rules for drawing lines on a map to represent a transit organization's routes.

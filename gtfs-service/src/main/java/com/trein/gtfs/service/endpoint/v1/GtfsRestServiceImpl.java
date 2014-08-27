@@ -19,11 +19,11 @@ import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
-import com.trein.gtfs.mongo.entities.Route;
-import com.trein.gtfs.mongo.entities.Shape;
-import com.trein.gtfs.mongo.entities.Stop;
-import com.trein.gtfs.mongo.entities.StopTime;
-import com.trein.gtfs.mongo.entities.Trip;
+import com.trein.gtfs.mongo.entity.Route;
+import com.trein.gtfs.mongo.entity.Shape;
+import com.trein.gtfs.mongo.entity.Stop;
+import com.trein.gtfs.mongo.entity.StopTime;
+import com.trein.gtfs.mongo.entity.Trip;
 import com.trein.gtfs.service.aspect.audit.ServiceEndpoint;
 import com.trein.gtfs.service.component.CachedRepository;
 import com.trein.gtfs.service.endpoint.RestRequestAware;

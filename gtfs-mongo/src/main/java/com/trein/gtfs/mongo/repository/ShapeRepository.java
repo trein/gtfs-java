@@ -8,7 +8,7 @@ import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.trein.gtfs.mongo.entities.Shape;
+import com.trein.gtfs.mongo.entity.Shape;
 
 public interface ShapeRepository extends MongoRepository<Shape, ObjectId> {
     

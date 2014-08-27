@@ -21,7 +21,7 @@ import org.springframework.util.ClassUtils;
 
 import com.googlecode.jcsv.annotations.internal.ValueProcessorProvider;
 import com.googlecode.jcsv.reader.CSVReader;
-import com.trein.gtfs.csv.annotations.GtfsFile;
+import com.trein.gtfs.csv.annotation.GtfsFile;
 import com.trein.gtfs.csv.reader.CSVHeaderAwareEntryParser;
 import com.trein.gtfs.csv.reader.CSVHeaderAwareReaderBuilder;
 import com.trein.gtfs.csv.vo.GtfsAgency;

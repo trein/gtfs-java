@@ -7,7 +7,7 @@ import com.googlecode.jcsv.annotations.ValueProcessor;
 import com.googlecode.jcsv.annotations.internal.ValueProcessorProvider;
 import com.googlecode.jcsv.reader.CSVEntryParser;
 import com.googlecode.jcsv.reader.CSVParsingContext;
-import com.trein.gtfs.csv.annotations.GtfsColumn;
+import com.trein.gtfs.csv.annotation.GtfsColumn;
 
 /**
  * Parses a csv entry, based on an annotated class.

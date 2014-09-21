@@ -37,9 +37,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- ============================================================ -->
-            <!-- JBoss RESTEasy -->
-            <!-- ============================================================ -->
             <dependency>
                 <groupId>org.jboss.resteasy</groupId>
                 <artifactId>resteasy-jaxrs</artifactId>
@@ -88,10 +85,8 @@
 
         </dependencies>
     </dependencyManagement>
+
     <dependencies>
-        <!-- ============================================================ -->
-        <!-- Testing -->
-        <!-- ============================================================ -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -108,4 +103,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>

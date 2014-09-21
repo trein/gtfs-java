@@ -818,11 +818,11 @@ public class Graph implements Serializable {
 
     // lazy-init geom index on an as needed basis
     public GeometryIndex getGeomIndex() {
-
+        
         if (this.geomIndex == null) {
             this.geomIndex = new GeometryIndex(this);
         }
-
+        
         return this.geomIndex;
     }
 
@@ -831,7 +831,7 @@ public class Graph implements Serializable {
         if (this.sampleFactory == null) {
             this.sampleFactory = new SampleFactory(this.getGeomIndex());
         }
-
+        
         return this.sampleFactory;
     }
 

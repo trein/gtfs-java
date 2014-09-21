@@ -1,6 +1,5 @@
 package org.opentripplanner.standalone;
 
-
 /**
  * The graph should only be modified by a runnable implementing this interface, executed by the
  * GraphUpdaterManager. A few notes: - Don't spend more time in this runnable than necessary, it

@@ -1,16 +1,3 @@
-/* This program is free software: you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public License
- as published by the Free Software Foundation, either version 3 of
- the License, or (props, at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>. */
-
 package org.opentripplanner.standalone;
 
 import java.util.Arrays;
@@ -26,82 +13,81 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is a wrapper around a new State that provides it with setter and increment methods,
- * allowing it to be modified before being put to use.
- * 
- * By virtue of being in the same package as States, it can modify their package private fields.
- * 
+ * allowing it to be modified before being put to use. By virtue of being in the same package as
+ * States, it can modify their package private fields.
+ *
  * @author andrewbyrd
  */
 public class StateEditor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(StateEditor.class);
-
-    protected State child;
-
-    private boolean extensionsModified = false;
-
-    private boolean spawned = false;
-
-    private boolean defectiveTraversal = false;
-
-    private boolean traversingBackward;
     
+    private static final Logger LOG = LoggerFactory.getLogger(StateEditor.class);
+    
+    protected State child;
+    
+    private boolean extensionsModified = false;
+    
+    private boolean spawned = false;
+    
+    private boolean defectiveTraversal = false;
+    
+    private boolean traversingBackward;
+
     // we use our own set of notes and only replace the child notes if they're different
     private Set<Alert> notes = null;
-
-    /* CONSTRUCTORS */
-
-    protected StateEditor() {}
     
-    public StateEditor(RoutingRequest options, Vertex v) {
-        child = new State(v, options);
+    /* CONSTRUCTORS */
+    
+    protected StateEditor() {
     }
 
+    public StateEditor(RoutingRequest options, Vertex v) {
+        this.child = new State(v, options);
+    }
+    
     public StateEditor(State parent, Edge e) {
-        child = parent.clone();
-        child.backState = parent;
-        child.backEdge = e;
+        this.child = parent.clone();
+        this.child.backState = parent;
+        this.child.backEdge = e;
         // We clear child.next here, since it could have already been set in the
         // parent
-        child.next = null;
+        this.child.next = null;
         if (e == null) {
-            child.backState = null;
-            child.vertex = parent.vertex;
-            child.stateData = child.stateData.clone();
+            this.child.backState = null;
+            this.child.vertex = parent.vertex;
+            this.child.stateData = this.child.stateData.clone();
         } else {
             // be clever
             // Note that we use equals(), not ==, here to allow for dynamically
             // created vertices
-            if (e.getFromVertex().equals(e.getToVertex())
-                    && parent.vertex.equals(e.getFromVertex())) {
+            if (e.getFromVertex().equals(e.getToVertex()) && parent.vertex.equals(e.getFromVertex())) {
                 // TODO LG: We disable this test: the assumption that
                 // the from and to vertex of an edge are not the same
                 // is not true anymore: bike rental on/off edges.
-                traversingBackward = parent.getOptions().arriveBy;
-                child.vertex = e.getToVertex();
+                this.traversingBackward = parent.getOptions().arriveBy;
+                this.child.vertex = e.getToVertex();
             } else if (parent.vertex.equals(e.getFromVertex())) {
-                traversingBackward = false;
-                child.vertex = e.getToVertex();
+                this.traversingBackward = false;
+                this.child.vertex = e.getToVertex();
             } else if (parent.vertex.equals(e.getToVertex())) {
-                traversingBackward = true;
-                child.vertex = e.getFromVertex();
+                this.traversingBackward = true;
+                this.child.vertex = e.getFromVertex();
             } else {
                 // Parent state is not at either end of edge.
                 LOG.warn("Edge is not connected to parent state: {}", e);
                 LOG.warn("   from   vertex: {}", e.getFromVertex());
                 LOG.warn("   to     vertex: {}", e.getToVertex());
                 LOG.warn("   parent vertex: {}", parent.vertex);
-                defectiveTraversal = true;
+                this.defectiveTraversal = true;
             }
-            if (traversingBackward != parent.getOptions().arriveBy) {
+            if (this.traversingBackward != parent.getOptions().arriveBy) {
                 LOG.error("Actual traversal direction does not match traversal direction in TraverseOptions.");
-                defectiveTraversal = true;
+                this.defectiveTraversal = true;
             }
         }
     }
-
+    
     /* PUBLIC METHODS */
-
+    
     /**
      * Why can a state editor only be used once? If you modify some component of state with and
      * editor, use the editor to create a new state, and then make more modifications, these
@@ -111,61 +97,56 @@ public class StateEditor {
      */
     public State makeState() {
         // check that this editor has not been used already
-        if (spawned)
-            throw new IllegalStateException("A StateEditor can only be used once.");
-
+        if (this.spawned) { throw new IllegalStateException("A StateEditor can only be used once."); }
+        
         // if something was flagged incorrect, do not make a new state
-        if (defectiveTraversal) {
-            LOG.error("Defective traversal flagged on edge " + child.backEdge);
+        if (this.defectiveTraversal) {
+            LOG.error("Defective traversal flagged on edge " + this.child.backEdge);
             return null;
         }
-
-        if (child.backState != null) {
+        
+        if (this.child.backState != null) {
             // make it impossible to use a state with lower weight than its
             // parent.
-            child.checkNegativeWeight();
-
+            this.child.checkNegativeWeight();
+            
             // check that time changes are coherent with edge traversal
             // direction
-            if (traversingBackward ? (child.getTimeDeltaSeconds() > 0)
-                    : (child.getTimeDeltaSeconds() < 0)) {
-                LOG.trace("Time was incremented the wrong direction during state editing. {}",
-                        child.backEdge);
+            if (this.traversingBackward ? (this.child.getTimeDeltaSeconds() > 0) : (this.child.getTimeDeltaSeconds() < 0)) {
+                LOG.trace("Time was incremented the wrong direction during state editing. {}", this.child.backEdge);
                 return null;
             }
         }
-        if (!parsePath(this.child)) {
-            return null;
-        }
-
-        // copy the notes if need be, keeping in mind they may both be null
-        if (this.notes != child.stateData.notes) {
-            cloneStateDataAsNeeded();
-            child.stateData.notes = this.notes;
-        }
+        if (!parsePath(this.child)) { return null; }
         
-        spawned = true;
-        return child;
-    }
+        // copy the notes if need be, keeping in mind they may both be null
+        if (this.notes != this.child.stateData.notes) {
+            cloneStateDataAsNeeded();
+            this.child.stateData.notes = this.notes;
+        }
 
+        this.spawned = true;
+        return this.child;
+    }
+    
     public boolean weHaveWalkedTooFar(RoutingRequest options) {
         // Only apply limit in transit-only case
-        if (!options.modes.isTransit())
-            return false;
-
-        return child.walkDistance >= options.maxWalkDistance;
+        if (!options.modes.isTransit()) { return false; }
+        
+        return this.child.walkDistance >= options.maxWalkDistance;
     }
-
+    
     public boolean isMaxPreTransitTimeExceeded(RoutingRequest options) {
-        return child.preTransitTime > options.maxPreTransitTime;
+        return this.child.preTransitTime > options.maxPreTransitTime;
     }
-
+    
+    @Override
     public String toString() {
-        return "<StateEditor " + child + ">";
+        return "<StateEditor " + this.child + ">";
     }
-
+    
     /* PUBLIC METHODS TO MODIFY A STATE BEFORE IT IS USED */
-
+    
     /**
      * Put a new value into the State extensions map. This will always clone the extensions map
      * before it is modified the first time, making sure that other references to the map in earlier
@@ -174,18 +155,19 @@ public class StateEditor {
     @SuppressWarnings("unchecked")
     public void setExtension(Object key, Object value) {
         cloneStateDataAsNeeded();
-        if (!extensionsModified) {
+        if (!this.extensionsModified) {
             HashMap<Object, Object> newExtensions;
-            if (child.stateData.extensions == null)
+            if (this.child.stateData.extensions == null) {
                 newExtensions = new HashMap<Object, Object>(4);
-            else
-                newExtensions = (HashMap<Object, Object>) child.stateData.extensions.clone();
-            child.stateData.extensions = newExtensions;
-            extensionsModified = true;
+            } else {
+                newExtensions = (HashMap<Object, Object>) this.child.stateData.extensions.clone();
+            }
+            this.child.stateData.extensions = newExtensions;
+            this.extensionsModified = true;
         }
-        child.stateData.extensions.put(key, value);
+        this.child.stateData.extensions.put(key, value);
     }
-
+    
     /**
      * Tell the stateEditor to return null when makeState() is called, no matter what other editing
      * has been done. This allows graph patches to block traversals.
@@ -193,49 +175,46 @@ public class StateEditor {
     public void blockTraversal() {
         this.defectiveTraversal = true;
     }
-
+    
     /**
      * Add an alert to this state. This used to use an EdgeNarrative
      */
     public void addAlert(Alert notes) {
-        if (notes == null)
-            return;
-        
-        if (this.notes == null)
+        if (notes == null) { return; }
+
+        if (this.notes == null) {
             this.notes = new HashSet<Alert>();
-        
+        }
+
         this.notes.add(notes);
     }
-    
+
     /**
      * Convenience function to add multiple alerts
      */
     public void addAlerts(Iterable<Alert> alerts) {
-        if (alerts == null)
-            return;
+        if (alerts == null) { return; }
         for (Alert alert : alerts) {
             this.addAlert(alert);
         }
     }
-
+    
     /* Incrementors */
-
+    
     public void incrementWeight(double weight) {
         if (Double.isNaN(weight)) {
-            LOG.warn("A state's weight is being incremented by NaN while traversing edge "
-                    + child.backEdge);
-            defectiveTraversal = true;
+            LOG.warn("A state's weight is being incremented by NaN while traversing edge " + this.child.backEdge);
+            this.defectiveTraversal = true;
             return;
         }
         if (weight < 0) {
-            LOG.warn("A state's weight is being incremented by a negative amount while traversing edge "
-                    + child.backEdge);
-            defectiveTraversal = true;
+            LOG.warn("A state's weight is being incremented by a negative amount while traversing edge " + this.child.backEdge);
+            this.defectiveTraversal = true;
             return;
         }
-        child.weight += weight;
+        this.child.weight += weight;
     }
-
+    
     /**
      * Advance or rewind the time of the new state by the given non-negative amount. Direction of
      * time is inferred from the direction of traversal. This is the only element of state that runs
@@ -244,280 +223,280 @@ public class StateEditor {
     public void incrementTimeInSeconds(int seconds) {
         incrementTimeInMilliseconds(seconds * 1000L);
     }
-    
+
     public void incrementTimeInMilliseconds(long milliseconds) {
         if (milliseconds < 0) {
-            LOG.warn("A state's time is being incremented by a negative amount while traversing edge "
-                    + child.getBackEdge());
-            defectiveTraversal = true;
+            LOG.warn("A state's time is being incremented by a negative amount while traversing edge " + this.child.getBackEdge());
+            this.defectiveTraversal = true;
             return;
         }
-        child.time += (traversingBackward ? -milliseconds : milliseconds);
-    }    
-
+        this.child.time += (this.traversingBackward ? -milliseconds : milliseconds);
+    }
+    
     public void incrementWalkDistance(double length) {
         if (length < 0) {
             LOG.warn("A state's walk distance is being incremented by a negative amount.");
-            defectiveTraversal = true;
+            this.defectiveTraversal = true;
             return;
         }
-        child.walkDistance += length;
+        this.child.walkDistance += length;
     }
-
+    
     public void incrementPreTransitTime(int seconds) {
         if (seconds < 0) {
             LOG.warn("A state's pre-transit time is being incremented by a negative amount.");
-            defectiveTraversal = true;
+            this.defectiveTraversal = true;
             return;
         }
-        child.preTransitTime += seconds;
-    }
-
-    public void incrementNumBoardings() {
-        cloneStateDataAsNeeded();
-        child.stateData.numBoardings++;
-        setEverBoarded(true);
-    }
-
-    /* Basic Setters */
-
-    public void setTripTimes(TripTimes tripTimes) {
-        cloneStateDataAsNeeded();
-        child.stateData.tripTimes = tripTimes;
-    }
-
-    public void setTripId(AgencyAndId tripId) {
-        cloneStateDataAsNeeded();
-        child.stateData.tripId = tripId;
-    }
-
-    public void setPreviousTrip(Trip previousTrip) {
-        cloneStateDataAsNeeded();
-        child.stateData.previousTrip = previousTrip;
+        this.child.preTransitTime += seconds;
     }
     
+    public void incrementNumBoardings() {
+        cloneStateDataAsNeeded();
+        this.child.stateData.numBoardings++;
+        setEverBoarded(true);
+    }
+    
+    /* Basic Setters */
+    
+    public void setTripTimes(TripTimes tripTimes) {
+        cloneStateDataAsNeeded();
+        this.child.stateData.tripTimes = tripTimes;
+    }
+    
+    public void setTripId(AgencyAndId tripId) {
+        cloneStateDataAsNeeded();
+        this.child.stateData.tripId = tripId;
+    }
+    
+    public void setPreviousTrip(Trip previousTrip) {
+        cloneStateDataAsNeeded();
+        this.child.stateData.previousTrip = previousTrip;
+    }
+
     /**
-     * Initial wait time is recorded so it can be subtracted out of paths in lieu of "reverse optimization".
-     * This happens in Analyst.
+     * Initial wait time is recorded so it can be subtracted out of paths in lieu of
+     * "reverse optimization". This happens in Analyst.
      */
     public void setInitialWaitTimeSeconds(long initialWaitTimeSeconds) {
         cloneStateDataAsNeeded();
-        child.stateData.initialWaitTime = initialWaitTimeSeconds;
+        this.child.stateData.initialWaitTime = initialWaitTimeSeconds;
+    }
+
+    public void setBackMode(TraverseMode mode) {
+        if (mode == this.child.stateData.backMode) { return; }
+
+        cloneStateDataAsNeeded();
+        this.child.stateData.backMode = mode;
     }
     
-    public void setBackMode(TraverseMode mode) {
-        if (mode == child.stateData.backMode)
-            return;
-        
-        cloneStateDataAsNeeded();
-        child.stateData.backMode = mode;
-    }
+    public void setBackWalkingBike(boolean walkingBike) {
+        if (walkingBike == this.child.stateData.backWalkingBike) { return; }
 
-    public void setBackWalkingBike (boolean walkingBike) {
-        if (walkingBike == child.stateData.backWalkingBike)
-            return;
-        
         cloneStateDataAsNeeded();
-        child.stateData.backWalkingBike = walkingBike;
+        this.child.stateData.backWalkingBike = walkingBike;
     }
-
-    /** 
-     * The lastNextArrivalDelta is the amount of time between the arrival of the last trip
-     * the planner used and the arrival of the trip after that.
+    
+    /**
+     * The lastNextArrivalDelta is the amount of time between the arrival of the last trip the
+     * planner used and the arrival of the trip after that.
      */
-    public void setLastNextArrivalDelta (int lastNextArrivalDelta) {
+    public void setLastNextArrivalDelta(int lastNextArrivalDelta) {
         cloneStateDataAsNeeded();
-        child.stateData.lastNextArrivalDelta = lastNextArrivalDelta;
+        this.child.stateData.lastNextArrivalDelta = lastNextArrivalDelta;
     }
-
+    
     public void setWalkDistance(double walkDistance) {
-        child.walkDistance = walkDistance;
+        this.child.walkDistance = walkDistance;
     }
-
+    
     public void setPreTransitTime(int preTransitTime) {
-        child.preTransitTime = preTransitTime;
+        this.child.preTransitTime = preTransitTime;
     }
-
+    
     public void setZone(String zone) {
         if (zone == null) {
-            if (child.stateData.zone != null) {
+            if (this.child.stateData.zone != null) {
                 cloneStateDataAsNeeded();
-                child.stateData.zone = zone;
+                this.child.stateData.zone = zone;
             }
-        } else if (!zone.equals(child.stateData.zone)) {
+        } else if (!zone.equals(this.child.stateData.zone)) {
             cloneStateDataAsNeeded();
-            child.stateData.zone = zone;
+            this.child.stateData.zone = zone;
         }
     }
-
+    
     public void setRoute(AgencyAndId routeId) {
         cloneStateDataAsNeeded();
-        child.stateData.route = routeId;
+        this.child.stateData.route = routeId;
         // unlike tripId, routeId is not set to null when alighting
         // but do a null check anyway
         if (routeId != null) {
-            AgencyAndId[] oldRouteSequence = child.stateData.routeSequence;
-            //LOG.debug("old route seq {}", Arrays.asList(oldRouteSequence));
+            AgencyAndId[] oldRouteSequence = this.child.stateData.routeSequence;
+            // LOG.debug("old route seq {}", Arrays.asList(oldRouteSequence));
             int oldLength = oldRouteSequence.length;
-            child.stateData.routeSequence = Arrays.copyOf(oldRouteSequence, oldLength + 1);
-            child.stateData.routeSequence[oldLength] = routeId;
-            //LOG.debug("new route seq {}", Arrays.asList(child.stateData.routeSequence)); // array will be interpreted as varargs
+            this.child.stateData.routeSequence = Arrays.copyOf(oldRouteSequence, oldLength + 1);
+            this.child.stateData.routeSequence[oldLength] = routeId;
+            // LOG.debug("new route seq {}", Arrays.asList(child.stateData.routeSequence)); // array
+            // will be interpreted as varargs
         }
     }
-
+    
     public void setNumBoardings(int numBoardings) {
         cloneStateDataAsNeeded();
-        child.stateData.numBoardings = numBoardings;
+        this.child.stateData.numBoardings = numBoardings;
     }
-
+    
     public void setEverBoarded(boolean everBoarded) {
         cloneStateDataAsNeeded();
-        child.stateData.everBoarded = true;
+        this.child.stateData.everBoarded = true;
     }
-
+    
     public void setBikeRenting(boolean bikeRenting) {
         cloneStateDataAsNeeded();
-        child.stateData.usingRentedBike = bikeRenting;
+        this.child.stateData.usingRentedBike = bikeRenting;
         if (bikeRenting) {
-            child.stateData.nonTransitMode = TraverseMode.BICYCLE;
+            this.child.stateData.nonTransitMode = TraverseMode.BICYCLE;
         } else {
-            child.stateData.nonTransitMode = TraverseMode.WALK;
+            this.child.stateData.nonTransitMode = TraverseMode.WALK;
         }
     }
-
+    
     /**
-     * This has two effects: marks the car as parked, and switches the current mode.
-     * Marking the car parked is important for allowing co-dominance of walking and driving states.
+     * This has two effects: marks the car as parked, and switches the current mode. Marking the car
+     * parked is important for allowing co-dominance of walking and driving states.
      */
     public void setCarParked(boolean carParked) {
         cloneStateDataAsNeeded();
-        child.stateData.carParked = carParked;
+        this.child.stateData.carParked = carParked;
         if (carParked) {
             // We do not handle mixed-mode P+BIKE...
-            child.stateData.nonTransitMode = TraverseMode.WALK;
+            this.child.stateData.nonTransitMode = TraverseMode.WALK;
         } else {
-            child.stateData.nonTransitMode = TraverseMode.CAR;
+            this.child.stateData.nonTransitMode = TraverseMode.CAR;
         }
     }
-
+    
     public void setPreviousStop(Stop previousStop) {
         cloneStateDataAsNeeded();
-        child.stateData.previousStop = previousStop;
+        this.child.stateData.previousStop = previousStop;
     }
-
+    
     public void setLastAlightedTimeSeconds(long lastAlightedTimeSeconds) {
         cloneStateDataAsNeeded();
-        child.stateData.lastAlightedTime = lastAlightedTimeSeconds;
+        this.child.stateData.lastAlightedTime = lastAlightedTimeSeconds;
     }
-
+    
     public void setTimeSeconds(long seconds) {
-        child.time = seconds * 1000;
+        this.child.time = seconds * 1000;
     }
-
+    
     public void setStartTimeSeconds(long seconds) {
         cloneStateDataAsNeeded();
-        child.stateData.startTime = seconds;
+        this.child.stateData.startTime = seconds;
     }
-
+    
     /**
      * Set non-incremental state values (ex. {@link State#getRoute()}) from an existing state.
      * Incremental values (ex. {@link State#getNumBoardings()}) are not currently set.
-     * 
+     *
      * @param state
      */
     public void setFromState(State state) {
         cloneStateDataAsNeeded();
-        child.stateData.route = state.stateData.route;
-        child.stateData.tripTimes = state.stateData.tripTimes;
-        child.stateData.tripId = state.stateData.tripId;
-        child.stateData.serviceDay = state.stateData.serviceDay;
-        child.stateData.previousTrip = state.stateData.previousTrip;
-        child.stateData.previousStop = state.stateData.previousStop;
-        child.stateData.zone = state.stateData.zone;
-        child.stateData.extensions = state.stateData.extensions;
-        child.stateData.usingRentedBike = state.stateData.usingRentedBike;
-        child.stateData.carParked = state.stateData.carParked;
+        this.child.stateData.route = state.stateData.route;
+        this.child.stateData.tripTimes = state.stateData.tripTimes;
+        this.child.stateData.tripId = state.stateData.tripId;
+        this.child.stateData.serviceDay = state.stateData.serviceDay;
+        this.child.stateData.previousTrip = state.stateData.previousTrip;
+        this.child.stateData.previousStop = state.stateData.previousStop;
+        this.child.stateData.zone = state.stateData.zone;
+        this.child.stateData.extensions = state.stateData.extensions;
+        this.child.stateData.usingRentedBike = state.stateData.usingRentedBike;
+        this.child.stateData.carParked = state.stateData.carParked;
     }
-
+    
     /* PUBLIC GETTER METHODS */
-
+    
     /*
      * Allow patches to see the State being edited, so they can decide whether to apply their
      * transformations to the traversal result or not.
      */
-
+    
     public Object getExtension(Object key) {
-        return child.getExtension(key);
-    }
-
-    public long getTimeSeconds() {
-        return child.getTimeSeconds();
-    }
-
-    public long getElapsedTimeSeconds() {
-        return child.getElapsedTimeSeconds();
-    }
-
-    public AgencyAndId getTripId() {
-        return child.getTripId();
-    }
-
-    public Trip getPreviousTrip() {
-        return child.getPreviousTrip();
+        return this.child.getExtension(key);
     }
     
+    public long getTimeSeconds() {
+        return this.child.getTimeSeconds();
+    }
+    
+    public long getElapsedTimeSeconds() {
+        return this.child.getElapsedTimeSeconds();
+    }
+    
+    public AgencyAndId getTripId() {
+        return this.child.getTripId();
+    }
+    
+    public Trip getPreviousTrip() {
+        return this.child.getPreviousTrip();
+    }
+
     public String getZone() {
-        return child.getZone();
+        return this.child.getZone();
     }
-
+    
     public AgencyAndId getRoute() {
-        return child.getRoute();
+        return this.child.getRoute();
     }
-
+    
     public int getNumBoardings() {
-        return child.getNumBoardings();
+        return this.child.getNumBoardings();
     }
-
+    
     public boolean isEverBoarded() {
-        return child.isEverBoarded();
+        return this.child.isEverBoarded();
     }
-
+    
     public boolean isRentingBike() {
-        return child.isBikeRenting();
+        return this.child.isBikeRenting();
     }
-
+    
     public long getLastAlightedTimeSeconds() {
-        return child.getLastAlightedTimeSeconds();
+        return this.child.getLastAlightedTimeSeconds();
     }
-
+    
     public double getWalkDistance() {
-        return child.getWalkDistance();
+        return this.child.getWalkDistance();
     }
-
+    
     public int getPreTransitTime() {
-        return child.getPreTransitTime();
+        return this.child.getPreTransitTime();
     }
-
+    
     public Vertex getVertex() {
-        return child.getVertex();
+        return this.child.getVertex();
     }
-
+    
     /* PRIVATE METHODS */
-
+    
     /**
      * To be called before modifying anything in the child's StateData. Makes sure that changes are
      * applied to a copy of StateData rather than the same one that is still referenced in existing,
      * older states.
      */
     private void cloneStateDataAsNeeded() {
-        if (child.backState != null && child.stateData == child.backState.stateData)
-            child.stateData = child.stateData.clone();
+        if ((this.child.backState != null) && (this.child.stateData == this.child.backState.stateData)) {
+            this.child.stateData = this.child.stateData.clone();
+        }
     }
-
+    
     /** return true if all PathParsers advanced to a state other than REJECT */
     public boolean parsePath(State state) {
-        if (state.stateData.opt.rctx == null)
-            return true; // a lot of tests don't set a routing context
+        if (state.stateData.opt.rctx == null) { return true; // a lot of tests don't set a routing
+                                                             // context
+        }
         PathParser[] parsers = state.stateData.opt.rctx.pathParsers;
         int[] parserStates = state.pathParserStates;
         boolean accept = true;
@@ -534,38 +513,41 @@ public class StateEditor {
                     modified = true;
                 }
                 parserStates[i] = newState;
-                if (newState == AutomatonState.REJECT)
+                if (newState == AutomatonState.REJECT) {
                     accept = false;
+                }
             }
             i++;
         }
-        if (modified)
+        if (modified) {
             state.pathParserStates = parserStates;
-
+        }
+        
         return accept;
     }
-
+    
     public void alightTransit() {
         cloneStateDataAsNeeded();
-        child.stateData.lastTransitWalk = child.getWalkDistance();
+        this.child.stateData.lastTransitWalk = this.child.getWalkDistance();
     }
-
+    
     public void setLastPattern(TripPattern pattern) {
         cloneStateDataAsNeeded();
-        child.stateData.lastPattern = pattern;
+        this.child.stateData.lastPattern = pattern;
     }
+    
     public void setOptions(RoutingRequest options) {
         cloneStateDataAsNeeded();
-        child.stateData.opt = options;
+        this.child.stateData.opt = options;
     }
-
+    
     public void setServiceDay(ServiceDay day) {
         cloneStateDataAsNeeded();
-        child.stateData.serviceDay = day;
+        this.child.stateData.serviceDay = day;
     }
-
+    
     public void setBikeRentalNetwork(Set<String> networks) {
         cloneStateDataAsNeeded();
-        child.stateData.bikeRentalNetworks = networks;
+        this.child.stateData.bikeRentalNetworks = networks;
     }
 }

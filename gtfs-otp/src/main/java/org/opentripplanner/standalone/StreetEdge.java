@@ -11,7 +11,7 @@ import java.util.Set;
 /* package-private ? */
 // EdgeWithElevation extends Edge
 public abstract class StreetEdge extends EdgeWithElevation {
-
+    
     private static final long serialVersionUID = 1L;
     public static final int CLASS_STREET = 3;
     public static final int CLASS_CROSSING = 4;
@@ -21,42 +21,42 @@ public abstract class StreetEdge extends EdgeWithElevation {
     public static final int ANY_PLATFORM_MASK = 24;
     public static final int CROSSING_CLASS_MASK = 7; // ignore platform
     public static final int CLASS_LINK = 32; // on/offramps; OSM calls them "links"
-
+    
     public StreetEdge(StreetVertex v1, StreetVertex v2) {
         super(v1, v2);
     }
-
+    
     /**
      * Returns true if this RoutingRequest can traverse this edge.
      */
     public abstract boolean canTraverse(RoutingRequest options);
-
+    
     public abstract boolean canTraverse(TraverseModeSet modes);
-
+    
     public abstract String getLabel();
-
+    
     public abstract double getLength();
-
+    
     public abstract float getCarSpeed();
-
+    
     public abstract void setCarSpeed(float carSpeed);
-
+    
     public abstract int getInAngle();
-
+    
     public abstract int getOutAngle();
-
+    
     public abstract StreetTraversalPermission getPermission();
-
+    
     public abstract boolean isNoThruTraffic();
-
+    
     public abstract int getStreetClass();
-
+    
     public abstract boolean isWheelchairAccessible();
-
+    
     public abstract Set<Alert> getNotes();
-
+    
     public abstract Set<Alert> getWheelchairNotes();
-
+    
     public abstract List<TurnRestriction> getTurnRestrictions();
-
+    
 }

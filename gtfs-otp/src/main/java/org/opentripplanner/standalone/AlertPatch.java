@@ -26,28 +26,28 @@ import org.onebusaway.gtfs.model.Trip;
 @XmlRootElement(name = "AlertPatch")
 public class AlertPatch implements Serializable {
     private static final long serialVersionUID = 20140319L;
-    
+
     private String id;
-    
+
     private Alert alert;
-    
+
     private List<TimePeriod> timePeriods = new ArrayList<TimePeriod>();
-    
+
     private String agency;
-    
+
     private AgencyAndId route;
-    
+
     private AgencyAndId trip;
-    
+
     private AgencyAndId stop;
-    
+
     private String direction;
-    
+
     @XmlElement
     public Alert getAlert() {
         return this.alert;
     }
-    
+
     public boolean displayDuring(State state) {
         for (TimePeriod timePeriod : this.timePeriods) {
             if (state.getTimeSeconds() >= timePeriod.startTime) {
@@ -56,25 +56,25 @@ public class AlertPatch implements Serializable {
         }
         return false;
     }
-    
+
     @XmlElement
     public String getId() {
         return this.id;
     }
-    
+
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public void apply(Graph graph) {
         Agency agency = this.agency != null ? graph.index.agencyForId.get(this.agency) : null;
         Route route = this.route != null ? graph.index.routeForId.get(this.route) : null;
         Stop stop = this.stop != null ? graph.index.stopForId.get(this.stop) : null;
         Trip trip = this.trip != null ? graph.index.tripForId.get(this.trip) : null;
-        
+
         if ((route != null) || (trip != null) || (agency != null)) {
             Collection<TripPattern> tripPatterns;
-            
+
             if (trip != null) {
                 tripPatterns = new LinkedList<TripPattern>();
                 TripPattern tripPattern = graph.index.patternForTrip.get(trip);
@@ -86,7 +86,7 @@ public class AlertPatch implements Serializable {
             } else {
                 tripPatterns = graph.index.patternsForAgency.get(agency);
             }
-            
+
             for (TripPattern tripPattern : tripPatterns) {
                 if ((this.direction != null) && !this.direction.equals(tripPattern.getDirection())) {
                     continue;
@@ -100,14 +100,14 @@ public class AlertPatch implements Serializable {
             }
         } else if (stop != null) {
             TransitStop transitStop = graph.index.stopVertexForStop.get(stop);
-            
+
             for (Edge edge : transitStop.getOutgoing()) {
                 if (edge instanceof PreBoardEdge) {
                     graph.addAlertPatch(edge, this);
                     break;
                 }
             }
-            
+
             for (Edge edge : transitStop.getIncoming()) {
                 if (edge instanceof PreAlightEdge) {
                     graph.addAlertPatch(edge, this);
@@ -116,16 +116,16 @@ public class AlertPatch implements Serializable {
             }
         }
     }
-    
+
     public void remove(Graph graph) {
         Agency agency = this.agency != null ? graph.index.agencyForId.get(this.agency) : null;
         Route route = this.route != null ? graph.index.routeForId.get(this.route) : null;
         Stop stop = this.stop != null ? graph.index.stopForId.get(this.stop) : null;
         Trip trip = this.trip != null ? graph.index.tripForId.get(this.trip) : null;
-        
+
         if ((route != null) || (trip != null) || (agency != null)) {
             Collection<TripPattern> tripPatterns;
-            
+
             if (trip != null) {
                 tripPatterns = new LinkedList<TripPattern>();
                 TripPattern tripPattern = graph.index.patternForTrip.get(trip);
@@ -137,7 +137,7 @@ public class AlertPatch implements Serializable {
             } else {
                 tripPatterns = graph.index.patternsForAgency.get(agency);
             }
-            
+
             for (TripPattern tripPattern : tripPatterns) {
                 if ((this.direction != null) && !this.direction.equals(tripPattern.getDirection())) {
                     continue;
@@ -151,14 +151,14 @@ public class AlertPatch implements Serializable {
             }
         } else if (stop != null) {
             TransitStop transitStop = graph.index.stopVertexForStop.get(stop);
-            
+
             for (Edge edge : transitStop.getOutgoing()) {
                 if (edge instanceof PreBoardEdge) {
                     graph.removeAlertPatch(edge, this);
                     break;
                 }
             }
-            
+
             for (Edge edge : transitStop.getIncoming()) {
                 if (edge instanceof PreAlightEdge) {
                     graph.removeAlertPatch(edge, this);
@@ -167,69 +167,69 @@ public class AlertPatch implements Serializable {
             }
         }
     }
-    
+
     public void setAlert(Alert alert) {
         this.alert = alert;
     }
-    
+
     private void writeObject(ObjectOutputStream os) throws IOException {
         if (this.timePeriods instanceof ArrayList<?>) {
             ((ArrayList<TimePeriod>) this.timePeriods).trimToSize();
         }
         os.defaultWriteObject();
     }
-    
+
     public void setTimePeriods(List<TimePeriod> periods) {
         this.timePeriods = periods;
     }
-    
+
     public String getAgency() {
         return this.agency;
     }
-    
+
     @XmlJavaTypeAdapter(AgencyAndIdAdapter.class)
     public AgencyAndId getRoute() {
         return this.route;
     }
-    
+
     @XmlJavaTypeAdapter(AgencyAndIdAdapter.class)
     public AgencyAndId getTrip() {
         return this.trip;
     }
-    
+
     @XmlJavaTypeAdapter(AgencyAndIdAdapter.class)
     public AgencyAndId getStop() {
         return this.stop;
     }
-    
+
     public void setAgencyId(String agency) {
         this.agency = agency;
     }
-    
+
     public void setRoute(AgencyAndId route) {
         this.route = route;
     }
-    
+
     public void setTrip(AgencyAndId trip) {
         this.trip = trip;
     }
-    
+
     public void setDirection(String direction) {
         if ((direction != null) && direction.equals("")) {
             direction = null;
         }
         this.direction = direction;
     }
-    
+
     @XmlElement
     public String getDirection() {
         return this.direction;
     }
-    
+
     public void setStop(AgencyAndId stop) {
         this.stop = stop;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof AlertPatch)) { return false; }
@@ -276,7 +276,7 @@ public class AlertPatch implements Serializable {
         }
         return true;
     }
-    
+
     @Override
     public int hashCode() {
         return ((this.direction == null ? 0 : this.direction.hashCode()) + (this.agency == null ? 0 : this.agency.hashCode())

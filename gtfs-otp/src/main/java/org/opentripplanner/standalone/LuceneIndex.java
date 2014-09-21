@@ -34,20 +34,20 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 /**
- * Lucene based index of streets, stops, etc.
- * For reference see:
- * https://svn.apache.org/repos/asf/lucene/dev/trunk/lucene/demo/src/java/org/apache/lucene/demo/IndexFiles.java
+ * Lucene based index of streets, stops, etc. For reference see:
+ * https://svn.apache.org/repos/asf/lucene
+ * /dev/trunk/lucene/demo/src/java/org/apache/lucene/demo/IndexFiles.java
  */
 public class LuceneIndex {
-
+    
     private static final Logger LOG = LoggerFactory.getLogger(LuceneIndex.class);
-
-    private Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
-    private QueryParser parser = new QueryParser(Version.LUCENE_47, "name", analyzer);
-    private GraphIndex graphIndex;
+    
+    private final Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
+    private final QueryParser parser = new QueryParser(Version.LUCENE_47, "name", this.analyzer);
+    private final GraphIndex graphIndex;
     private Directory directory;
     private IndexSearcher searcher; // Will be null until index is built.
-
+    
     public LuceneIndex(final GraphIndex graphIndex, boolean background) {
         this.graphIndex = graphIndex;
         if (background) {
@@ -56,34 +56,34 @@ public class LuceneIndex {
             new BackgroundIndexer().run();
         }
     }
-
+    
     /**
      * Index stations, stops, intersections, streets, and addresses by name and location.
      */
     private void index() {
         try {
             long startTime = System.currentTimeMillis();
-            directory = FSDirectory.open(new File("/var/otp/lucene"));
+            this.directory = FSDirectory.open(new File("/var/otp/lucene"));
             // TODO reuse the index if it exists?
-            //directory = new RAMDirectory(); // only a little faster
-            IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47, analyzer).setOpenMode(OpenMode.CREATE);
-            final IndexWriter writer = new IndexWriter(directory, config);
-            for (Stop stop : graphIndex.stopForId.values()) {
+            // directory = new RAMDirectory(); // only a little faster
+            IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47, this.analyzer).setOpenMode(OpenMode.CREATE);
+            final IndexWriter writer = new IndexWriter(this.directory, config);
+            for (Stop stop : this.graphIndex.stopForId.values()) {
                 addStop(writer, stop);
             }
-            for (StreetVertex sv : Iterables.filter(graphIndex.vertexForId.values(), StreetVertex.class)) {
+            for (StreetVertex sv : Iterables.filter(this.graphIndex.vertexForId.values(), StreetVertex.class)) {
                 addCorner(writer, sv);
             }
             writer.close();
             long elapsedTime = System.currentTimeMillis() - startTime;
             LOG.info("Built Lucene index in {} msec", elapsedTime);
             // Make the IndexSearcher necessary for querying.
-            searcher = new IndexSearcher(DirectoryReader.open(directory));
+            this.searcher = new IndexSearcher(DirectoryReader.open(this.directory));
         } catch (Exception ex) {
             throw new RuntimeException("Lucene indexing failed.", ex);
         }
     }
-
+    
     private void addStop(IndexWriter iwriter, Stop stop) throws IOException {
         Document doc = new Document();
         doc.add(new TextField("name", stop.getName(), Field.Store.YES));
@@ -96,17 +96,20 @@ public class LuceneIndex {
         doc.add(new StringField("category", Category.STOP.name(), Field.Store.YES));
         iwriter.addDocument(doc);
     }
-
+    
     private void addCorner(IndexWriter iwriter, StreetVertex sv) throws IOException {
         String mainStreet = null;
         String crossStreet = null;
         // TODO score based on OSM street type, using intersection nodes instead of vertices.
         for (PlainStreetEdge pse : Iterables.filter(sv.getOutgoing(), PlainStreetEdge.class)) {
-            if (mainStreet == null) mainStreet = pse.getName();
-            else crossStreet = pse.getName();
+            if (mainStreet == null) {
+                mainStreet = pse.getName();
+            } else {
+                crossStreet = pse.getName();
+            }
         }
-        if (mainStreet == null || crossStreet == null) return;
-        if (mainStreet.equals(crossStreet)) return;
+        if ((mainStreet == null) || (crossStreet == null)) { return; }
+        if (mainStreet.equals(crossStreet)) { return; }
         Document doc = new Document();
         doc.add(new TextField("name", mainStreet + " & " + crossStreet, Field.Store.YES));
         doc.add(new DoubleField("lat", sv.getLat(), Field.Store.YES));
@@ -114,7 +117,7 @@ public class LuceneIndex {
         doc.add(new StringField("category", Category.CORNER.name(), Field.Store.YES));
         iwriter.addDocument(doc);
     }
-
+    
     private class BackgroundIndexer extends Thread {
         @Override
         public void run() {
@@ -122,9 +125,12 @@ public class LuceneIndex {
             index();
         }
     }
-
-    /** Return a list of results in in the format expected by GeocoderBuiltin.js in the OTP Leaflet client. */
-    public List<LuceneResult> query (String queryString) {
+    
+    /**
+     * Return a list of results in in the format expected by GeocoderBuiltin.js in the OTP Leaflet
+     * client.
+     */
+    public List<LuceneResult> query(String queryString) {
         /* Turn the query string into a Lucene query. Terms are fuzzy and should all be present. */
         BooleanQuery query = new BooleanQuery();
         for (String term : queryString.split(" ")) {
@@ -133,11 +139,11 @@ public class LuceneIndex {
         List<LuceneResult> result = Lists.newArrayList();
         try {
             TopScoreDocCollector collector = TopScoreDocCollector.create(10, true);
-            searcher.search(query, collector);
+            this.searcher.search(query, collector);
             ScoreDoc[] docs = collector.topDocs().scoreDocs;
             for (int i = 0; i < docs.length; i++) {
                 LuceneResult lr = new LuceneResult();
-                Document doc = searcher.doc(docs[i].doc);
+                Document doc = this.searcher.doc(docs[i].doc);
                 lr.lat = doc.getField("lat").numericValue().doubleValue();
                 lr.lng = doc.getField("lon").numericValue().doubleValue();
                 String category = doc.getField("category").stringValue().toLowerCase();
@@ -152,14 +158,15 @@ public class LuceneIndex {
             return result;
         }
     }
-
+    
     /** This class matches the structure of the Geocoder responses expected by the OTP client. */
     public static class LuceneResult {
         public double lat;
         public double lng;
         public String description;
     }
-
-    public static enum Category { STOP, CORNER; }
+    
+    public static enum Category {
+        STOP, CORNER;
+    }
 }
-

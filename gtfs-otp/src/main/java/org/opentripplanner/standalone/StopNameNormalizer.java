@@ -1,10 +1,11 @@
 package org.opentripplanner.standalone;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Ints;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Transforms transit stop names into a somewhat more normalized form, so string

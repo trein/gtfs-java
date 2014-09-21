@@ -13,12 +13,12 @@
 
 package org.opentripplanner.standalone;
 
+import com.google.common.collect.Maps;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
 
 /**
  * Does the same thing as String.intern, but for several different types.

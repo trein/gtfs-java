@@ -131,6 +131,7 @@ public class MultiShortestPathTree extends AbstractShortestPathTree {
         return ret;
     }
     
+    @Override
     public String toString() {
         return "MultiSPT(" + this.stateSets.size() + " vertices)";
     }

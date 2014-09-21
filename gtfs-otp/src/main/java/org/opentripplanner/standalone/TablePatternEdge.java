@@ -1,5 +1,6 @@
 package org.opentripplanner.standalone;
 
+
 /**
  * A superclass for general trip pattern related edges
  * 
@@ -13,7 +14,6 @@ public abstract class TablePatternEdge extends Edge implements PatternEdge {
         super(fromv, tov);
     }
     
-    @Override
     public TripPattern getPattern() {
         return ((OnboardVertex) this.fromv).getTripPattern();
     }

@@ -23,8 +23,7 @@ public class GtfsStopContext {
     
     public Map<T2<Stop, Trip>, Vertex> patternArriveNodes = new HashMap<T2<Stop, Trip>, Vertex>();
     
-    // exemplar
-    public Map<T2<Stop, Trip>, Vertex> patternDepartNodes = new HashMap<T2<Stop, Trip>, Vertex>();
+    public Map<T2<Stop, Trip>, Vertex> patternDepartNodes = new HashMap<T2<Stop, Trip>, Vertex>(); // exemplar
     
     // Why?
     public HashMap<TripPattern, Integer> tripPatternIds = new HashMap<TripPattern, Integer>();

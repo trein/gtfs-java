@@ -1,5 +1,6 @@
 package org.opentripplanner.standalone;
 
+
 public class PatternArriveVertex extends PatternStopVertex {
     
     private static final long serialVersionUID = 20140101;

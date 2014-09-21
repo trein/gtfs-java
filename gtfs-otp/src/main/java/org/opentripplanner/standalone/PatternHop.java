@@ -1,16 +1,3 @@
-/* This program is free software: you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public License
- as published by the Free Software Foundation, either version 3 of
- the License, or (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>. */
-
 package org.opentripplanner.standalone;
 
 import org.onebusaway.gtfs.model.Stop;
@@ -19,19 +6,19 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
- * A transit vehicle's journey between departure at one stop and arrival at the next.
- * This version represents a set of such journeys specified by a TripPattern.
+ * A transit vehicle's journey between departure at one stop and arrival at the next. This version
+ * represents a set of such journeys specified by a TripPattern.
  */
 public class PatternHop extends TablePatternEdge implements OnboardEdge, HopEdge {
-
+    
     private static final long serialVersionUID = 1L;
-
-    private Stop begin, end;
-
+    
+    private final Stop begin, end;
+    
     public int stopIndex;
-
+    
     private LineString geometry = null;
-
+    
     public PatternHop(PatternStopVertex from, PatternStopVertex to, Stop begin, Stop end, int stopIndex) {
         super(from, to);
         this.begin = begin;
@@ -39,105 +26,108 @@ public class PatternHop extends TablePatternEdge implements OnboardEdge, HopEdge
         this.stopIndex = stopIndex;
         getPattern().setPatternHop(stopIndex, this);
     }
-
+    
+    @Override
     public double getDistance() {
-        return SphericalDistanceLibrary.getInstance().distance(begin.getLat(), begin.getLon(), end.getLat(),
-                end.getLon());
+        return SphericalDistanceLibrary.getInstance().distance(this.begin.getLat(), this.begin.getLon(), this.end.getLat(),
+                this.end.getLon());
     }
-
+    
     public TraverseMode getMode() {
         return GtfsLibrary.getTraverseMode(getPattern().route);
     }
-    
+
+    @Override
     public String getName() {
         return GtfsLibrary.getRouteName(getPattern().route);
     }
-    
-    public State optimisticTraverse(State state0) {
-        RoutingRequest options = state0.getOptions();
-        
-        // Ignore this edge if either of its stop is banned hard
-        if (!options.bannedStopsHard.isEmpty()) {
-            if (options.bannedStopsHard.matches(((PatternStopVertex) fromv).getStop())
-                    || options.bannedStopsHard.matches(((PatternStopVertex) tov).getStop())) {
-                return null;
-            }
-        }
-        
-    	int runningTime = getPattern().scheduledTimetable.getBestRunningTime(stopIndex);
-    	StateEditor s1 = state0.edit(this);
-    	s1.incrementTimeInSeconds(runningTime);
-    	s1.setBackMode(getMode());
-    	s1.incrementWeight(runningTime);
-    	return s1.makeState();
-    }
 
     @Override
-    public double timeLowerBound(RoutingRequest options) {
-        return getPattern().scheduledTimetable.getBestRunningTime(stopIndex);
+    public State optimisticTraverse(State state0) {
+        RoutingRequest options = state0.getOptions();
+
+        // Ignore this edge if either of its stop is banned hard
+        if (!options.bannedStopsHard.isEmpty()) {
+            if (options.bannedStopsHard.matches(((PatternStopVertex) this.fromv).getStop())
+                    || options.bannedStopsHard.matches(((PatternStopVertex) this.tov).getStop())) { return null; }
+        }
+        
+        int runningTime = getPattern().scheduledTimetable.getBestRunningTime(this.stopIndex);
+        StateEditor s1 = state0.edit(this);
+        s1.incrementTimeInSeconds(runningTime);
+        s1.setBackMode(getMode());
+        s1.incrementWeight(runningTime);
+        return s1.makeState();
     }
     
+    @Override
+    public double timeLowerBound(RoutingRequest options) {
+        return getPattern().scheduledTimetable.getBestRunningTime(this.stopIndex);
+    }
+
     @Override
     public double weightLowerBound(RoutingRequest options) {
         return timeLowerBound(options);
     }
-    
+
+    @Override
     public State traverse(State s0) {
         RoutingRequest options = s0.getOptions();
-        
+
         // Ignore this edge if either of its stop is banned hard
         if (!options.bannedStopsHard.isEmpty()) {
-            if (options.bannedStopsHard.matches(((PatternStopVertex) fromv).getStop())
-                    || options.bannedStopsHard.matches(((PatternStopVertex) tov).getStop())) {
-                return null;
-            }
+            if (options.bannedStopsHard.matches(((PatternStopVertex) this.fromv).getStop())
+                    || options.bannedStopsHard.matches(((PatternStopVertex) this.tov).getStop())) { return null; }
         }
-        
+
         TripTimes tripTimes = s0.getTripTimes();
-        int runningTime = tripTimes.getRunningTime(stopIndex);
+        int runningTime = tripTimes.getRunningTime(this.stopIndex);
         StateEditor s1 = s0.edit(this);
         s1.incrementTimeInSeconds(runningTime);
-        if (s0.getOptions().arriveBy)
+        if (s0.getOptions().arriveBy) {
             s1.setZone(getBeginStop().getZoneId());
-        else
+        } else {
             s1.setZone(getEndStop().getZoneId());
-        //s1.setRoute(pattern.getExemplar().route.getId());
+        }
+        // s1.setRoute(pattern.getExemplar().route.getId());
         s1.incrementWeight(runningTime);
         s1.setBackMode(getMode());
         return s1.makeState();
     }
-
+    
     public void setGeometry(LineString geometry) {
         this.geometry = geometry;
     }
-
+    
+    @Override
     public LineString getGeometry() {
-        if (geometry == null) {
-
-            Coordinate c1 = new Coordinate(begin.getLon(), begin.getLat());
-            Coordinate c2 = new Coordinate(end.getLon(), end.getLat());
-
-            geometry = GeometryUtils.getGeometryFactory().createLineString(new Coordinate[] { c1, c2 });
+        if (this.geometry == null) {
+            
+            Coordinate c1 = new Coordinate(this.begin.getLon(), this.begin.getLat());
+            Coordinate c2 = new Coordinate(this.end.getLon(), this.end.getLat());
+            
+            this.geometry = GeometryUtils.getGeometryFactory().createLineString(new Coordinate[] { c1, c2 });
         }
-        return geometry;
+        return this.geometry;
     }
-
+    
     @Override
     public Stop getEndStop() {
-        return end;
+        return this.end;
     }
-
+    
     @Override
     public Stop getBeginStop() {
-        return begin;
+        return this.begin;
     }
-
+    
+    @Override
     public String toString() {
-    	return "PatternHop(" + getFromVertex() + ", " + getToVertex() + ")";
+        return "PatternHop(" + getFromVertex() + ", " + getToVertex() + ")";
     }
-
+    
     @Override
     public int getStopIndex() {
-        return stopIndex;
+        return this.stopIndex;
     }
 }

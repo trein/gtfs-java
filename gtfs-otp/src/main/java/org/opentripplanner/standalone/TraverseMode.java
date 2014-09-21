@@ -13,12 +13,12 @@
 
 package org.opentripplanner.standalone;
 
+import javax.xml.bind.annotation.XmlType;
+
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Set;
-
-import javax.xml.bind.annotation.XmlType;
 
 @XmlType(name="TraverseMode")  
 public enum TraverseMode {

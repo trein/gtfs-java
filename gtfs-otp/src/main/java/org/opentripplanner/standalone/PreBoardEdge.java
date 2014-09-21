@@ -1,6 +1,5 @@
 package org.opentripplanner.standalone;
 
-
 /**
  * PreBoard edges connect a TransitStop to its agency_stop_depart vertices; PreAlight edges connect
  * an agency_stop_arrive vertex to its TransitStop. Applies the local stop rules (see

@@ -2,7 +2,6 @@ package org.opentripplanner.standalone;
 
 import java.util.BitSet;
 
-import org.glassfish.jersey.server.internal.routing.RoutingContext;
 import org.onebusaway.gtfs.model.Stop;
 import org.onebusaway.gtfs.model.Trip;
 import org.slf4j.Logger;

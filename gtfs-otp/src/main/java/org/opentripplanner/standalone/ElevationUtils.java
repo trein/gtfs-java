@@ -11,17 +11,17 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 
 public class ElevationUtils {
     private static Logger log = LoggerFactory.getLogger(ElevationUtils.class);
-
+    
     /*
      * These numbers disagree with everything else I (David Turner) have read about the energy cost
      * of cycling but given that we are going to be fudging them anyway, they're not totally crazy
      */
     private static final double ENERGY_PER_METER_ON_FLAT = 1;
-
+    
     private static final double ENERGY_SLOPE_FACTOR = 4000;
-
+    
     public static double getLengthMultiplierFromElevation(CoordinateSequence elev) {
-
+        
         double trueLength = 0;
         double flatLength = 0;
         double lastX = elev.getX(0);
@@ -38,7 +38,7 @@ public class ElevationUtils {
         if (flatLength == 0) { return 0; }
         return trueLength / flatLength;
     }
-
+    
     /**
      * @param elev The elevatioon profile, where each (x, y) is (distance along edge, elevation)
      * @param slopeLimit Whether the slope should be limited to 0.35, which is the max slope for
@@ -73,7 +73,7 @@ public class ElevationUtils {
             if (maxSlope < Math.abs(slope)) {
                 maxSlope = Math.abs(slope);
             }
-
+            
             double slope_or_zero = Math.max(slope, 0);
             double hypotenuse = Math.sqrt((rise * rise) + (run * run));
             double energy = hypotenuse
@@ -88,34 +88,34 @@ public class ElevationUtils {
         }
         return new SlopeCosts(slopeSpeedEffectiveLength, slopeWorkCost, slopeSafetyCost, maxSlope, flattened);
     }
-
+    
     /** constants for slope computation */
     final static double tx[] = { 0.0000000000000000E+00, 0.0000000000000000E+00, 0.0000000000000000E+00, 2.7987785324442748E+03,
-        5.0000000000000000E+03, 5.0000000000000000E+03, 5.0000000000000000E+03 };
+            5.0000000000000000E+03, 5.0000000000000000E+03, 5.0000000000000000E+03 };
     final static double ty[] = { -3.4999999999999998E-01, -3.4999999999999998E-01, -3.4999999999999998E-01,
-            -7.2695627831828688E-02, -2.4945814335295903E-03, 5.3500304527448035E-02, 1.2191105175593375E-01,
-        3.4999999999999998E-01, 3.4999999999999998E-01, 3.4999999999999998E-01 };
+        -7.2695627831828688E-02, -2.4945814335295903E-03, 5.3500304527448035E-02, 1.2191105175593375E-01,
+            3.4999999999999998E-01, 3.4999999999999998E-01, 3.4999999999999998E-01 };
     final static double coeff[] = { 4.3843513168660255E+00, 3.6904323727375652E+00, 1.6791850199667697E+00,
-            5.5077866957024113E-01, 1.7977766419113900E-01, 8.0906832222762959E-02, 6.0239305785343762E-02,
-        4.6782343053423814E+00, 3.9250580214736304E+00, 1.7924585866601270E+00, 5.3426170441723031E-01,
-        1.8787442260720733E-01, 7.4706427576152687E-02, 6.2201805553147201E-02, 5.3131908923568787E+00,
-            4.4703901299120750E+00, 2.0085381385545351E+00, 5.4611063530784010E-01, 1.8034042959223889E-01,
-        8.1456939988273691E-02, 5.9806795955995307E-02, 5.6384893192212662E+00, 4.7732222200176633E+00,
-        2.1021485412233019E+00, 5.7862890496126462E-01, 1.6358571778476885E-01, 9.4846184210137130E-02,
-            5.5464612133430242E-02 };
-
+        5.5077866957024113E-01, 1.7977766419113900E-01, 8.0906832222762959E-02, 6.0239305785343762E-02,
+            4.6782343053423814E+00, 3.9250580214736304E+00, 1.7924585866601270E+00, 5.3426170441723031E-01,
+            1.8787442260720733E-01, 7.4706427576152687E-02, 6.2201805553147201E-02, 5.3131908923568787E+00,
+        4.4703901299120750E+00, 2.0085381385545351E+00, 5.4611063530784010E-01, 1.8034042959223889E-01,
+            8.1456939988273691E-02, 5.9806795955995307E-02, 5.6384893192212662E+00, 4.7732222200176633E+00,
+            2.1021485412233019E+00, 5.7862890496126462E-01, 1.6358571778476885E-01, 9.4846184210137130E-02,
+        5.5464612133430242E-02 };
+    
     public static double slopeSpeedCoefficient(double slope, double altitude) {
         /*
          * computed by asking ZunZun for a quadratic b-spline approximating some values from
          * http://www.analyticcycling.com/ForcesSpeed_Page.html fixme: should clamp to local speed
          * limits (code is from ZunZun)
          */
-
+        
         int nx = 7;
         int ny = 10;
         int kx = 2;
         int ky = 2;
-
+        
         double h[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, 0.0 };
         double hh[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -124,20 +124,20 @@ public class ElevationUtils {
                 0.0, 0.0, 0.0, 0.0 };
         double w_y[] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, 0.0 };
-
+        
         int i, j, li, lj, lx, ky1, nky1, ly, i1, j1, l2;
         double f, temp;
-
+        
         int kx1 = kx + 1;
         int nkx1 = nx - kx1;
         int l = kx1;
         int l1 = l + 1;
-
+        
         while ((altitude >= tx[l1 - 1]) && (l != nkx1)) {
             l = l1;
             l1 = l + 1;
         }
-
+        
         h[0] = 1.0;
         for (j = 1; j < (kx + 1); j++) {
             for (i = 0; i < j; i++) {
@@ -156,22 +156,22 @@ public class ElevationUtils {
                 }
             }
         }
-
+        
         lx = l - kx1;
         for (j = 0; j < kx1; j++) {
             w_x[j] = h[j];
         }
-
+        
         ky1 = ky + 1;
         nky1 = ny - ky1;
         l = ky1;
         l1 = l + 1;
-
+        
         while ((slope >= ty[l1 - 1]) && (l != nky1)) {
             l = l1;
             l1 = l + 1;
         }
-
+        
         h[0] = 1.0;
         for (j = 1; j < (ky + 1); j++) {
             for (i = 0; i < j; i++) {
@@ -190,17 +190,17 @@ public class ElevationUtils {
                 }
             }
         }
-
+        
         ly = l - ky1;
         for (j = 0; j < ky1; j++) {
             w_y[j] = h[j];
         }
-
+        
         l = lx * nky1;
         for (i1 = 0; i1 < kx1; i1++) {
             h[i1] = w_x[i1];
         }
-
+        
         l1 = l + ly;
         temp = 0.0;
         for (i1 = 0; i1 < kx1; i1++) {
@@ -211,15 +211,15 @@ public class ElevationUtils {
             }
             l1 = l1 + nky1;
         }
-
+        
         return temp;
     }
-
+    
     /** parameter A in the Rees (2004) slope-dependent walk cost model **/
     private static double walkParA = 0.75;
     /** parameter C in the Rees (2004) slope-dependent walk cost model **/
     private static double walkParC = 14.6;
-
+    
     /**
      * The cost for walking in hilly/mountain terrain dependent on slope using an empirical function
      * by WG Rees (Comp & Geosc, 2004), that overhauls the Naismith rule for mountaineering.<br>
@@ -228,7 +228,7 @@ public class ElevationUtils {
      * TODO: Not sure if it makes sense to use maxSlope as input and instead better use a lower
      * estimate / average value. However, the DEM is most likely generalized/smoothed and hence
      * maxSlope may be smaller than in the real world.
-     *
+     * 
      * @param verticalDistance the vertical distance of the line segment
      * @param maxSlope the slope of the segment
      * @return walk costs dependent on slope (in seconds)
@@ -253,22 +253,22 @@ public class ElevationUtils {
         costs = (walkParA * verticalDistance) + ((walkParC * (h * h)) / verticalDistance);
         return costs;
     }
-
+    
     public static PackedCoordinateSequence getPartialElevationProfile(PackedCoordinateSequence elevationProfile, double start,
             double end) {
         if (elevationProfile == null) { return null; }
         List<Coordinate> coordList = new LinkedList<Coordinate>();
-
+        
         if (start < 0) {
             start = 0;
         }
-
+        
         Coordinate[] coordinateArray = elevationProfile.toCoordinateArray();
         double length = coordinateArray[coordinateArray.length - 1].x;
         if (end > length) {
             end = length;
         }
-
+        
         boolean started = false;
         boolean finished = false;
         Coordinate lastCoord = null;
@@ -307,11 +307,11 @@ public class ElevationUtils {
             }
             lastCoord = coord;
         }
-
+        
         Coordinate coordArr[] = new Coordinate[coordList.size()];
         return new PackedCoordinateSequence.Float(coordList.toArray(coordArr), 2);
     }
-    
+
     /** checks for units (m/ft) in an OSM ele tag value, and returns the value in meters */
     public static Double parseEleTag(String ele) {
         ele = ele.toLowerCase();
@@ -328,5 +328,5 @@ public class ElevationUtils {
             return null;
         }
     }
-
+    
 }

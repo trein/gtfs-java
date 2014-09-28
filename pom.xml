@@ -10,7 +10,8 @@
         <module>gtfs-jpa</module>
         <module>gtfs-mongo</module>
         <module>gtfs-etl</module>
-        <module>gtfs-csv</module>
+	<module>gtfs-csv</module>
+	<module>gtfs-opt</module>
         <module>gtfs-service</module>
     </modules>
 
